@@ -17,7 +17,7 @@
    version="1.1"
    id="svg1363"
    inkscape:version="0.92.4 (33fec40, 2019-01-16)"
-   sodipodi:docname="truedoc-dev-inkspace.svg">
+   sodipodi:docname="truedoc-dev.svg">
   <defs
      id="defs1357">
     <linearGradient
@@ -81,7 +81,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.8756036"
-     inkscape:cx="2.6024554"
+     inkscape:cx="-93.100069"
      inkscape:cy="172.65381"
      inkscape:document-units="px"
      inkscape:current-layer="layer5"
@@ -134,7 +134,8 @@
        style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.11111069px;line-height:1.25;font-family:monospace;-inkscape-font-specification:'monospace Italic';letter-spacing:0px;word-spacing:0px;fill:#e3dbdb;fill-opacity:1;stroke:none;stroke-width:0.26458335;stroke-opacity:1"
        x="20.595589"
        y="64.360016"
-       id="text3558"><tspan
+       id="text3558"
+       sodipodi:insensitive="true"><tspan
          sodipodi:role="line"
          id="tspan3556"
          x="20.595589"

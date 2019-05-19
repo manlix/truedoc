@@ -21,7 +21,7 @@
   </rdf:RDF>
  </metadata>
  <g transform="translate(-18.162 -45.507)">
-  <rect x="18.928" y="59.671" width="69.978" height="6.1482" rx="8.6925e-14" fill="#1a1a1a" stroke="#000" stroke-linejoin="round" stroke-width=".16807"/>
+  <path d="m18.928 59.671h69.978v6.1482h-69.978v-6.1482z" fill="#1a1a1a" stroke="#000" stroke-linejoin="round" stroke-width=".16807"/>
  </g>
  <g transform="translate(-18.162 -45.507)">
   <g fill="#e3dbdb" aria-label="ИСТИННЫЙ ДОКУМЕНТ ВАЖНЕЕ">
