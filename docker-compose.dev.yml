@@ -1,0 +1,58 @@
+version: "3.7"
+
+# Docs:
+#   - versioning: https://docs.docker.com/compose/compose-file/compose-versioning/
+#   - compose file reference: https://docs.docker.com/compose/compose-file/
+
+# Articles:
+#   - Some examples: https://blog.codeship.com/using-docker-compose-for-python-development/
+#   - About ".dockerignore" and "Best practices": https://dev.to/djangostars/what-is-docker-and-how-to-use-it-with-python-tutorial-87a
+
+services:
+
+  truedoc-mysql:  # Hostname inside containers: "truedoc-mysql".
+    image: mysql/mysql-server:8.0.16  # https://hub.docker.com/r/mysql/mysql-server/
+    environment:  # More environment vars: https://dev.mysql.com/doc/refman/8.0/en/docker-mysql-more-topics.html
+      MYSQL_DATABASE: truedoc
+      MYSQL_USER: truedoc
+      MYSQL_PASSWORD: truedoc
+      MYSQL_ROOT_PASSWORD: truedoc
+    command:
+      ## Required to prevent issue for PMA: "The server requested authentication method unknown to the client [caching_sha2_password]".
+      ## TODO: drop after PMA will ready to use PHP compatible version supporting "caching_sha2_password". See: https://github.com/phpmyadmin/phpmyadmin/issues/14220
+      - "--default-authentication-plugin=mysql_native_password"
+
+
+  truedoc-pma:  # Hostname inside containers: "truedoc-pma". Access from local: "http://truedoc-pma.localhost:8080".
+    image: phpmyadmin/phpmyadmin:4.9  # https://hub.docker.com/r/phpmyadmin/phpmyadmin
+    ports:
+      - "127.0.0.1:8080:80"
+    environment:
+      PMA_HOST: truedoc-mysql
+      PMA_USER: truedoc
+      PMA_PASSWORD: truedoc
+    depends_on:
+      - truedoc-mysql
+
+  truedoc-app:  # Hostname inside containers: "truedoc-app". Access from local: "http://truedoc-app.localhost:36456".
+    build:
+      context: .
+      dockerfile: Dockerfile.dev  # TODO: read about multi-stage builds: https://docs.docker.com/develop/develop-images/multistage-build/
+      args:
+        TRUEDOC_PATH: "/var/lib/truedoc"
+
+    environment:
+      FLASK_APP: "truedoc.website:app"
+      FLASK_ENV: "development"  # ATTENTION: required for dev to reload code after change
+
+    volumes:
+      - "./truedoc:/var/lib/truedoc/truedoc"
+
+    ports:
+      - "127.0.0.1:36456:5000"
+
+    depends_on:
+      - truedoc-mysql
+      - truedoc-pma  # ATTENTION: do NOT use in production.
+
+    command: python -m flask run --host 0.0.0.0 --port 5000

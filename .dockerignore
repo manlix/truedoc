@@ -1,0 +1,17 @@
+# See useful tool to see data in future build context:
+# https://github.com/pwaller/docker-show-context
+#
+# To download binary use page:
+# https://github.com/pwaller/docker-show-context/releases
+#
+.git/
+.gitignore
+.idea/
+**/__pycache__/
+docker-compose.dev.yml
+Dockerfile.dev
+README.md
+scripts/
+setup.py
+img/
+website_mock/
