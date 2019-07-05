@@ -17,7 +17,7 @@ function wait_for_mysql() {
 
     get_mysql_ip
 
-    while [ "$(docker inspect --format='{{.State.Health.Status}}' hustalink_hustalink-mysql_1)" != "healthy" ] || ! nc -zv "${mysql_ip}" 3306;
+    while [ "$(docker inspect --format='{{.State.Health.Status}}' truedoc_truedoc-mysql_1)" != "healthy" ] || ! nc -zv "${mysql_ip}" 3306;
         do
             msg "Wait for 3 seconds to being MySQL started..."
             sleep 3
