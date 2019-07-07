@@ -46,9 +46,6 @@ services:
     volumes:
       - "./truedoc:/var/lib/truedoc/truedoc"
 
-    ports:
-      - "127.0.0.1:36456:5000"
-
     depends_on:
       - truedoc-mysql
       - truedoc-pma  # ATTENTION: do NOT use in production.
