@@ -50,6 +50,7 @@ services:
 
     depends_on:
       - truedoc-mysql
+      - truedoc-nginx
       - truedoc-pma  # ATTENTION: do NOT use in production.
 
     command: python -m flask run --host 0.0.0.0 --port 5000
@@ -58,7 +59,5 @@ services:
     image: nginx:1.16-alpine
     ports:
       - "127.0.0.1:80:80"
-    depends_on:
-      - truedoc-app
     volumes:
       - "./nginx-dev/conf.d:/etc/nginx/conf.d"
