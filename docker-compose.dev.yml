@@ -10,6 +10,30 @@ version: "3.7"
 
 services:
 
+
+  truedoc-app:  # Hostname inside containers: "truedoc-app". Access from local: "http://truedoc-app.localhost:36456".
+    ports:
+      - "127.0.0.1:36456:5000"
+    build:
+      context: .
+      dockerfile: Dockerfile.dev  # TODO: read about multi-stage builds: https://docs.docker.com/develop/develop-images/multistage-build/
+      args:
+        TRUEDOC_PATH: "/var/lib/truedoc"
+
+    environment:
+      FLASK_APP: "truedoc.website:app"
+      FLASK_ENV: "development"  # ATTENTION: required for dev to reload code after change
+
+    volumes:
+      - "./truedoc:/var/lib/truedoc/truedoc"
+
+    depends_on:
+      - truedoc-mysql
+      - truedoc-pma  # ATTENTION: do NOT use in production.
+
+    command: python -m flask run --host 0.0.0.0 --port 5000
+
+
   truedoc-mysql:  # Hostname inside containers: "truedoc-mysql".
     image: mysql/mysql-server:8.0.16  # https://hub.docker.com/r/mysql/mysql-server/
     ports:
@@ -34,26 +58,6 @@ services:
     depends_on:
       - truedoc-mysql
 
-  truedoc-app:  # Hostname inside containers: "truedoc-app". Access from local: "http://truedoc-app.localhost:36456".
-    build:
-      context: .
-      dockerfile: Dockerfile.dev  # TODO: read about multi-stage builds: https://docs.docker.com/develop/develop-images/multistage-build/
-      args:
-        TRUEDOC_PATH: "/var/lib/truedoc"
-
-    environment:
-      FLASK_APP: "truedoc.website:app"
-      FLASK_ENV: "development"  # ATTENTION: required for dev to reload code after change
-
-    volumes:
-      - "./truedoc:/var/lib/truedoc/truedoc"
-
-    depends_on:
-      - truedoc-mysql
-      - truedoc-nginx
-      - truedoc-pma  # ATTENTION: do NOT use in production.
-
-    command: python -m flask run --host 0.0.0.0 --port 5000
 
   truedoc-nginx:
     image: nginx:1.16-alpine
@@ -61,3 +65,6 @@ services:
       - "127.0.0.1:80:80"
     volumes:
       - "./nginx-dev/conf.d:/etc/nginx/conf.d"
+    depends_on:
+      - truedoc-app     # Required because nginx has 'truedoc-app' in proxy_pass directive.
+      - truedoc-pma     # Required because nginx has 'truedoc-pma' in proxy_pass directive.
