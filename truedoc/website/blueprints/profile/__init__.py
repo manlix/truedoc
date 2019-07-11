@@ -38,7 +38,6 @@ def create_profile():
         )
 
 
-# List pr
 @bp.route('/', methods=[HTTP_METHOD.GET])
 def list_profiles():
     """List profiles."""
