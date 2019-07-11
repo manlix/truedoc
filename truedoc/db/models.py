@@ -53,4 +53,5 @@ class Profile(Model):
 #
 ###########################################################################
 
+# TODO: drop when alembic will be implemented
 metadata.create_all(engine)
