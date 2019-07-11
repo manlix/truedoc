@@ -1,2 +1,2 @@
 class Config:
-    DB_PATH = 'mysql+pymysql://truedoc-mysql:truedoc@truedoc-mysql/truedoc'
+    DB_PATH = 'mysql+pymysql://truedoc:truedoc@truedoc-mysql/truedoc'
