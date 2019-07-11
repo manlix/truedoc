@@ -3,7 +3,7 @@ from http import HTTPStatus
 from flask import Blueprint
 from flask import jsonify
 
-from ...constants import STATUS
+from ....constants import STATUS
 
 bp = Blueprint('error', __name__)
 

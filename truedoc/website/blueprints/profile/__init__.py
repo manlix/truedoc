@@ -4,8 +4,8 @@ from flask import Blueprint
 from flask import jsonify
 from flask import request
 
-from ...constants import HTTP_METHOD
-from ...constants import STATUS
+from ....constants import HTTP_METHOD
+from ....constants import STATUS
 
 bp = Blueprint('profile', __name__)
 
