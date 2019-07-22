@@ -3,7 +3,7 @@ from http import HTTPStatus
 from flask import Blueprint
 from flask import jsonify
 
-from ....constants import STATUS
+from ....constants import STATE
 
 bp = Blueprint('error', __name__)
 
@@ -12,7 +12,7 @@ bp = Blueprint('error', __name__)
 def error_handler_401(e):
     return jsonify(
         error_code=HTTPStatus.UNAUTHORIZED,
-        status=STATUS.ERROR,
+        status=STATE.ERROR,
     )
 
 
@@ -20,7 +20,7 @@ def error_handler_401(e):
 def error_handler_404(e):
     return jsonify(
         error_code=HTTPStatus.NOT_FOUND,
-        status=STATUS.ERROR,
+        status=STATE.ERROR,
     )
 
 
@@ -28,5 +28,5 @@ def error_handler_404(e):
 def error_handler_401(e):
     return jsonify(
         error_code=HTTPStatus.INTERNAL_SERVER_ERROR,
-        status=STATUS.ERROR,
+        status=STATE.ERROR,
     )

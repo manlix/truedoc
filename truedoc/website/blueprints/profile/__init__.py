@@ -1,26 +1,24 @@
-from http import HTTPStatus
-
 from flask import Blueprint
-from flask import jsonify
 from flask import request
 
-from ....constants import HTTP_METHOD
-from ....constants import STATUS
+from flask import jsonify
 
+from ....constants import STATE
 from ....db import db
+from ....messages import Error
 
 bp = Blueprint('profile', __name__)
 
 
 # Create profile
-@bp.route('/', methods=[HTTP_METHOD.POST])
+@bp.route('/', methods=['POST'])
 def create_profile():
     """Create profile."""
 
     if not request.is_json:
         return jsonify(
-            error_code=HTTPStatus.BAD_REQUEST,  # 400
-            status=STATUS.ERROR,
+            error=Error.IS_NOT_JSON,
+            state=STATE.ERROR,
         )
 
     else:
@@ -34,14 +32,5 @@ def create_profile():
         db.Profile.create_profile(profile)
 
         return jsonify(
-            status=STATUS.SUCCESS,
+            state=STATE.SUCCESS,
         )
-
-
-@bp.route('/', methods=[HTTP_METHOD.GET])
-def list_profiles():
-    """List profiles."""
-    return jsonify(
-        status=STATUS.SUCCESS,
-        users=db.Profile.list_all(),
-    )

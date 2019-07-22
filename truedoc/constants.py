@@ -1,10 +1,4 @@
-# HTTP methods list
-class HTTP_METHOD:
-    GET = 'GET'
-    POST = 'POST'
-
-
-# Status list:
-class STATUS:
+# Posible state list:
+class STATE:
     ERROR = 'error'
     SUCCESS = 'success'
