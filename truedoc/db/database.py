@@ -25,7 +25,7 @@ class Profile:
         return query
 
     @staticmethod
-    def create_profile(profile: models.Profile) -> None:
+    def create(profile: models.Profile) -> None:
         """Create profile."""
         db_session.add(profile)
         db_session.commit()
