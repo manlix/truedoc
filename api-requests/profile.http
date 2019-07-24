@@ -6,7 +6,9 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
 
-### Creating profile
+# Profile.
+
+## Creating profile. Valid request.
 
 POST http://truedoc-app.localhost/profile/
 Content-Type: application/json
