@@ -6,6 +6,8 @@ from .blueprints import profile
 from ..db import db
 
 app = Flask(__name__)
-
 app.register_blueprint(error.bp)
 app.register_blueprint(profile.bp, url_prefix='/profile')
+
+# See Generic Exception Handlers:
+# https://flask.palletsprojects.com/en/1.1.x/errorhandling/
