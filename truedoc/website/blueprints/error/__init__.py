@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from flask import Blueprint
 from ....response import failure
 
@@ -12,3 +14,8 @@ def error_handler_401(e):
 @bp.app_errorhandler(404)
 def error_handler_404(e):
     return failure(http_code=404)
+
+
+@bp.app_errorhandler(405)
+def error_handler_405(e):
+    return failure(http_code=405)
