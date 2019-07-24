@@ -1,11 +1,13 @@
 from flask import Blueprint
 from flask import request
 
-from flask import jsonify
+from marshmallow import ValidationError
 
-from ....constants import STATE
+from ....response import failure, success
+
 from ....db import db
-from ....messages import Error
+
+from ....db import schemas
 
 bp = Blueprint('profile', __name__)
 
@@ -15,22 +17,15 @@ bp = Blueprint('profile', __name__)
 def create_profile():
     """Create profile."""
 
-    if not request.is_json:
-        return jsonify(
-            error=Error.IS_NOT_JSON,
-            state=STATE.ERROR,
-        )
+    profile_schema = schemas.ProfileSchema()
+    try:
+        data = profile_schema.load(request.get_json())
+    except ValidationError as err:
+        return failure(errors=err.messages)
 
     else:
+        profile = db.models.Profile(email=data['email'])
+        profile.set_password(data['password'])
+        db.Profile.create(profile)
 
-        profile = db.models.Profile(
-            email=request.json['email'],
-        )
-
-        profile.set_password(request.json['password'])
-
-        db.Profile.create_profile(profile)
-
-        return jsonify(
-            state=STATE.SUCCESS,
-        )
+        return success()
