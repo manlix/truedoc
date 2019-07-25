@@ -12,5 +12,5 @@ def failure(**kwargs):
 
 # TODO: add skipping 'http_code' key from 'kwargs' because HTTP code already has this code
 def success(**kwargs):
-    return jsonify({'status': STATUS.SUCCESS}), \
+    return jsonify({'status': STATUS.SUCCESS, **kwargs}), \
            kwargs['http_code'] if 'http_code' in kwargs else HTTPStatus.OK  # 200
