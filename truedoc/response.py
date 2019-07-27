@@ -1,16 +1,22 @@
-from http import HTTPStatus
-
 from flask import jsonify
 from .constants import STATUS
 
 
-# TODO: add skipping 'http_code' key from 'kwargs' because HTTP code already has this code
-def failure(**kwargs):
-    return jsonify({'status': STATUS.ERROR, **kwargs}), \
-           kwargs['http_code'] if 'http_code' in kwargs else HTTPStatus.BAD_REQUEST  # 400
+def failure(http_code=400, description=None, **kwargs):
+    """Default return code is 400 if $http_code was not set."""
+    response = {'status': STATUS.ERROR, **kwargs}
+
+    if description is not None:
+        response['description'] = description if isinstance(description, str) else description[0]
+
+    return jsonify(response), http_code
 
 
-# TODO: add skipping 'http_code' key from 'kwargs' because HTTP code already has this code
-def success(**kwargs):
-    return jsonify({'status': STATUS.SUCCESS, **kwargs}), \
-           kwargs['http_code'] if 'http_code' in kwargs else HTTPStatus.OK  # 200
+def success(http_code=200, description=None, **kwargs):
+    """Default return code is 200 if $http_code was not set."""
+    response = {'status': STATUS.SUCCESS, **kwargs}
+
+    if description is not None:
+        response['description'] = description if isinstance(description, str) else description[0]
+
+    return jsonify(response), http_code
