@@ -25,4 +25,4 @@ app.register_blueprint(profile.bp, url_prefix='/profile')
 
 @app.errorhandler(TruedocError)
 def handle_exception(e):
-    return failure(description=e.args, http_code=500)
+    return failure(http_code=500, description=e.args)
