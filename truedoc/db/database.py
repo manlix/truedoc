@@ -10,7 +10,11 @@ To catch original exception from PyMySQL dig to "exc.orig":
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
 
+from sqlalchemy.exc import IntegrityError
+from pymysql.constants import ER
+
 from . import models
+from truedoc.exceptions import ProfileError
 
 db_session = scoped_session(sessionmaker(bind=models.engine))
 
@@ -28,5 +32,15 @@ class Profile:
     def create(profile: models.Profile) -> None:
         """Create profile."""
         db_session.add(profile)
-        db_session.commit()
 
+        try:
+            db_session.commit()
+        except IntegrityError as exc:
+            db_session.rollback()
+
+            errno, errmsg = exc.orig.args
+
+            if errno == ER.DUP_ENTRY:
+                raise ProfileError('Profile with given email already exists')
+
+            raise
