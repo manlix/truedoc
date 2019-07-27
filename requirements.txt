@@ -1,6 +1,8 @@
 # Latest versions are available on https://pypi.org
 
+blinker==1.4  # Required for 'sentry-sdk'
 Flask==1.1.1
 marshmallow==3.0.0rc8
 PyMySQL==0.9.3
+sentry-sdk==0.10.2
 SQLAlchemy==1.3.5
