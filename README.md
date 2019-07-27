@@ -3,8 +3,8 @@
 * [Архитектура взаимодействия](#arch)
 * [Действия](#actions)
 * [Ответы](#responses)
-    * [Простой положительный](#responses.simple.positive)
-    * [Простой отрицательный](#responses.simpe.negative)
+    * [Простой положительный](#responses.simple_positive)
+    * [Простой отрицательный](#responses.simple_negative)
     * [Неудачный](#responses.fail)
 
 
@@ -29,7 +29,7 @@ Delete   | DELETE     | Объект
 
 Каждый ответ содержит **status** со значением **success** (для успешных запросов) и **error** (для неудачных запросов) с уточняющей информацией в поле **description**.
 
-### Простой положительный <a name="responses.simple.positive"></a>
+### Простой положительный <a name="responses.simple_positive"></a>
 * HTTP-код: **200**;
 * Обязательные поля:
     * status = success
@@ -40,7 +40,7 @@ Delete   | DELETE     | Объект
 }
 ```
          
-### Простой отрицательный <a name="responses.simpe.negative"></a>
+### Простой отрицательный <a name="responses.simple_negative"></a>
 * HTTP-код: **400** и выше;
 * Обязательные поля:
     * status = error
