@@ -6,7 +6,8 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
 
-# Некорректный JSON
+# Некорректный JSON.
+# Должен возвращать: 400 (Bad request).
 POST http://truedoc-app.localhost/profile/
 Content-Type: application/json
 
@@ -15,6 +16,7 @@ INCORRECT_JSON
 ###
 
 # Профиль: создание профиля.
+# Должен возвращать: 200 (OK) либо ошибку 409 (Conflict) в случае если профиль уже создан.
 POST http://truedoc-app.localhost/profile/
 Content-Type: application/json
 
@@ -25,7 +27,8 @@ Content-Type: application/json
 
 ###
 
-# Профиль: создание профиля, без необходимых полей (пароль, поле 'password')
+# Профиль: создание профиля, без необходимых полей (пароль, поле 'password').
+# Должен возвращать ошибку: 406 (Not Acceptable).
 POST http://truedoc-app.localhost/profile/
 Content-Type: application/json
 
@@ -36,6 +39,7 @@ Content-Type: application/json
 ###
 
 # Профиль: создание профиля, с некорректным email адресом.
+# Должен возвращать ошибку: 406 (Not Acceptable).
 POST http://truedoc-app.localhost/profile/
 Content-Type: application/json
 
