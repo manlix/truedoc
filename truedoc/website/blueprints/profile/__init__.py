@@ -35,4 +35,4 @@ def list_profiles():
     profiles_schema = schemas.ProfileSchema(many=True)
     profiles = profiles_schema.dump(db.Profile.list_all())
 
-    return success(profiles=profiles)
+    return success(result=profiles)
