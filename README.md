@@ -5,6 +5,7 @@
 * [Ответы](#responses)
     * [Простой положительный](#responses.simple_positive)
     * [Простой отрицательный](#responses.simple_negative)
+    * [Положительный](#responses.positive)
     * [Неудачный](#responses.fail)
 
 
@@ -30,9 +31,9 @@ Delete   | DELETE     | Объект
 Каждый ответ содержит **status** со значением **success** (для успешных запросов) и **error** (для неудачных запросов) с уточняющей информацией в поле **description**.
 
 ### Простой положительный <a name="responses.simple_positive"></a>
-* HTTP-код: **200**;
+* HTTP-код: **200** _(OK)_;
 * Обязательные поля:
-    * status = success
+    * **status** _(str)_ = "success"
 
 ```json
 {
@@ -41,10 +42,10 @@ Delete   | DELETE     | Объект
 ```
          
 ### Простой отрицательный <a name="responses.simple_negative"></a>
-* HTTP-код: **406** и выше;
+* HTTP-код: **406** _(Not Acceptable)_ или **409** _(Conflict)_;
 * Обязательные поля:
-    * status = error
-    * description = "краткое описание проблемы"
+    * **status** _(str)_ = "error"
+    * **description** _(str)_ = "краткое описание проблемы"
 
 ```json
 {
@@ -53,9 +54,21 @@ Delete   | DELETE     | Объект
 }
 ```
 
+### Положительный <a name="responses.positive"></a>
+* HTTP-код: **200** _(OK)_;
+* Обязательные поля:
+    * **status** _(str)_ = "success"
+    * **result** _(dict)_ || _(list)_ || _(str)_ = result
+
+```text
+{
+  "status": "success",
+  "result": result,
+}
+```
 
 ### Неудачный <a name="responses.fail"></a> 
-* HTTP-код: **406** и выше;
+* HTTP-код: **406** _(Not Acceptable)_ и выше;
 * Обязательные поля:
     * **status** _(str)_ = error - факт неудачного запроса ошибка
     * **description** _(str)_= краткое описание неудачного запроса
