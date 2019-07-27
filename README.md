@@ -65,7 +65,7 @@ Delete   | DELETE     | Объект
 ```json
 {
   "status": "error",
-  "description": "Bad request.",
+  "description": "Bad request",
   "error_fields": {
     "email": [
       "Incorrect email."    
