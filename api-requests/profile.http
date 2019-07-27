@@ -6,8 +6,15 @@
 # * 'mptr' and 'fptr' create a POST request to submit a form with a text or file field (multipart/form-data);
 
 
-# Профиль: создание профиля.
+# Некорректный JSON
+POST http://truedoc-app.localhost/profile/
+Content-Type: application/json
 
+INCORRECT_JSON
+
+###
+
+# Профиль: создание профиля.
 POST http://truedoc-app.localhost/profile/
 Content-Type: application/json
 
@@ -28,11 +35,13 @@ Content-Type: application/json
 
 ###
 
-# Профиль: создание профиля, с некоррктным email адресом.
+# Профиль: создание профиля, с некорректным email адресом.
 POST http://truedoc-app.localhost/profile/
 Content-Type: application/json
+
 {
   "email": "invalid_email",
   "password": "password"
 }
 
+###
