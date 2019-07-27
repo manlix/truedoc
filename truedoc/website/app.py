@@ -2,6 +2,8 @@ from flask import Flask
 
 from truedoc.db import db
 
+from truedoc.exceptions import TruedocError
+from truedoc.response import failure
 from truedoc.website.blueprints import error
 from truedoc.website.blueprints import profile
 
@@ -17,5 +19,10 @@ app = Flask(__name__)
 app.register_blueprint(error.bp)
 app.register_blueprint(profile.bp, url_prefix='/profile')
 
+
 # TODO: see error handling manual
 # https://flask.palletsprojects.com/en/1.1.x/errorhandling/
+
+@app.errorhandler(TruedocError)
+def handle_exception(e):
+    return failure(description=e.args, http_code=500)
