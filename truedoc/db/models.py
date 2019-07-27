@@ -12,8 +12,8 @@ from sqlalchemy.types import VARCHAR
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
-from .. import common
-from ..config import Config
+from truedoc import common
+from truedoc.config import Config
 
 engine = create_engine(Config.DB_PATH, echo=True)
 metadata = MetaData(bind=engine)
