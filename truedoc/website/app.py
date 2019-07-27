@@ -27,5 +27,6 @@ app.register_blueprint(profile.bp, url_prefix='/profile')
 
 @app.errorhandler(TruedocError)
 def handle_exception(e):
+    """Common handler for exceptions TruedocError type."""
     http_code = e.http_code if hasattr(e, 'http_code') else HTTPStatus.INTERNAL_SERVER_ERROR
     return failure(http_code=http_code, description=e.args)
