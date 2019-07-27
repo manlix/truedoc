@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from flask import Flask
 
 from truedoc.db import db
@@ -25,4 +27,5 @@ app.register_blueprint(profile.bp, url_prefix='/profile')
 
 @app.errorhandler(TruedocError)
 def handle_exception(e):
-    return failure(http_code=500, description=e.args)
+    http_code = e.http_code if hasattr(e, 'http_code') else HTTPStatus.INTERNAL_SERVER_ERROR
+    return failure(http_code=http_code, description=e.args)

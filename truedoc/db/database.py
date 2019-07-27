@@ -14,7 +14,7 @@ from sqlalchemy.exc import IntegrityError
 from pymysql.constants import ER
 
 from . import models
-from truedoc.exceptions import ProfileError
+from truedoc.exceptions import ProfileAlreadyExistsError
 
 db_session = scoped_session(sessionmaker(bind=models.engine))
 
@@ -41,6 +41,6 @@ class Profile:
             errno, errmsg = exc.orig.args
 
             if errno == ER.DUP_ENTRY:
-                raise ProfileError('Profile with given email already exists')
+                raise ProfileAlreadyExistsError('Profile with given email already exists')
 
             raise
