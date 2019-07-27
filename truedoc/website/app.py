@@ -1,21 +1,21 @@
 from flask import Flask
 
-from .blueprints import error
-from .blueprints import profile
+from truedoc.db import db
 
-from ..db import db
-from ..response import failure
+from truedoc.website.blueprints import error
+from truedoc.website.blueprints import profile
+
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+
+sentry_sdk.init(
+    dsn="https://f6de8903ce254aa89bfc41f021320f5d@sentry.io/1513696",
+    integrations=[FlaskIntegration()]
+)
 
 app = Flask(__name__)
 app.register_blueprint(error.bp)
 app.register_blueprint(profile.bp, url_prefix='/profile')
 
-
-# See Generic Exception Handlers:
+# TODO: see error handling manual
 # https://flask.palletsprojects.com/en/1.1.x/errorhandling/
-
-# TODO: think about parse for 'e'
-@app.errorhandler(Exception)
-def handler_all_exceptions(e):
-    """Catch all unhandled exception."""
-    return failure(http_code=500)
