@@ -3,20 +3,22 @@
 * [Архитектура взаимодействия](#arch)
 * [Действия](#actions)
 * [Ответы](#responses)
+    * [Генераторы ответов](#responses.generators)
     * [Простой положительный](#responses.simple_positive)
     * [Простой отрицательный](#responses.simple_negative)
     * [Положительный](#responses.positive)
-    * [Неудачный](#responses.fail)
-
+    * [Отрицательный](#responses.negative)
+    * [HTTP коды ответов](#response_codes)
 
 ## Архитектура взаимодействия <a name="arch"></a>
 
 * Используется [RESTful API](https://en.wikipedia.org/wiki/Representational_state_transfer#Applied_to_Web_services);
-* **JSON** является основным форматом для входных и выходных данных (включая ошибки).
+* **JSON** является основным форматом для входных и выходных данных (включая ошибки);
+* Ответ содержит специфичный HTTP-код.
 
 ## Действия <a name="actions"></a>
 
-Стандартные действия - [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete).
+Используется подход [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete).
 
 Действие | HTTP-метод | Контекст
 -------- | ---------- | --------
@@ -24,11 +26,23 @@ Create   | POST       | Объект
 Read     | GET        | Объект
 Update   | PATCH      | Объект 
 Delete   | DELETE     | Объект
-  
 
 ## Ответы <a name="responses"></a>
 
-Каждый ответ содержит **status** со значением **success** (для успешных запросов) и **error** (для неудачных запросов) с уточняющей информацией в поле **description**.
+Каждый ответ строится [генератором ответов](#responses.generators) и содержит специфичный [HTTP-код](#responses.http_codes) и **JSON** с обязательным полем **status** и значением **success** _(str)_ (для положительных) и **error** _(str)_ (для отрицательных) с уточняющей информацией в поле **description** _(str)_.
+
+Типы ответов:
+* [Простой положительный](#responses.simple_positive);
+* [Простой отрицательный](#responses.simple_negative);
+* [Положительный](#responses.positive);
+* [Отрицательный](#responses.negative).
+
+### Генераторы ответов <a name="responses.generators"></a>
+
+Существует 2 функции для формирование ответов:
+
+* **truedoc.response.success(http_code=200, description=None, \*\*kwargs)** - для положительных;
+* **truedoc.response.failure(http_code=406, description=None, \*\*kwargs)** - для отрицательных.
 
 ### Простой положительный <a name="responses.simple_positive"></a>
 * HTTP-код: **200** _(OK)_;
@@ -67,7 +81,7 @@ Delete   | DELETE     | Объект
 }
 ```
 
-### Неудачный <a name="responses.fail"></a> 
+### Отрицательный <a name="responses.negative"></a> 
 * HTTP-код: **406** _(Not Acceptable)_ и выше;
 * Обязательные поля:
     * **status** _(str)_ = error - факт неудачного запроса ошибка
@@ -90,3 +104,10 @@ Delete   | DELETE     | Объект
 }
 ``` 
 
+### HTTP коды ответов <a name="responses.http_codes"></a>
+
+* **200** _(OK)_  - запрос принят и обработан (напр.: пользователь зарегистриррован);
+* **400** _(Bad request)_ - некорректный запрос (напр.: невалидный JSON);
+* **406** _(Not Acceptable)_ - запрос корректный, но есть ошибки в полях (напр.: при регистрации не указан пароль либо введён некорректный email);
+* **409** _(Conflict)_ - какой-либо конфликт при обработке запросе (напр.: профиль с таким email уже существует);
+* **500** _(Internal Server Error)_ - проблема на стороне сервиса.
