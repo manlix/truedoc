@@ -14,7 +14,7 @@ from sqlalchemy.exc import IntegrityError
 from pymysql.constants import ER
 
 from . import models
-from truedoc.exceptions import ProfileAlreadyExistsError
+from truedoc.exceptions import ProfileAlreadyExistsError, ProfileDoesNotExist
 
 db_session = scoped_session(sessionmaker(bind=models.engine))
 
@@ -42,5 +42,32 @@ class Profile:
 
             if errno == ER.DUP_ENTRY:
                 raise ProfileAlreadyExistsError('Profile with given email already exists')
+
+            raise
+
+
+class Document:
+
+    @staticmethod
+    def list_all():
+        """List all documents."""
+        query = db_session.query(models.Document).all()
+
+        return query
+
+    @staticmethod
+    def create(document: models.Document):
+        """Create document."""
+        db_session.add(document)
+
+        try:
+            db_session.commit()
+        except IntegrityError as exc:
+            db_session.rollback()
+
+            errno, errmsg = exc.orig.args
+
+            if errno == ER.NO_REFERENCED_ROW_2:
+                raise ProfileDoesNotExist('Profile with given id does not exist')
 
             raise

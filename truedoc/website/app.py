@@ -1,13 +1,14 @@
 from http import HTTPStatus
 
 from flask import Flask
+from flask import request
 
 from truedoc.db import db
 
 from truedoc.exceptions import TruedocError
 from truedoc.response import failure
 from truedoc.website.blueprints import error
-from truedoc.website.blueprints import profile
+from truedoc.website.blueprints import document, profile
 
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
@@ -20,6 +21,7 @@ sentry_sdk.init(
 app = Flask(__name__)
 app.register_blueprint(error.bp)
 app.register_blueprint(profile.bp, url_prefix='/profile')
+app.register_blueprint(document.bp, url_prefix='/document')
 
 
 # TODO: see error handling manual

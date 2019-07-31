@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from flask import jsonify
 from .constants import STATUS
-
+from flask import make_response
 
 def failure(http_code=HTTPStatus.NOT_ACCEPTABLE, description=None, **kwargs):
     """Default return code is 406 if $http_code was not set."""
