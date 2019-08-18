@@ -55,7 +55,10 @@ class Document(Model):
     id = Column(VARCHAR(36), default=common.uuid4, primary_key=True)  # TODO: think about rename to 'document_id'
     profile_id = Column(VARCHAR(36), ForeignKey('profile.id'), nullable=False)
     title = Column(VARCHAR(128), nullable=False)
+
+    # TODO: drop 'document' field.
     document = Column(BLOB, nullable=False)
+
     filename = Column(VARCHAR(256), nullable=False)
     filesize = Column(INTEGER, nullable=False)
     digest = Column(VARCHAR(32), nullable=False)

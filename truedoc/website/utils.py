@@ -15,6 +15,7 @@ def uploaded_document():
     if 'document' not in request.files or not isinstance(request.files['document'], FileStorage):
         raise DocumentNoFileInRequest('No file in request.')
 
+    # TODO: should saves file to object storage.
     document_in_memory = request.files['document'].read()
 
     document = {
