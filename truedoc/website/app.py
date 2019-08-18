@@ -1,16 +1,16 @@
+"""Application: Truedoc."""
 from http import HTTPStatus
 
 from flask import Flask
 
-from truedoc.db import db
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 from truedoc.exceptions import TruedocError
 from truedoc.response import failure
 from truedoc.website.blueprints import error
 from truedoc.website.blueprints import document, profile
 
-import sentry_sdk
-from sentry_sdk.integrations.flask import FlaskIntegration
 
 sentry_sdk.init(
     dsn="https://f6de8903ce254aa89bfc41f021320f5d@sentry.io/1513696",
