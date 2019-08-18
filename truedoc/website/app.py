@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 from flask import Flask
-from flask import request
 
 from truedoc.db import db
 
