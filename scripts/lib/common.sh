@@ -8,7 +8,6 @@
 #  $ command -v shellcheck
 #  /snap/bin/shellcheck
 
-
 ##################################################################
 #
 # Example to use:
@@ -20,9 +19,8 @@
 ##################################################################
 
 set -o pipefail
-set -o errexit  # analog: set -e
+set -o errexit # analog: set -e
 set -o nounset # analog: set -u
-
 
 ############################################
 #  COLORS
@@ -30,7 +28,6 @@ set -o nounset # analog: set -u
 
 # shellcheck source=/dev/null
 . "$(dirname "${BASH_SOURCE[0]}")/colors.sh"
-
 
 ############################################
 #  FUNCTIONS
