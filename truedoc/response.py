@@ -1,3 +1,4 @@
+"""Standard responses for API: success & failure."""
 from http import HTTPStatus
 
 from flask import jsonify
