@@ -12,6 +12,8 @@ function main() {
   docker::installed || die "No Docker installed"
 
   cd "$(dirname "$0")/../" || die "Cannot open source dir"
+
+  # Build image from Dockerfile
   docker build --tag truedoc-app --no-cache -f ./Dockerfile.dev . || die "Failed build Docker image"
 }
 

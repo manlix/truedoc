@@ -30,6 +30,8 @@ function main() {
   docker_compose::installed || die "No docker-compose installed"
 
   cd "$(dirname "$0")/../" || die "Cannot open source dir"
+
+  # Builds, (re)create, starts, and attaches to containers for a service
   docker-compose -f docker-compose.dev.yml up -d || die "Failed start by docker-compose"
 
   wait_for_mysql

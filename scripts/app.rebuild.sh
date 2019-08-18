@@ -13,6 +13,8 @@ function main() {
   docker_compose::installed || die "No docker-compose installed"
 
   cd "$(dirname "$0")/../" || die "Cannot open source dir"
+
+  # Build services
   docker-compose -f docker-compose.dev.yml build --no-cache || die "Failed start by docker-compose"
 }
 
