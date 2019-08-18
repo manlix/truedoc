@@ -3,7 +3,7 @@
 # Start truedoc-app with deps
 
 # shellcheck source=/dev/null
-. "$(dirname "$0")/common.sh"
+. "$(dirname "$0")/lib/common.sh"
 
 
 function get_mysql_ip() {
