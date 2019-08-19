@@ -10,6 +10,7 @@
     * [Отрицательный](#responses.negative)
     * [HTTP коды ответов](#response_codes)
 * [Инструменты](#tools)    
+    * [Проверка кода на соответствие стандартам](#tools.code_standard)
 
 ## Архитектура взаимодействия <a name="arch"></a>
 
@@ -115,4 +116,9 @@ Delete   | DELETE     | Объект
 
 ## Инструменты <a name="tools"></a>
 
-Для проверки кода на соответствие стандартам используется [Pylint](https://www.pylint.org/) 
+### Проверка кода на соответствие стандартам <a name="tools.code_standard"></a>
+Используется [Pylint](https://www.pylint.org/):
+
+```shell
+$ pylint code.py
+```
