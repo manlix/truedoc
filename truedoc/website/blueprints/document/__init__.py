@@ -1,5 +1,4 @@
 from flask import Blueprint
-from flask import request
 
 from marshmallow.exceptions import ValidationError
 
@@ -9,6 +8,7 @@ from truedoc.response import failure, success
 from truedoc.website import utils
 
 bp = Blueprint('document', __name__)
+
 
 @bp.route('/', methods=['POST'])
 def create_document():
@@ -24,7 +24,8 @@ def create_document():
         return failure(error_fields=err.messages)
     else:
         document = db.models.Document(
-            profile_id='88fe325f-2572-4bbc-a60e-e7c0ae1c475d',  # TODO: load profile_id to Schema and replace "dump_only=True" -> "load_only=True"
+            # TODO: load profile_id to Schema and replace "dump_only=True" -> "load_only=True"
+            profile_id='88fe325f-2572-4bbc-a60e-e7c0ae1c475d',
             **document,
         )
         db.Document.create(document)
