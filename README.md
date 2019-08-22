@@ -2,7 +2,7 @@
 # Правила проекта
 * [Системные требования](#system_requirements)
 * [Разработческий стенд](#dev_mode)
-    * [Инициализация базы данных](#dev_mode.init_db)
+    * [Работа с базой данных](#dev_mode.db)
 * [Архитектура взаимодействия](#arch)
 * [Действия](#actions)
 * [Ответы](#responses)
@@ -21,6 +21,7 @@
 
 ## Разработческий стенд <a name="dev_mode"></a>
 
+Необходимо создать **virtualenv** и установить пакеты из **requirements.txt**:
 ```sh
 manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc
 manlix@lab:~$ . ~/venv/truedoc
@@ -29,21 +30,40 @@ manlix@lab:~$ . ~/venv/truedoc
 
 ```
 
-### Инициализация базы данных <a name="dev_mode.init_db"></a>
+### Работа с базой данных <a name="dev_mode.db"></a>
+
+Перед запуском **Truedoc** необходимо инициализировать базу данных:
 
 ```sh
-# Create new revision
-manlix@lab:~/git/truedoc/truedoc$ alembic revision -m 'Init DB' --autogenerate
-
 # Upgrade to 'head' (latest revision)
 manlix@lab:~/git/truedoc/truedoc$ alembic upgrade head
+```
 
+* Место хранения конфига: **truedoc/truedoc/alembic.ini**
+* Место хранения ревизий: **truedoc/truedoc/alembic/versions/**
+* Формат файла ревизии: **YYYYMMDDHHMMSS_revision_slug.py** _(список файлов ревизий всегда отсортирован)_
+
+Создание новой ревизии:
+
+**ВАЖНО:** после создания необходимо проверить сгенерированный код _(**alembic** может не распознавать некоторые изменения в моделях и базе данных)_.
+```sh
+manlix@lab:~/git/truedoc/truedoc$ alembic revision -m 'Init DB' --autogenerate
+```
+
+Текущая ревизия в базе данных:
+```sh
 # Show 'current revision' in database
 manlix@lab:~/git/truedoc/truedoc$ alembic current
+```
 
+Даунгрейд на 1 ревизию:
+```sh
 # Downgrade to '-1 revision'
 manlix@lab:~/git/truedoc/truedoc$ alembic downgrade -1
+```
 
+Апгрейд на 1 ревизию:
+```sh
 # Upgrade to '+1 revision'
 manlix@lab:~/git/truedoc/truedoc$ alembic upgrade +1
 ```
