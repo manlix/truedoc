@@ -3,6 +3,7 @@
 * [Системные требования](#system_requirements)
 * [Разработческий стенд](#dev_mode)
     * [Работа с базой данных](#dev_mode.db)
+    * [Работа с docker-compose](#dev_mode.docker_compose)
 * [Архитектура взаимодействия](#arch)
 * [Действия](#actions)
 * [Ответы](#responses)
@@ -66,6 +67,27 @@ manlix@lab:~/git/truedoc/truedoc$ alembic downgrade -1
 ```sh
 # Upgrade to '+1 revision'
 manlix@lab:~/git/truedoc/truedoc$ alembic upgrade +1
+```
+
+### Работа с docker-compose <a name="dev_mode.docker_compose"></a>
+
+* Запустить Truedoc: 
+```sh
+manlix@lab:~/git/truedoc$ ./scripts/app.start.sh
+```
+
+* Стартовая: http://truedoc-app.localhost
+* MySQL-сервер: [truedoc-mysql.localhost:3306
+* Веб-интерфейс к MySQL: http://truedoc-pma.localhost
+
+* Полностью остановить и зачистить (удалить контейнеры и образы) Truedoc: 
+```sh
+manlix@lab:~/git/truedoc$ ./scripts/docker.dropall.sh
+```
+
+* Запустить bash-сессию внутри контейнера с MySQL: 
+```sh
+manlix@lab:~/git/truedoc$ docker-compose -f ./docker-compose.dev.yml exec truedoc-mysql bash
 ```
 
 ## Архитектура взаимодействия <a name="arch"></a>
