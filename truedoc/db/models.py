@@ -63,15 +63,3 @@ class Document(Model):
     filesize = Column(INTEGER, nullable=False)
     digest = Column(VARCHAR(32), nullable=False)
     created_at = Column(DATETIME, nullable=False, default=datetime.datetime.utcnow)
-
-
-###########################################################################
-#
-# WARNING: creating tables in database after all models have been declared.
-#
-#                       NO DOT REMOVE BELOW.
-#
-###########################################################################
-
-# TODO: drop when alembic will be implemented
-metadata.create_all(engine)
