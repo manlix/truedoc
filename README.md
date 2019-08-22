@@ -80,14 +80,24 @@ manlix@lab:~/git/truedoc$ ./scripts/app.start.sh
 * MySQL-сервер: truedoc-mysql.localhost:3306
 * Веб-интерфейс к MySQL: http://truedoc-pma.localhost
 
+Остановить контейнер с Truedoc:
+```sh
+manlix@lab:~/git/truedoc$ docker-compose -f docker-compose.dev.yml stop truedoc-app
+```
+
+Запустить контейнер с Truedoc:
+```sh
+manlix@lab:~/git/truedoc$ docker-compose -f docker-compose.dev.yml start truedoc-app
+```
+
+* Запустить bash-сессию внутри запущенного контейнера с MySQL: 
+```sh
+manlix@lab:~/git/truedoc$ docker-compose -f ./docker-compose.dev.yml exec truedoc-mysql bash
+```
+
 * Полностью остановить и зачистить (удалить контейнеры и образы) Truedoc: 
 ```sh
 manlix@lab:~/git/truedoc$ ./scripts/docker.dropall.sh
-```
-
-* Запустить bash-сессию внутри контейнера с MySQL: 
-```sh
-manlix@lab:~/git/truedoc$ docker-compose -f ./docker-compose.dev.yml exec truedoc-mysql bash
 ```
 
 ## Архитектура взаимодействия <a name="arch"></a>
