@@ -1,5 +1,6 @@
 # Latest versions are available on https://pypi.org
 
+alembic==1.0.11  # https://pypi.org/project/alembic/
 blinker==1.4  # Required for 'sentry-sdk'
 Flask==1.1.1  # https://pypi.org/project/Flask/
 marshmallow==3.0.1  # https://pypi.org/project/marshmallow/
