@@ -32,12 +32,13 @@ manlix@lab:~$ . ~/venv/truedoc
 ### Инициализация базы данных <a name="dev_mode.init_db"></a>
 
 ```sh
+# Create new revision
 manlix@lab:~/git/truedoc/truedoc$ alembic revision -m 'Init DB' --autogenerate
 
-# Upgrade to 'head'
+# Upgrade to 'head' (latest revision)
 manlix@lab:~/git/truedoc/truedoc$ alembic upgrade head
 
-# Show 'current version' in database
+# Show 'current revision' in database
 manlix@lab:~/git/truedoc/truedoc$ alembic current
 
 # Downgrade to '-1 revision'
