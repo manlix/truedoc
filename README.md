@@ -16,7 +16,7 @@
 
 * Используется [RESTful API](https://en.wikipedia.org/wiki/Representational_state_transfer#Applied_to_Web_services);
 * **JSON** является основным форматом для входных и выходных данных (включая ошибки);
-* Ответ содержит специфичный HTTP-код.
+* [Ответ](#responses) содержит специфичный HTTP-код.
 
 ## Действия <a name="actions"></a>
 
