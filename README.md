@@ -77,7 +77,7 @@ manlix@lab:~/git/truedoc$ ./scripts/app.start.sh
 ```
 
 * Стартовая: http://truedoc-app.localhost
-* MySQL-сервер: [truedoc-mysql.localhost:3306
+* MySQL-сервер: truedoc-mysql.localhost:3306
 * Веб-интерфейс к MySQL: http://truedoc-pma.localhost
 
 * Полностью остановить и зачистить (удалить контейнеры и образы) Truedoc: 
