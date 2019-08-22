@@ -1,5 +1,7 @@
 
 # Правила проекта
+* [Системные требования](#system_requirements)
+* [Разработческий стенд](#dev_mode)
 * [Архитектура взаимодействия](#arch)
 * [Действия](#actions)
 * [Ответы](#responses)
@@ -11,6 +13,21 @@
     * [HTTP коды ответов](#response_codes)
 * [Инструменты](#tools)    
     * [Проверка кода на соответствие стандартам](#tools.code_standard)
+
+## Системные требования <a name="system_requirements"></a>
+
+* Python 3.7
+
+## Разработческий стенд <a name="dev_mode"></a>
+
+```sh
+manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc
+manlix@lab:~$ . ~/venv/truedoc
+(truedoc) manlix@lab:~$ pip3 install -r ~/git/truedoc/requirements.txt
+(truedoc) manlix@lab:~$ pushd ~/git/truedoc && python3 setup.py develop && popd
+
+```
+
 
 ## Архитектура взаимодействия <a name="arch"></a>
 
