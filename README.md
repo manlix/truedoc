@@ -90,6 +90,11 @@ manlix@lab:~/git/truedoc$ docker-compose -f docker-compose.dev.yml stop truedoc-
 manlix@lab:~/git/truedoc$ docker-compose -f docker-compose.dev.yml start truedoc-app
 ```
 
+Посмотреть STDERR контейнера с Truedoc:
+```sh
+manlix@lab:~/git/truedoc$ docker-compose -f docker-compose.dev.yml logs truedoc-app
+```
+
 * Запустить bash-сессию внутри запущенного контейнера с MySQL: 
 ```sh
 manlix@lab:~/git/truedoc$ docker-compose -f ./docker-compose.dev.yml exec truedoc-mysql bash
