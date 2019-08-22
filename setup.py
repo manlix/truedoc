@@ -4,7 +4,5 @@ import setuptools
 
 setuptools.setup(
     name="truedoc",
-    classifiers=[
-        "Programming Language :: Python :: 3.7",
-    ]
+    packages=setuptools.find_packages(),
 )
