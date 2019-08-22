@@ -2,6 +2,7 @@
 # Правила проекта
 * [Системные требования](#system_requirements)
 * [Разработческий стенд](#dev_mode)
+    * [Инициализация базы данных](#dev_mode.init_db)
 * [Архитектура взаимодействия](#arch)
 * [Действия](#actions)
 * [Ответы](#responses)
@@ -28,6 +29,23 @@ manlix@lab:~$ . ~/venv/truedoc
 
 ```
 
+### Инициализация базы данных <a name="dev_mode.init_db"></a>
+
+```sh
+manlix@lab:~/git/truedoc/truedoc$ alembic revision -m 'Init DB' --autogenerate
+
+# Upgrade to 'head'
+manlix@lab:~/git/truedoc/truedoc$ alembic upgrade head
+
+# Show 'current version' in database
+manlix@lab:~/git/truedoc/truedoc$ alembic current
+
+# Downgrade to '-1 revision'
+manlix@lab:~/git/truedoc/truedoc$ alembic downgrade -1
+
+# Upgrade to '+1 revision'
+manlix@lab:~/git/truedoc/truedoc$ alembic upgrade +1
+```
 
 ## Архитектура взаимодействия <a name="arch"></a>
 
