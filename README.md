@@ -79,7 +79,7 @@ Delete   | DELETE     | Объект
 ```text
 {
   "status": "success",
-  "result": result,
+  "result": "result"
 }
 ```
 
