@@ -230,12 +230,14 @@ $ pylint code.py
     * [PyMySQL](https://github.com/PyMySQL/PyMySQL) - работа с MySQL
     * [Requests](http://python-requests.org) - тестовые запросы к API
     * [Sentry](https://github.com/getsentry/sentry-python) - трекер ошибок
-    * [SQLAlchemy](https://www.sqlalchemy.org/) - ORM для работы с базой данных
+    * [SQLAlchemy](https://www.sqlalchemy.org) - ORM для работы с базой данных
 
 * Другое:
-    * [Docker](https://www.docker.com) - контейнеры
+    * [Bandit](https://github.com/PyCQA/bandit) - проверка безопасности Python кода
     * [docker-composer](https://docs.docker.com/compose/) - декларативное организация контейнеров
-    * [nginx](https://nginx.org/) - обратный прокси-сервер поверх контейнеров
+    * [Docker](https://www.docker.com) - контейнеры
+    * [Git](https://git-scm.com) - правление исходным кодом
     * [HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) - канал связи для API
     * [JSON](https://en.wikipedia.org/wiki/JSON) - для работы API
-    * [Git](https://git-scm.com/) - правление исходным кодом
+    * [nginx](https://nginx.org) - обратный прокси-сервер поверх контейнеров
+    * [Pylint](https://www.pylint.org) - проверка Python кода на соответствие стандартам
