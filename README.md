@@ -15,6 +15,7 @@
     * [HTTP коды ответов](#response_codes)
 * [Инструменты](#tools)    
     * [Проверка кода на соответствие стандартам](#tools.code_standard)
+* [Технологии](#techstack)
 
 ## Системные требования <a name="system_requirements"></a>
 
@@ -22,13 +23,13 @@
 
 ## Разработческий стенд <a name="dev_mode"></a>
 
-Необходимо создать **virtualenv** и установить пакеты из **requirements.txt**:
+Единожды необходимо создать **virtualenv** и установить пакеты из **requirements.txt**:
 ```sh
-manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc
-manlix@lab:~$ . ~/venv/truedoc
+manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc && . ~/venv/truedoc
 (truedoc) manlix@lab:~$ pip3 install -r ~/git/truedoc/requirements.txt
-(truedoc) manlix@lab:~$ pushd ~/git/truedoc && python3 setup.py develop && popd
 
+# В отличие от "install", для разработки используется "develop" - пакеты не устанавливаются, создаются ссылки.
+(truedoc) manlix@lab:~$ pushd ~/git/truedoc && python3 setup.py develop && popd
 ```
 
 ### Работа с базой данных <a name="dev_mode.db"></a>
@@ -215,3 +216,26 @@ Delete   | DELETE     | Объект
 ```shell
 $ pylint code.py
 ```
+
+## Технологии <a name="techstack"></a>
+
+* Языки: 
+    * [Python](https://www.python.org/)
+    * [Bash](https://www.gnu.org/software/bash/)
+ 
+* Библиотеки для Python:
+    * [Alembic](https://alembic.sqlalchemy.org) - миграция базы данных
+    * [Flask](https://palletsprojects.com/p/flask/) - основной framework
+    * [Marshmallow](https://marshmallow.readthedocs.io) - валидация моделей
+    * [PyMySQL](https://github.com/PyMySQL/PyMySQL) - работа с MySQL
+    * [Requests](http://python-requests.org) - тестовые запросы к API
+    * [Sentry](https://github.com/getsentry/sentry-python) - трекер ошибок
+    * [SQLAlchemy](https://www.sqlalchemy.org/) - ORM для работы с базой данных
+
+* Другое:
+    * [Docker](https://www.docker.com) - контейнеры
+    * [docker-composer](https://docs.docker.com/compose/) - декларативное организация контейнеров
+    * [nginx](https://nginx.org/) - обратный прокси-сервер поверх контейнеров
+    * [HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) - канал связи для API
+    * [JSON](https://en.wikipedia.org/wiki/JSON) - для работы API
+    * [Git](https://git-scm.com/) - правление исходным кодом
