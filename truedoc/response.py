@@ -10,7 +10,10 @@ def failure(http_code=HTTPStatus.NOT_ACCEPTABLE, description=None, **kwargs):
     response = {'status': STATUS.ERROR, **kwargs}
 
     if description is not None:
-        response['description'] = description if isinstance(description, str) else description[0]
+        response['description'] = description
+
+    if http_code == HTTPStatus.INTERNAL_SERVER_ERROR:
+        response['internal_error'] = True
 
     return jsonify(response), http_code
 
@@ -20,6 +23,6 @@ def success(http_code=HTTPStatus.OK, description=None, **kwargs):
     response = {'status': STATUS.SUCCESS, **kwargs}
 
     if description is not None:
-        response['description'] = description if isinstance(description, str) else description[0]
+        response['description'] = description
 
     return jsonify(response), http_code
