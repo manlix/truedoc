@@ -15,6 +15,7 @@
     * [HTTP коды ответов](#response_codes)
 * [Инструменты](#tools)    
     * [Проверка кода на соответствие стандартам](#tools.code_standard)
+    * [Проверка кода на безопасность](#tools.code_safety)
 * [Технологии](#techstack)
 
 ## Системные требования <a name="system_requirements"></a>
@@ -211,16 +212,23 @@ Delete   | DELETE     | Объект
 ## Инструменты <a name="tools"></a>
 
 ### Проверка кода на соответствие стандартам <a name="tools.code_standard"></a>
-Используется [Pylint](https://www.pylint.org/):
+Используется [Pylint](https://www.pylint.org):
 
 ```shell
 $ pylint code.py
 ```
 
+### Проверка кода на безопасность <a name="tools.code_safety"></a>
+Используется [Bandit](https://github.com/PyCQA/bandit):
+
+```shell
+$ bandit code.py
+```
+
 ## Технологии <a name="techstack"></a>
 
 * Языки: 
-    * [Python](https://www.python.org/)
+    * [Python](https://www.python.org)
     * [Bash](https://www.gnu.org/software/bash/)
  
 * Библиотеки для Python:
