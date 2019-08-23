@@ -4,7 +4,6 @@ from http import HTTPStatus
 from flask import Flask
 
 import sentry_sdk
-from sentry_sdk.integrations.flask import FlaskIntegration
 
 from truedoc.exceptions import TruedocError
 from truedoc.response import failure
@@ -12,13 +11,10 @@ from truedoc.website.blueprints import document
 from truedoc.website.blueprints import error
 from truedoc.website.blueprints import profile
 
-
-sentry_sdk.init(
-    dsn="https://f6de8903ce254aa89bfc41f021320f5d@sentry.io/1513696",
-    integrations=[FlaskIntegration()]
-)
+sentry_sdk.init("https://f6de8903ce254aa89bfc41f021320f5d@sentry.io/1513696")
 
 app = Flask(__name__)
+
 app.register_blueprint(error.bp)
 app.register_blueprint(profile.bp, url_prefix='/profile')
 app.register_blueprint(document.bp, url_prefix='/document')
