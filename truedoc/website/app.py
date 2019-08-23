@@ -8,8 +8,9 @@ from sentry_sdk.integrations.flask import FlaskIntegration
 
 from truedoc.exceptions import TruedocError
 from truedoc.response import failure
+from truedoc.website.blueprints import document
 from truedoc.website.blueprints import error
-from truedoc.website.blueprints import document, profile
+from truedoc.website.blueprints import profile
 
 
 sentry_sdk.init(
