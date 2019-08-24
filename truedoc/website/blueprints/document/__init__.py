@@ -15,11 +15,7 @@ def create_document():
     document_schema = schemas.DocumentSchema()
     data = document_schema.load(utils.uploaded_document())
 
-    document = db.models.Document(
-        # TODO: load profile_id to Schema and replace "dump_only=True" -> "load_only=True"
-        profile_id='88fe325f-2572-4bbc-a60e-e7c0ae1c475d',
-        **data,
-    )
+    document = db.models.Document(**data)
     db.Document.create(document)
 
     return success(result=document_schema.dump(document))
