@@ -9,13 +9,10 @@ from truedoc.response import failure
 bp = Blueprint('error', __name__)
 
 
-@bp.app_errorhandler(werkzeug.exceptions.BadRequest)
+@bp.app_errorhandler(HTTPStatus.BAD_REQUEST)
 def error_handler_400(e):
     """Catch incorrect JSON in requests with Content-Type = application/json"""
-    return failure(
-        http_code=werkzeug.exceptions.BadRequest.code,
-        description=werkzeug.exceptions.BadRequest.description,
-    )
+    return failure(http_code=HTTPStatus.BAD_REQUEST, description=HTTPStatus.BAD_REQUEST.description)
 
 
 @bp.app_errorhandler(HTTPStatus.UNAUTHORIZED)
