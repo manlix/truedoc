@@ -41,7 +41,7 @@ class Profile:
             errno, errmsg = exc.orig.args
 
             if errno == ER.DUP_ENTRY:
-                raise ProfileAlreadyExistsError('Profile with given email already exists')
+                raise ProfileAlreadyExistsError
 
             raise
 
@@ -68,6 +68,6 @@ class Document:
             errno, errmsg = exc.orig.args
 
             if errno == ER.NO_REFERENCED_ROW_2:
-                raise ProfileDoesNotExist('Profile with given id does not exist')
+                raise ProfileDoesNotExist
 
             raise

@@ -13,7 +13,7 @@ def uploaded_document():
     # See 'Uploading files': https://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/
 
     if 'document' not in request.files or not isinstance(request.files['document'], FileStorage):
-        raise DocumentNoFileInRequest('No file in request.')
+        raise DocumentNoFileInRequest
 
     # TODO: should saves file to object storage.
     document_in_memory = request.files['document'].read()

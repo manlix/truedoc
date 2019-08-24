@@ -37,10 +37,11 @@ app.register_blueprint(document.bp, url_prefix='/document')
 @app.errorhandler(TruedocError)
 def handle_exception_truedocerror(exc):
     """Common handler for exceptions TruedocError type."""
-    http_code = exc.http_code if hasattr(exc, 'http_code') else HTTPStatus.INTERNAL_SERVER_ERROR
+    http_code = exc.http_code
+    description = exc.description
 
-    logger.exception('[Exception][TruedocError]')
-    return failure(http_code=http_code, description=exc.args)
+    logger.exception('[ErrorHandler:TruedocError]')
+    return failure(http_code=http_code, description=description)
 
 
 @app.errorhandler(SQLAlchemyError)
@@ -48,9 +49,10 @@ def handle_exception_sqlalchemyerror(exc):
     """Error handler for any errors by SQLAlchemy."""
 
     http_code = HTTPStatus.INTERNAL_SERVER_ERROR
+    description = HTTPStatus.INTERNAL_SERVER_ERROR.description
 
     logger.exception('[ErrorHandler:SQLAlchemyError]')
-    return failure(http_code=http_code, description=HTTPStatus.INTERNAL_SERVER_ERROR.description)
+    return failure(http_code=http_code, description=description)
 
 
 @app.errorhandler(MarshmallowError)

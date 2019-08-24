@@ -2,8 +2,6 @@ from http import HTTPStatus
 
 from flask import Blueprint
 
-import werkzeug.exceptions
-
 from truedoc.response import failure
 
 bp = Blueprint('error', __name__)

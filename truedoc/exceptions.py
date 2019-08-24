@@ -7,6 +7,9 @@ from sqlalchemy.exc import SQLAlchemyError  # Used in 'truedoc.app'
 class TruedocError(Exception):
     """General exception for Truedoc."""
 
+    http_code = HTTPStatus.INTERNAL_SERVER_ERROR
+    description = HTTPStatus.INTERNAL_SERVER_ERROR.description
+
 
 #########################
 #
@@ -21,11 +24,13 @@ class ProfileError(TruedocError):
 class ProfileAlreadyExistsError(ProfileError):
     """Child profile exception: profile already exists."""
     http_code = HTTPStatus.CONFLICT  # 409
+    description = 'Profile with given email already exists'
 
 
 class ProfileDoesNotExist(ProfileError):
     """Child profile exception: given profile_id doesn't exist."""
     http_code = HTTPStatus.NOT_ACCEPTABLE  # 406
+    description = 'Profile with given id does not exist'
 
 
 #########################
@@ -41,3 +46,4 @@ class DocumentError(TruedocError):
 class DocumentNoFileInRequest(DocumentError):
     """Child exception for 'document': there isn't file data in request."""
     http_code = HTTPStatus.NOT_ACCEPTABLE  # 406
+    description = 'No file data in request'
