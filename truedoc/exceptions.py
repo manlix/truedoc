@@ -30,7 +30,7 @@ class ProfileAlreadyExistsError(ProfileError):
 class ProfileDoesNotExist(ProfileError):
     """Child profile exception: given profile_id doesn't exist."""
     http_code = HTTPStatus.NOT_ACCEPTABLE  # 406
-    description = 'Profile with given id does not exist'
+    description = 'Profile with given profile_id does not exist'
 
 
 #########################
