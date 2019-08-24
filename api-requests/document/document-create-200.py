@@ -20,7 +20,6 @@ payload = {
             )
         ),
     ]
-
 }
 
 r = requests.post(endpoint, **payload)
