@@ -6,6 +6,7 @@ from flask import Flask
 
 import sentry_sdk
 
+from truedoc.exceptions import MarshmallowError
 from truedoc.exceptions import SQLAlchemyError
 from truedoc.exceptions import TruedocError
 
@@ -50,3 +51,23 @@ def handle_exception_sqlalchemyerror(exc):
 
     logger.exception('[ErrorHandler:SQLAlchemyError]')
     return failure(http_code=http_code, description=HTTPStatus.INTERNAL_SERVER_ERROR.description)
+
+
+@app.errorhandler(MarshmallowError)
+def handle_exception_validationerror(exc):
+    """Error handler for any errors by Marshmallow."""
+
+    http_code = HTTPStatus.NOT_ACCEPTABLE
+
+    logger.exception('[ErrorHandler:MarshmallowError]')
+    return failure(http_code=http_code, error_fields=exc.messages)
+
+
+@app.errorhandler(Exception)
+def handle_exception_unknown(exc):
+    """Error handler for any unknown exceptions."""
+
+    http_code = HTTPStatus.INTERNAL_SERVER_ERROR
+
+    logger.exception('[ErrorHandler:Exception]')
+    return failure(http_code=http_code)

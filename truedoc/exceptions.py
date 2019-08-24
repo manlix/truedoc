@@ -1,6 +1,7 @@
 """Exception classes for truedoc-related errors."""
 from http import HTTPStatus
-from sqlalchemy.exc import SQLAlchemyError
+from marshmallow.exceptions import MarshmallowError  # Used in 'truedoc.app'
+from sqlalchemy.exc import SQLAlchemyError  # Used in 'truedoc.app'
 
 
 class TruedocError(Exception):
