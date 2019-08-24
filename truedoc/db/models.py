@@ -27,7 +27,7 @@ class Profile(Model):
     """Profile model."""
     __tablename__ = 'profile'
 
-    id = Column(VARCHAR(36), default=common.uuid4, primary_key=True)  # TODO: think about rename to 'profile_id
+    profile_id = Column(VARCHAR(36), default=common.uuid4, primary_key=True)
     email = Column(VARCHAR(128), nullable=False, unique=True)
     password = Column(VARCHAR(128), nullable=False)
     created_at = Column(DATETIME, nullable=False, default=datetime.datetime.utcnow)
@@ -36,7 +36,7 @@ class Profile(Model):
         self.__set_email(email)
 
     def __repr__(self):
-        return f'<User id={self.id}>'
+        return f'<User profile_id={self.profile_id}>'
 
     def __set_email(self, email):
         self.email = email
@@ -52,8 +52,8 @@ class Document(Model):
     """Document model."""
     __tablename__ = 'document'
 
-    id = Column(VARCHAR(36), default=common.uuid4, primary_key=True)  # TODO: think about rename to 'document_id'
-    profile_id = Column(VARCHAR(36), ForeignKey('profile.id'), nullable=False)
+    document_id = Column(VARCHAR(36), default=common.uuid4, primary_key=True)
+    profile_id = Column(VARCHAR(36), ForeignKey('profile.profile_id'), nullable=False)
     title = Column(VARCHAR(128), nullable=False)
 
     # TODO: drop 'document' field.
