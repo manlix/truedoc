@@ -1,5 +1,6 @@
 """Application: Truedoc."""
 from http import HTTPStatus
+import logging
 
 from flask import Flask
 
@@ -12,6 +13,13 @@ from truedoc.response import failure
 from truedoc.website.blueprints import document
 from truedoc.website.blueprints import error
 from truedoc.website.blueprints import profile
+
+logging.basicConfig(
+    level=logging.WARNING,
+    format='[%(levelname)s] - [%(name)s] - [%(asctime)s] - %(message)s',
+)
+
+logger = logging.getLogger(__name__)
 
 sentry_sdk.init("https://f6de8903ce254aa89bfc41f021320f5d@sentry.io/1513696")
 
@@ -26,19 +34,19 @@ app.register_blueprint(document.bp, url_prefix='/document')
 # https://flask.palletsprojects.com/en/1.1.x/errorhandling/
 
 @app.errorhandler(TruedocError)
-def handle_exception(e):
+def handle_exception_truedocerror(exc):
     """Common handler for exceptions TruedocError type."""
-    http_code = e.http_code if hasattr(e, 'http_code') else HTTPStatus.INTERNAL_SERVER_ERROR
+    http_code = exc.http_code if hasattr(exc, 'http_code') else HTTPStatus.INTERNAL_SERVER_ERROR
 
-    # TODO: log exception here by logging.exception(...)
-    return failure(http_code=http_code, description=e.args)
+    logger.exception('[Exception][TruedocError]')
+    return failure(http_code=http_code, description=exc.args)
 
 
 @app.errorhandler(SQLAlchemyError)
-def handle_exception(exc):
+def handle_exception_sqlalchemyerror(exc):
     """Error handler for any errors by SQLAlchemy."""
 
     http_code = HTTPStatus.INTERNAL_SERVER_ERROR
 
-    # TODO: log exception here by logging.exception(...)
+    logger.exception('[ErrorHandler:SQLAlchemyError]')
     return failure(http_code=http_code, description=HTTPStatus.INTERNAL_SERVER_ERROR.description)
