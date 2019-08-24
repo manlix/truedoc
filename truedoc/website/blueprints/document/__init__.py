@@ -1,10 +1,8 @@
 from flask import Blueprint
 
-from marshmallow.exceptions import ValidationError
-
 from truedoc.db import db
 from truedoc.db import schemas
-from truedoc.response import failure, success
+from truedoc.response import success
 from truedoc.website import utils
 
 bp = Blueprint('document', __name__)
@@ -12,24 +10,19 @@ bp = Blueprint('document', __name__)
 
 @bp.route('/', methods=['POST'])
 def create_document():
-    """Create document.
+    """Create document."""
 
-    Test request: http -v -f POST truedoc-app.localhost/document/  title="document_title" document@~/checm.docx
-    """
+    document_schema = schemas.DocumentSchema()
+    data = document_schema.load(utils.uploaded_document())
 
-    try:
+    document = db.models.Document(
+        # TODO: load profile_id to Schema and replace "dump_only=True" -> "load_only=True"
+        profile_id='88fe325f-2572-4bbc-a60e-e7c0ae1c475d',
+        **data,
+    )
+    db.Document.create(document)
 
-        document = schemas.DocumentSchema().load(utils.uploaded_document())
-    except ValidationError as err:
-        return failure(error_fields=err.messages)
-    else:
-        document = db.models.Document(
-            # TODO: load profile_id to Schema and replace "dump_only=True" -> "load_only=True"
-            profile_id='88fe325f-2572-4bbc-a60e-e7c0ae1c475d',
-            **document,
-        )
-        db.Document.create(document)
-        return success(result=schemas.DocumentSchema().dump(document))
+    return success(result=document_schema.dump(document))
 
 
 @bp.route('/', methods=['GET'])
