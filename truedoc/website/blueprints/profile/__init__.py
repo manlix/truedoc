@@ -19,7 +19,7 @@ def create_profile():
     profile.set_password(data['password'])
     db.Profile.create(profile)
 
-    return success()
+    return success(result=profile_schema.dump(profile))
 
 
 @bp.route('/', methods=['GET'])
