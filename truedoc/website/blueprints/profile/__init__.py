@@ -1,11 +1,9 @@
 from flask import Blueprint
 from flask import request
 
-from marshmallow.exceptions import ValidationError
-
 from truedoc.db import db
 from truedoc.db import schemas
-from truedoc.response import failure, success
+from truedoc.response import success
 
 bp = Blueprint('profile', __name__)
 
@@ -15,17 +13,13 @@ def create_profile():
     """Create profile."""
 
     profile_schema = schemas.ProfileSchema()
-    try:
-        data = profile_schema.load(request.get_json())
-    except ValidationError as err:
-        return failure(error_fields=err.messages)
+    data = profile_schema.load(request.get_json())
 
-    else:
-        profile = db.models.Profile(email=data['email'])
-        profile.set_password(data['password'])
-        db.Profile.create(profile)
+    profile = db.models.Profile(email=data['email'])
+    profile.set_password(data['password'])
+    db.Profile.create(profile)
 
-        return success()
+    return success()
 
 
 @bp.route('/', methods=['GET'])
