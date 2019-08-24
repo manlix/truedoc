@@ -19,6 +19,7 @@ def uploaded_document():
     document_in_memory = request.files['document'].read()
 
     document = {
+        'profile_id': request.form.get('profile_id', None),
         'title': request.form.get('title', None),
         'document': document_in_memory,
         'filename': secure_filename(request.files['document'].filename),
