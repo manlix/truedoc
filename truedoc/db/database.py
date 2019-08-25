@@ -45,6 +45,24 @@ class Profile:
 
             raise
 
+    @staticmethod
+    def delete(profile: models.Profile) -> None:
+        """Delete profile."""
+
+        db_session.delete(profile)
+        db_session.commit()
+
+    @staticmethod
+    def load(profile_id: str) -> models.Profile:
+        """Load profile."""
+
+        query = db_session.query(models.Profile).filter(models.Profile.profile_id == profile_id).first()
+
+        if query is None:
+            raise ProfileDoesNotExist
+
+        return query
+
 
 class Document:
 
