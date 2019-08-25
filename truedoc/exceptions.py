@@ -34,6 +34,7 @@ class ProfileDoesNotExist(ProfileError):
 
 
 class ProfileIsNotAvailableForDeleting(ProfileError):
+    """Child profile exception: given profile is not available for deleting."""
     http_code = HTTPStatus.NOT_ACCEPTABLE  # 406
     description = 'Profile is not available for deleting due to has documents'
 
@@ -52,3 +53,10 @@ class DocumentNoFileInRequest(DocumentError):
     """Child exception for 'document': there isn't file data in request."""
     http_code = HTTPStatus.NOT_ACCEPTABLE  # 406
     description = 'No file data in request'
+
+
+class DocumentDoesNotExist(DocumentError):
+    """Child document exception: given document does not exist."""
+
+    http_code = HTTPStatus.NOT_ACCEPTABLE  # 406
+    description = 'Document does not exist'
