@@ -10,9 +10,11 @@
     * [Генераторы ответов](#responses.generators)
     * [Простой положительный](#responses.simple_positive)
     * [Простой отрицательный](#responses.simple_negative)
+    * [Простой отрицательный фатальный](#responses.simple_negative_fatal)
     * [Положительный](#responses.positive)
     * [Отрицательный](#responses.negative)
     * [HTTP коды ответов](#response_codes)
+* [Обработка исключения](#handle_exceptions)
 * [Инструменты](#tools)    
     * [Проверка кода на соответствие стандартам](#tools.code_standard)
     * [Проверка кода на безопасность](#tools.code_safety)
@@ -42,9 +44,9 @@ manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc && . ~/venv/truedoc
 manlix@lab:~/git/truedoc/truedoc$ alembic upgrade head
 ```
 
-* Место хранения конфига: **truedoc/truedoc/alembic.ini**
-* Место хранения ревизий: **truedoc/truedoc/alembic/versions/**
-* Формат файла ревизии: **YYYYMMDDHHMMSS_revision_slug.py** _(список файлов ревизий всегда отсортирован)_
+* Место хранения конфига: `truedoc/truedoc/alembic.ini`
+* Место хранения ревизий: `truedoc/truedoc/alembic/versions/`
+* Формат файла ревизии: `YYYYMMDDHHMMSS_revision_slug.py` _(список файлов ревизий всегда отсортирован)_
 
 Создание новой ревизии:
 
@@ -107,10 +109,16 @@ manlix@lab:~/git/truedoc$ docker-compose -f ./docker-compose.dev.yml exec truedo
 manlix@lab:~/git/truedoc$ ./scripts/docker.dropall.sh
 ```
 
+Для инициализации базы данных с хост-системы (_127.0.0.1_), после запуска контейнеров, в _/etc/hosts_ нужно добавить ```127.0.0.1 truedoc-mysql```,  а на хост-системе активировать **venv** _/home/manlix/venv/truedoc/_ и выполнить:
+
+```
+(truedoc) manlix@lab:~/git/truedoc/truedoc$ alembic upgrade head
+```
+
 ## Архитектура взаимодействия <a name="arch"></a>
 
 * Используется [RESTful API](https://en.wikipedia.org/wiki/Representational_state_transfer#Applied_to_Web_services);
-* **JSON** является основным форматом для входных и выходных данных (включая ошибки);
+* `JSON` является основным форматом для входных и выходных данных (включая ошибки);
 * [Ответ](#responses) содержит специфичный HTTP-код.
 
 ## Действия <a name="actions"></a>
@@ -131,6 +139,7 @@ Delete   | DELETE     | Объект
 Типы ответов:
 * [Простой положительный](#responses.simple_positive);
 * [Простой отрицательный](#responses.simple_negative);
+* [Простой отрицательный фатальный](#responses.simple_negative_fatal);
 * [Положительный](#responses.positive);
 * [Отрицательный](#responses.negative).
 
@@ -138,13 +147,13 @@ Delete   | DELETE     | Объект
 
 Существует 2 функции для формирование ответов:
 
-* **truedoc.response.success(http_code=200, description=None, \*\*kwargs)** - для положительных;
-* **truedoc.response.failure(http_code=406, description=None, \*\*kwargs)** - для отрицательных.
+* `truedoc.response.success(http_code=200, description=None, **kwargs)` - для положительных;
+* `truedoc.response.failure(http_code=406, description=None, **kwargs)` - для отрицательных.
 
 ### Простой положительный <a name="responses.simple_positive"></a>
-* HTTP-код: **200** _(OK)_;
+* HTTP-код: `200 (OK)`;
 * Обязательные поля:
-    * **status** _(str)_ = "success"
+    * `status` _(str)_ = `success`
 
 ```json
 {
@@ -153,10 +162,24 @@ Delete   | DELETE     | Объект
 ```
          
 ### Простой отрицательный <a name="responses.simple_negative"></a>
-* HTTP-код: **406** _(Not Acceptable)_ или **409** _(Conflict)_;
+* HTTP-код: `406 (Not Acceptable)` или `409 (Conflict)`;
 * Обязательные поля:
-    * **status** _(str)_ = "error"
-    * **description** _(str)_ = "краткое описание проблемы"
+    * `status` _(str)_ = `error`
+    * `description` _(str)_ = `краткое описание проблемы`
+
+```json
+{
+  "status": "error",
+  "description": "Краткое описание проблемы"
+}
+```
+
+### Простой отрицательный фатальный <a name="responses.simple_negative_fatal"></a>
+* HTTP-код: `500 (Internal Server Error)`;
+* Обязательные поля:
+    * `status` _(str)_ = `error`
+    * `internal_error` (bool) = `True`
+    * `description` _(str)_ = `краткое описание проблемы`
 
 ```json
 {
@@ -166,10 +189,10 @@ Delete   | DELETE     | Объект
 ```
 
 ### Положительный <a name="responses.positive"></a>
-* HTTP-код: **200** _(OK)_;
+* HTTP-код: `200` _(OK)_;
 * Обязательные поля:
-    * **status** _(str)_ = "success"
-    * **result** _(dict)_ || _(list)_ || _(str)_ = result
+    * `status` _(str)_ = `success`
+    * `result` _(dict)_ || _(list)_ || _(str)_ = `result`
 
 ```text
 {
@@ -179,12 +202,12 @@ Delete   | DELETE     | Объект
 ```
 
 ### Отрицательный <a name="responses.negative"></a> 
-* HTTP-код: **406** _(Not Acceptable)_ и выше;
+* HTTP-код: `406 (Not Acceptable)` и выше, но не больше `499`;
 * Обязательные поля:
-    * **status** _(str)_ = error - факт неудачного запроса ошибка
-    * **description** _(str)_= краткое описание неудачного запроса
-    * **errors_fields** _(dict)_ - факт на некорректные данные во входящем запросе, в полях
-    * **errors_fields['входящее_поле']** _(list)_ - каждый элемент является описанием найденной ошибки в поле **входящее_поле**. Ошибок для каждого поля может быть несколько (зависит от кол-ва привязанных валидаторов) 
+    * `status` _(str)_ = `error` — факт неудачного запроса ошибка
+    * `description` _(str)_= `краткое описание неудачного запроса`
+    * `errors_fields` _(dict)_ — факт на некорректные данные во входящем запросе, в полях
+    * `errors_fields['входящее_поле']` _(list)_ — каждый элемент является описанием найденной ошибки в поле **входящее_поле**. Ошибок для каждого поля может быть несколько (зависит от кол-ва привязанных валидаторов) 
 
 ```json
 {
@@ -203,11 +226,40 @@ Delete   | DELETE     | Объект
 
 ### HTTP коды ответов <a name="responses.http_codes"></a>
 
-* **200** _(OK)_  - запрос принят и обработан (напр.: пользователь зарегистриррован);
-* **400** _(Bad request)_ - некорректный запрос (напр.: невалидный JSON);
-* **406** _(Not Acceptable)_ - запрос корректный, но есть ошибки в полях (напр.: при регистрации не указан пароль либо введён некорректный email);
-* **409** _(Conflict)_ - конфликт при обработке запросе (напр.: профиль с таким email уже существует);
-* **500** _(Internal Server Error)_ - проблема на стороне сервиса.
+* `200 (OK)`  - запрос принят и обработан (напр.: пользователь зарегистриррован);
+* `400 (Bad request)` - некорректный запрос (напр.: невалидный JSON);
+* `406 (Not Acceptable)` - запрос корректный, но есть ошибки в полях (напр.: при регистрации не указан пароль либо введён некорректный email);
+* `409 (Conflict)` - конфликт при обработке запросе (напр.: профиль с таким email уже существует);
+* `500 (Internal Server Error)` - проблема на стороне сервиса.
+
+## Обработка исключений <a name="handle_exceptions"></a>
+
+Чтобы при ∀ проблемах на стороне сервера отдавать клиенту `JSON`, вместо обычного текста (например: `500 (Internal Server Error)` необходимо градировать типы исключений и отдавать соответствующий ответ:
+
+* `TruedocError` — проблемы уровня проекта (указанный пользователь не ∃, не введены обязательные поля, ...); 
+* `SQLAlchemyError` — проблемы при работе с БД (ошибки при доступе к БД);
+* `MarshmallowError` — проблемы валидации данных;
+* `Exception` — ∀ другие проблемы.
+
+Обработчики зарегистрированы в `truedoc.app`:
+
+```python
+@app.errorhandler(TruedocError)
+def handle_exception_truedocerror(exc):
+    ...
+
+@app.errorhandler(SQLAlchemyError)
+def handle_exception_sqlalchemyerror(exc):
+    ...
+
+@app.errorhandler(MarshmallowError)
+def handle_exception_validationerror(exc):
+    ...
+
+@app.errorhandler(Exception)
+def handle_exception_unknown(exc):
+    ...
+```
 
 ## Инструменты <a name="tools"></a>
 
