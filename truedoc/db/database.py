@@ -14,7 +14,9 @@ from sqlalchemy.exc import IntegrityError
 from pymysql.constants import ER
 
 from . import models
-from truedoc.exceptions import ProfileAlreadyExistsError, ProfileDoesNotExist
+from truedoc.exceptions import ProfileAlreadyExistsError
+from truedoc.exceptions import ProfileDoesNotExist
+from truedoc.exceptions import ProfileIsNotAvailableForDeleting
 
 db_session = scoped_session(sessionmaker(bind=models.engine))
 
@@ -50,7 +52,18 @@ class Profile:
         """Delete profile."""
 
         db_session.delete(profile)
-        db_session.commit()
+
+        try:
+            db_session.commit()
+        except IntegrityError as exc:
+            db_session.rollback()
+
+            errno, errmsg = exc.orig.args
+
+            if errno == ER.ROW_IS_REFERENCED_2:
+                raise ProfileIsNotAvailableForDeleting
+
+            raise
 
     @staticmethod
     def load(profile_id: str) -> models.Profile:

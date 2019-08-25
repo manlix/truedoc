@@ -33,6 +33,11 @@ class ProfileDoesNotExist(ProfileError):
     description = 'Profile with given profile_id does not exist'
 
 
+class ProfileIsNotAvailableForDeleting(ProfileError):
+    http_code = HTTPStatus.NOT_ACCEPTABLE  # 406
+    description = 'Profile is not available for deleting due to has documents'
+
+
 #########################
 #
 # DOCUMENT
