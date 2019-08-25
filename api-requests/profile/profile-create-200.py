@@ -1,16 +1,25 @@
 """Создание профиля (успех).
-Должен возвращать: 200 (OK) или ошибку 409 (Conflict) в случае если профиль уже создан."""
+Ожидаемый возврат: 200 (OK).
+
+
+Сценарий:
+1) создаём профиль с email 'test@example.com' и паролем 'password';
+2) удаляем созданный профиль.
+"""
 import requests
 
-endpoint = 'http://truedoc-app.localhost/profile/'
+endpoint_profile = 'http://truedoc-app.localhost/profile/'
 payload = dict(
-    email='hello@example.com',
+    email='test@example.com',
     password='password',
 )
 
-r = requests.post(endpoint, json=payload)
+r = requests.post(endpoint_profile, json=payload)
 
-assert r.status_code in (
-    200,  # 200 (OK)
-    409,  # 409 (Conflict)
-)
+assert r.status_code == 200, f'Status code ({r.status_code}) is NOT 200. Cannot create profile: {r.text}'
+
+profile_id = r.json()['result']['profile_id']
+
+r = requests.delete(f'{endpoint_profile}{profile_id}')
+
+assert r.status_code == 200, f'Status code ({r.status_code}) is NOT 200. Cannot delete profile ({profile_id}): {r.text}'
