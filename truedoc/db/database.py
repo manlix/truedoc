@@ -7,13 +7,14 @@ To catch original exception from PyMySQL dig to "exc.orig":
     - exc.orig.args[1] - error message
 """
 
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
+from sqlalchemy.orm import sessionmaker
 
 from sqlalchemy.exc import IntegrityError
 from pymysql.constants import ER
 
 from . import models
+from truedoc.exceptions import DocumentDoesNotExist
 from truedoc.exceptions import ProfileAlreadyExistsError
 from truedoc.exceptions import ProfileDoesNotExist
 from truedoc.exceptions import ProfileIsNotAvailableForDeleting
@@ -66,7 +67,7 @@ class Profile:
             raise
 
     @staticmethod
-    def load(profile_id: str) -> models.Profile:
+    def load(profile_id: str) -> models.Profile:  # TODO: think how to repalce 'str' -> 'uuid'
         """Load profile."""
 
         query = db_session.query(models.Profile).filter(models.Profile.profile_id == profile_id).first()
@@ -102,3 +103,21 @@ class Document:
                 raise ProfileDoesNotExist
 
             raise
+
+    @staticmethod
+    def load(document_id: str) -> models.Document:  # TODO: think how to replace 'str' -> 'uuid'
+        """Load document."""
+
+        query = db_session.query(models.Document).filter(models.Document.document_id == document_id).first()
+
+        if query is None:
+            raise DocumentDoesNotExist
+
+        return query
+
+    @staticmethod
+    def delete(document: models.Document) -> None:
+        """Delete document."""
+
+        db_session.delete(document)
+        db_session.commit()
