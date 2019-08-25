@@ -30,3 +30,15 @@ def list_profiles():
     profiles = profiles_schema.dump(db.Profile.list_all())
 
     return success(result=profiles)
+
+
+@bp.route('/<uuid:profile_id>', methods=['DELETE'])
+def delete_profile(profile_id):
+    """Delete given profile_id."""
+
+    profile_id = str(profile_id)
+
+    profile = db.Profile.load(profile_id)
+    db.Profile.delete(profile)
+
+    return success()
