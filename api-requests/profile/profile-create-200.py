@@ -1,11 +1,9 @@
 """Создание профиля (успех).
 Ожидаемый возврат: 200 (OK).
 
-
 Сценарий:
 1) создаём профиль с email 'test@example.com' и паролем 'password';
-2) удаляем созданный профиль.
-"""
+2) удаляем созданный профиль."""
 import requests
 
 endpoint_profile = 'http://truedoc-app.localhost/profile/'
