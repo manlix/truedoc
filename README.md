@@ -175,6 +175,9 @@ Delete   | DELETE     | Объект
 ```
 
 ### Простой отрицательный фатальный <a name="responses.simple_negative_fatal"></a>
+
+Отличается от `простого отрицательного` наличием поля `internal_error`, свидетельствующим, что проблема произошла на стороне сервера (напр.: недоступна БД).
+
 * HTTP-код: `500 (Internal Server Error)`;
 * Обязательные поля:
     * `status` _(str)_ = `error`
@@ -184,6 +187,7 @@ Delete   | DELETE     | Объект
 ```json
 {
   "status": "error",
+  "internal_error": true,        
   "description": "Краткое описание проблемы"
 }
 ```
