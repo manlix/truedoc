@@ -29,3 +29,27 @@ def list_documents():
     documents = documents_schema.dump(db.Document.list_all())
 
     return success(result=documents)
+
+
+@bp.route('/<uuid:document_id>', methods=['GET'])
+def load_document(document_id):
+    """Load document by document_id."""
+
+    document_id = str(document_id)
+
+    document_schema = schemas.DocumentSchema()
+    document = document_schema.dump(db.Document.load(document_id))
+
+    return success(result=document)
+
+
+@bp.route('/<uuid:document_id>', methods=['DELETE'])
+def delete_document(document_id):
+    """Delete given document."""
+
+    document_id = str(document_id)
+
+    document = db.Document.load(document_id)
+    db.Document.delete(document)
+
+    return success()
