@@ -60,11 +60,13 @@ services:
     depends_on:
       - truedoc-app     # Required because nginx has 'truedoc-app' in proxy_pass directive.
       - truedoc-pma     # Required because nginx has 'truedoc-pma' in proxy_pass directive.
+      - truedoc-ui  # Required because nginx has 'truedoc-ui' in proxy_pass directive.
 
 
   truedoc-ui:
     image: python:3.7.4-alpine3.10  # https://hub.docker.com/_/python
     working_dir: /var/lib/truedoc-ui  # Just to run `shell` with start point with this directory
+    tty: true  # Required to see logs redirected to STDOUT & STDERR by 'docker-compose ... logs truedoc-ui'
     volumes:
       - "./truedoc-ui:/var/lib/truedoc-ui:ro"
     command: python -m http.server --directory /var/lib/truedoc-ui/ 80
