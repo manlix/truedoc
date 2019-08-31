@@ -32,7 +32,7 @@ function main() {
   cd "$(dirname "$0")/../" || die "Cannot open source dir"
 
   # Builds, (re)create, starts, and attaches to containers for a service
-  docker-compose -f docker-compose.dev.yml up -d || die "Failed start services by docker-compose"
+  docker-compose -f docker-compose.dev.yml up -d --remove-orphans|| die "Failed start services by docker-compose"
 
   wait_for_mysql
 }
