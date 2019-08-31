@@ -1,0 +1,128 @@
+$(document).ready(function(){
+
+    function onError(msg) {
+
+        $('#error').toggle(true);
+        $('#error').html(msg);
+    }
+
+    function formSuccess(response) {
+
+        $('#ui')
+            .empty()
+            .html('Регистрация успешно пройдена!<br>profile_id: ' + response['result'].profile_id);
+    }
+
+    function formFail(xhr, ajaxOptions, thrownError) {
+        console.log(xhr);
+        console.log(ajaxOptions);
+        console.log(thrownError);
+
+        // TODO: read detailed errors from xhr.responseJSON.error_fields
+
+        // 'About ''XMLHttpRequest': https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
+
+        if (xhr.readyState == 0) {
+            onError('Сервис недоступен');
+        } else if (xhr.status == 406) {
+            onError('Некоторые поля заполнены неверно');
+        } else if (xhr.status == 409) {
+            onError('Профиль с таким email уже существует');
+        }
+    }
+
+    var ui = $('<div></div>')
+            .attr('id', 'ui')
+            .css(
+                {
+                    'border': '10px green solid',
+                    'width':'500px',
+                    'background-color': '#FCF4A3',
+                    'align': 'center',
+                    'text-align': 'center',
+                    'padding': '10px',
+            });
+
+    $('body').append(ui);
+
+    $("#ui")
+        .append(
+            [
+                '<h1>Создание профиля</h1>',
+                '<div id="error"></div>',
+                '<div id="success"></div>',
+                '<div>Email:</div>',
+                '<input id="email" name="email" placeholder="email@example.com" autofocus>',
+                '<div>Пароль:</div>',
+                '<div><input id="password" name="password" type="password"></div>',
+                '<div><br><input type="submit"></div>',
+            ]
+        )
+        .wrap('<form></form>');
+
+    $('#error').css(
+    {
+        'color': '#ffffff',
+        'background-color': '#ff0000',
+        'display': 'none',
+
+    });
+
+    $('#success').css(
+    {
+        'color': '#ffffff',
+        'background-color': 'green',
+        'display': 'none',
+
+    });
+
+
+    function check_fields() {
+        email = $('#email')
+        password = $('#password')
+
+        if (email.val().length == 0) {
+            onError('Не введён email.')
+        }
+
+        else if (password.val().length == 0) {
+            onError('Не введён пароль.');
+        } else {
+            sendData();
+        }
+    }
+
+    $('form').submit(function(event) {
+        event.preventDefault();
+        check_fields();
+    });
+
+    function sendData() {
+
+        var arr = {
+            email: $('form input[name=email]').val(),
+            password: $('form input[name=password]').val(),
+        }
+
+        $.ajax({
+
+            url: 'http://truedoc-app.localhost/profile/',
+            type: 'POST',
+            data: JSON.stringify(arr),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            async: true,
+            success: formSuccess,
+
+            error: formFail,
+
+            statusCode: {
+                200: function() { }, // Регистрация прошла успешно.
+                406: function() { }, // Какие-то поля заполнены неверно. Смотри: xhr.responseJSON.error_fields
+                409: function() { }, // Профиль с указаным email'ом уже существует.
+            }
+        });
+    }
+});
+
+
