@@ -17,21 +17,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev  # TODO: read about multi-stage builds: https://docs.docker.com/develop/develop-images/multistage-build/
-      args:
-        TRUEDOC_PATH: "/var/lib/truedoc"
 
-    environment:
-      FLASK_APP: "truedoc.website:app"
-      FLASK_ENV: "development"  # ATTENTION: required for dev to reload code after change
-
-    volumes:
+    volumes:  # ATTENTION: you cannot mount a host directory from within the Dockerfile (see: https://docs.docker.com/engine/reference/builder/#notes-about-specifying-volumes)
       - "./truedoc:/var/lib/truedoc/truedoc"
 
     depends_on:
       - truedoc-mysql
       - truedoc-pma  # ATTENTION: do NOT use in production.
-
-    command: python -m flask run --host 0.0.0.0 --port 5000
 
 
   truedoc-mysql:  # Hostname inside containers: "truedoc-mysql".

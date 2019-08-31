@@ -5,8 +5,9 @@ FROM python:3.7.4-alpine3.10
 ARG TRUEDOC_PATH="/var/lib/truedoc"
 
 # ATTENTION: "FLASK_ENV=development" is required to automatic reload changed source code without rebuild containers.
-# Docs: http://flask.pocoo.org/docs/1.0/quickstart/#debug-mode
-ENV FLASK_ENV "development"
+# Docs: https://flask.palletsprojects.com/en/1.1.x/quickstart/#debug-mode
+ENV FLASK_APP="truedoc.website:app" \
+    FLASK_ENV="development"
 
 RUN mkdir -p ${TRUEDOC_PATH}
 WORKDIR ${TRUEDOC_PATH}
