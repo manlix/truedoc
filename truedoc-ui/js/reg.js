@@ -105,15 +105,14 @@ $(document).ready(function(){
         }
 
         $.ajax({
-
-            url: 'http://truedoc-app.localhost/profile/',
-            type: 'POST',
-            data: JSON.stringify(arr),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
             async: true,
-            success: formSuccess,
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(arr),
+            dataType: 'json',
+            type: 'POST',
+            url: 'http://truedoc-app.localhost/profile/',
 
+            success: formSuccess,
             error: formFail,
 
             statusCode: {
