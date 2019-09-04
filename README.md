@@ -288,20 +288,22 @@ $ bandit code.py
     * [Bash](https://www.gnu.org/software/bash/)
  
 * Библиотеки для Python:
-    * [Alembic](https://alembic.sqlalchemy.org) - миграция базы данных
-    * [Flask](https://palletsprojects.com/p/flask/) - основной framework
-    * [Marshmallow](https://marshmallow.readthedocs.io) - валидация моделей
-    * [PyMySQL](https://github.com/PyMySQL/PyMySQL) - работа с MySQL
-    * [Requests](http://python-requests.org) - тестовые запросы к API
-    * [Sentry](https://github.com/getsentry/sentry-python) - трекер ошибок
-    * [SQLAlchemy](https://www.sqlalchemy.org) - ORM для работы с базой данных
+    * [Alembic](https://alembic.sqlalchemy.org) — миграция базы данных
+    * [Flask](https://palletsprojects.com/p/flask/) — основной framework
+    * [Marshmallow](https://marshmallow.readthedocs.io) — валидация моделей
+    * [PyMySQL](https://github.com/PyMySQL/PyMySQL) — работа с MySQL
+    * [Requests](http://python—requests.org) — тестовые запросы к API
+    * [Sentry](https://github.com/getsentry/sentry—python) — трекер ошибок
+    * [SQLAlchemy](https://www.sqlalchemy.org) — ORM для работы с базой данных
 
 * Другое:
-    * [Bandit](https://github.com/PyCQA/bandit) - проверка безопасности Python кода
-    * [docker-composer](https://docs.docker.com/compose/) - декларативное организация контейнеров
-    * [Docker](https://www.docker.com) - контейнеры
-    * [Git](https://git-scm.com) - правление исходным кодом
-    * [HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) - канал связи для API
-    * [JSON](https://en.wikipedia.org/wiki/JSON) - для работы API
-    * [nginx](https://nginx.org) - обратный прокси-сервер поверх контейнеров
-    * [Pylint](https://www.pylint.org) - проверка Python кода на соответствие стандартам
+    * [Bandit](https://github.com/PyCQA/bandit) — проверка безопасности Python кода
+    * [CORS](https://learn.javascript.ru/fetch-crossorigin) — политика CORS
+    * [Docker](https://www.docker.com) — контейнеры
+    * [docker—composer](https://docs.docker.com/compose/) — декларативное организация контейнеров
+    * [Git](https://git—scm.com) — управление исходным кодом
+    * [HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) — канал связи для API
+    * [jQuery](https://jquery.com) — Javascript библиотека, для использования AJAX
+    * [JSON](https://en.wikipedia.org/wiki/JSON) — для работы API
+    * [nginx](https://nginx.org) — обратный прокси—сервер поверх контейнеров
+    * [Pylint](https://www.pylint.org) — проверка Python кода на соответствие стандартам
