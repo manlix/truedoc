@@ -291,6 +291,7 @@ $ bandit code.py
     * [Alembic](https://alembic.sqlalchemy.org) — миграция базы данных
     * [Flask](https://palletsprojects.com/p/flask/) — основной framework
     * [Marshmallow](https://marshmallow.readthedocs.io) — валидация моделей
+    * [PyJWT](https://github.com/jpadilla/pyjwt) — работа с токенами JWT (JSON Web Token)
     * [PyMySQL](https://github.com/PyMySQL/PyMySQL) — работа с MySQL
     * [Requests](http://python—requests.org) — тестовые запросы к API
     * [Sentry](https://github.com/getsentry/sentry—python) — трекер ошибок
