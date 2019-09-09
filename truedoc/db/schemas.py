@@ -21,3 +21,15 @@ class DocumentSchema(Schema):
     filesize = fields.Integer(required=True, validate=[validate.Range(min=0)])
     digest = fields.String(required=True, validate=[validate.Length(equal=32)])
     created_at = fields.DateTime(required=True, dump_only=True)
+
+
+class ProfileAuthSchema(Schema):
+    """Profile authorization schema."""
+    email = fields.Email(required=True, load_only=True, validate=[validate.Length(max=128), validate.Email()])
+    password = fields.String(required=True, load_only=True)
+
+
+class ProfileTokensSchema(Schema):
+    """Profile tokens schema."""
+    access_token = fields.String(required=True, validate=[validate.Length(min=1)])
+    refresh_token = fields.String(required=True, validate=[validate.Length(min=1)])

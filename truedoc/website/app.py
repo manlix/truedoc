@@ -11,6 +11,7 @@ from truedoc.exceptions import SQLAlchemyError
 from truedoc.exceptions import TruedocError
 
 from truedoc.response import failure
+from truedoc.website.blueprints import auth
 from truedoc.website.blueprints import document
 from truedoc.website.blueprints import error
 from truedoc.website.blueprints import profile
@@ -29,6 +30,7 @@ app = Flask(__name__)
 app.register_blueprint(error.bp)
 app.register_blueprint(profile.bp, url_prefix='/profile')
 app.register_blueprint(document.bp, url_prefix='/document')
+app.register_blueprint(auth.bp, url_prefix='/auth')
 
 
 # TODO: see error handling manual

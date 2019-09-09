@@ -39,6 +39,18 @@ class ProfileIsNotAvailableForDeleting(ProfileError):
     description = 'Profile is not available for deleting due to has documents'
 
 
+class ProfileUnauthorized(ProfileError):
+    """Child profile exception: either 'profile_id or email' or password is invalid."""
+    http_code = HTTPStatus.UNAUTHORIZED  # 401
+    description = 'Unauthorized by invalid credentials for profile'
+
+
+class ProfileInvalidPassword(ProfileError):
+    """Child profile exception: invalid password."""
+    http_code = HTTPStatus.UNAUTHORIZED  # 401
+    description = 'Invalid password for given profile'
+
+
 #########################
 #
 # DOCUMENT

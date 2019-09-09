@@ -18,6 +18,8 @@ from werkzeug.security import generate_password_hash
 from truedoc import common
 from truedoc.config import Config
 
+import truedoc.exceptions
+
 engine = create_engine(Config.DB_PATH, echo=True)
 metadata = MetaData(bind=engine)
 Model = declarative_base(metadata=metadata)
@@ -45,7 +47,10 @@ class Profile(Model):
         self.password = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.password, password)
+        if check_password_hash(self.password, password):
+            return True
+
+        raise truedoc.exceptions.ProfileInvalidPassword
 
 
 class Document(Model):

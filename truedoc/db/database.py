@@ -67,10 +67,16 @@ class Profile:
             raise
 
     @staticmethod
-    def load(profile_id: str) -> models.Profile:  # TODO: think how to repalce 'str' -> 'uuid'
-        """Load profile."""
+    def load(profile_id_or_email: str) -> models.Profile:
+        """Load profile by either 'profile_id' or 'email' field."""
 
-        query = db_session.query(models.Profile).filter(models.Profile.profile_id == profile_id).first()
+        # Load by 'email'
+        if '@' in profile_id_or_email:
+            query = db_session.query(models.Profile).filter(models.Profile.email == profile_id_or_email).first()
+
+        # Load by 'profile_id'
+        else:
+            query = db_session.query(models.Profile).filter(models.Profile.profile_id == profile_id_or_email).first()
 
         if query is None:
             raise ProfileDoesNotExist
