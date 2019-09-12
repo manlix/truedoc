@@ -72,3 +72,20 @@ class DocumentDoesNotExist(DocumentError):
 
     http_code = HTTPStatus.NOT_ACCEPTABLE  # 406
     description = 'Document does not exist'
+
+
+#########################
+#
+# JWT
+#
+#########################
+
+class JWTError(TruedocError):
+    """General exception for JWT."""
+    http_code = HTTPStatus.UNAUTHORIZED  # 401
+    description = 'Invalid token'
+
+
+class JWTNoValidTokenInHeaderError(JWTError):
+    """Child exception for 'token'."""
+    description = 'No valid token in header'
