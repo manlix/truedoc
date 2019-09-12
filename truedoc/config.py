@@ -13,10 +13,11 @@ class Config:  # pylint: disable=too-few-public-methods
         """Data for work with JWT."""
         ALGORITHM = 'HS256'
         SECRET = 'secret'  # TODO: think where we can to save it securely
-        ISSUER = 'truedoc-app'
 
-        ACCESS_TOKEN_EXP = TIME.MINUTE * 10
-        REFRESH_TOKEN_EXP = TIME.MINUTE * 15
+        LEEWAY = 10 * TIME.SECOND
+
+        ACCESS_TOKEN_EXP = 10 * TIME.MINUTE
+        REFRESH_TOKEN_EXP = 15 * TIME.MINUTE
 
         @staticmethod
         def expiration_time(timedelta):
