@@ -4,7 +4,7 @@ from flask import request
 
 import truedoc.exceptions
 
-from truedoc import token
+from truedoc import tokens
 from truedoc.db import db
 from truedoc.db import schemas
 from truedoc.response import success
@@ -31,6 +31,23 @@ def authentication():
     ):
         raise truedoc.exceptions.ProfileUnauthorized
 
-    tokens_data = profile_tokens_schema.load(token.create_tokens(profile_id=profile.profile_id))
+    tokens_data = profile_tokens_schema.load(tokens.create_tokens(profile_id=profile.profile_id))
 
     return success(result=tokens_data)
+
+
+@bp.route('/check_token', methods=['GET'])
+def check_token():
+    # Authorization: Bearer ${TOKEN}
+    auth_header = request.headers.get('Authorization')
+
+    # Looking for '${TOKEN}' in header 'Authorization: Bearer ${TOKEN}'
+    try:
+        prefix, bearer_token = auth_header.split(' ', maxsplit=1)
+        assert prefix == 'Bearer'
+
+    except (AssertionError, AttributeError, ValueError):
+        raise truedoc.exceptions.JWTNoValidTokenInHeaderError
+
+    if tokens.check_token(bearer_token):
+        return success()
