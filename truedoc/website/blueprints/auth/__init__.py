@@ -29,7 +29,7 @@ def authentication():
             truedoc.exceptions.ProfileDoesNotExist,
             truedoc.exceptions.ProfileInvalidPassword,
     ):
-        raise truedoc.exceptions.ProfileUnauthorized
+        raise truedoc.exceptions.ProfileUnauthorizedError
 
     tokens_data = profile_tokens_schema.load(tokens.create_tokens(profile_id=profile.profile_id))
 
@@ -47,7 +47,7 @@ def check_token():
         assert prefix == 'Bearer'
 
     except (AssertionError, AttributeError, ValueError):
-        raise truedoc.exceptions.JWTNoValidTokenInHeaderError
+        raise truedoc.exceptions.TokenNoValidTokenInHeaderError
 
     if tokens.check_token(bearer_token):
         return success()

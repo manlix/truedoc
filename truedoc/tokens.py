@@ -50,7 +50,7 @@ def check_token(token):
         )
 
     except jwt.exceptions.PyJWTError as exc:
-        raise truedoc.exceptions.JWTError(exc)
+        raise truedoc.exceptions.TokenError(exc)
 
     if isinstance(decoded, dict):
         return True

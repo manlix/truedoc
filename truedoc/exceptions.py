@@ -39,7 +39,7 @@ class ProfileIsNotAvailableForDeleting(ProfileError):
     description = 'Profile is not available for deleting due to has documents'
 
 
-class ProfileUnauthorized(ProfileError):
+class ProfileUnauthorizedError(ProfileError):
     """Child profile exception: either 'profile_id or email' or password is invalid."""
     http_code = HTTPStatus.UNAUTHORIZED  # 401
     description = 'Unauthorized by invalid credentials for profile'
@@ -80,12 +80,12 @@ class DocumentDoesNotExist(DocumentError):
 #
 #########################
 
-class JWTError(TruedocError):
+class TokenError(TruedocError):
     """General exception for JWT."""
     http_code = HTTPStatus.UNAUTHORIZED  # 401
     description = 'Invalid token'
 
 
-class JWTNoValidTokenInHeaderError(JWTError):
+class TokenNoValidTokenInHeaderError(TokenError):
     """Child exception for 'token'."""
     description = 'No valid token in header'
