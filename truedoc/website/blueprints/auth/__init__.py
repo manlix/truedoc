@@ -38,7 +38,7 @@ def authentication():
     return success(result=tokens_data)
 
 
-@bp.route('/is_token_valid', methods=['GET'])
+@bp.route('/check_token', methods=['GET'])
 def check_token():
     """Process ${TOKEN} for validating from header: 'Authorization: ${auth_schema} ${TOKEN}'."""
 
