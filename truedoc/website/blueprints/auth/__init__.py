@@ -2,6 +2,8 @@
 from flask import Blueprint
 from flask import request
 
+import marshmallow.exceptions
+
 import truedoc.exceptions
 
 from truedoc import tokens
@@ -17,8 +19,8 @@ def authentication():
     """Authentication."""
 
     # Schemas
-    profile_auth_schema = schemas.ProfileAuthSchema()
-    profile_tokens_schema = schemas.ProfileTokensSchema()
+    profile_auth_schema = schemas.AuthenticationSchema()
+    profile_tokens_schema = schemas.AuthorizationTokensSchema()
 
     profile_data = profile_auth_schema.load(request.get_json())
 
@@ -36,18 +38,18 @@ def authentication():
     return success(result=tokens_data)
 
 
-@bp.route('/check_token', methods=['GET'])
+@bp.route('/is_token_valid', methods=['GET'])
 def check_token():
-    # Authorization: Bearer ${TOKEN}
-    auth_header = request.headers.get('Authorization')
+    """Process ${TOKEN} for validating from header: 'Authorization: ${auth_schema} ${TOKEN}'."""
 
-    # Looking for '${TOKEN}' in header 'Authorization: Bearer ${TOKEN}'
+    headers = dict(request.headers)
+    authorization_header_schema = schemas.AuthorizationHeaderSchema()
+
     try:
-        prefix, bearer_token = auth_header.split(' ', maxsplit=1)
-        assert prefix == 'Bearer'
+        authorization_header_data = authorization_header_schema.load(headers)
 
-    except (AssertionError, AttributeError, ValueError):
+    except marshmallow.exceptions.ValidationError:
         raise truedoc.exceptions.TokenNoValidTokenInHeaderError
 
-    if tokens.check_token(bearer_token):
+    if tokens.is_token_valid(authorization_header_data['token']):
         return success()

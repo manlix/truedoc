@@ -30,7 +30,7 @@ def create_tokens(profile_id) -> dict:
     }
 
 
-def check_token(token):
+def is_token_valid(token):
     """Check access_token."""
 
     try:
@@ -52,5 +52,5 @@ def check_token(token):
     except jwt.exceptions.PyJWTError as exc:
         raise truedoc.exceptions.TokenError(exc)
 
-    if isinstance(decoded, dict):
+    if isinstance(decoded, dict):  # ATTENTION: over-secure approach to return 'True' if result is 'dict' only
         return True
