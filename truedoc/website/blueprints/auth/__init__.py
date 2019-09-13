@@ -42,7 +42,7 @@ def authentication():
 def check_token():
     """Process ${TOKEN} for validating from header: 'Authorization: ${auth_schema} ${TOKEN}'."""
 
-    headers = dict(request.headers)
+    headers = dict(request.headers)  # TODO: think is it wrong to use 'dict()' here or not?
     authorization_header_schema = schemas.AuthorizationHeaderSchema()
 
     try:
