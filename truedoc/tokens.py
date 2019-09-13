@@ -30,7 +30,7 @@ def create_tokens(profile_id) -> dict:
     }
 
 
-def is_token_valid(token):
+def is_token_valid(token) -> bool:
     """Check access_token."""
 
     try:
