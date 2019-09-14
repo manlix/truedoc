@@ -3,7 +3,7 @@
 alembic==1.1.0  # https://pypi.org/project/alembic/
 blinker==1.4  # Required for 'sentry-sdk'
 Flask==1.1.1  # https://pypi.org/project/Flask/
-marshmallow==3.0.1  # https://pypi.org/project/marshmallow/
+marshmallow==3.0.5  # https://pypi.org/project/marshmallow/
 PyJWT==1.7.1  # https://pypi.org/project/PyJWT/
 PyMySQL==0.9.3  # https://pypi.org/project/PyMySQL/
 requests==2.22.0  # Required for 'api-requests': https://pypi.org/project/requests/
