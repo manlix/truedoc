@@ -42,7 +42,17 @@ manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc && . ~/venv/truedoc
 
 ```sh
 # Upgrade to 'head' (latest revision)
-manlix@lab:~/git/truedoc/truedoc$ alembic upgrade head
+
+manlix@lab:~/git/truedoc$ docker-compose -f docker-compose.dev.yml exec truedoc-app sh
+/var/lib/truedoc #
+/var/lib/truedoc # cd truedoc
+/var/lib/truedoc/truedoc # export PYTHONPATH=..
+/var/lib/truedoc/truedoc # alembic upgrade head
+INFO  [alembic.runtime.migration] Context impl MySQLImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> cb3afdbd10ea, Init DB
+/var/lib/truedoc/truedoc # exit
+manlix@lab:~/git/truedoc$
 ```
 
 * Место хранения конфига: `truedoc/truedoc/alembic.ini`
@@ -108,12 +118,6 @@ manlix@lab:~/git/truedoc$ docker-compose -f ./docker-compose.dev.yml exec truedo
 * Полностью остановить и зачистить (удалить контейнеры и образы) Truedoc: 
 ```sh
 manlix@lab:~/git/truedoc$ ./scripts/docker.dropall.sh
-```
-
-Для инициализации базы данных с хост-системы (_127.0.0.1_), после запуска контейнеров, в _/etc/hosts_ нужно добавить ```127.0.0.1 truedoc-mysql```,  а на хост-системе активировать **venv** _/home/manlix/venv/truedoc/_ и выполнить:
-
-```
-(truedoc) manlix@lab:~/git/truedoc/truedoc$ alembic upgrade head
 ```
 
 ## Архитектура взаимодействия <a name="arch"></a>
