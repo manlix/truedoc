@@ -294,7 +294,7 @@ $ bandit code.py
     * [PyJWT](https://github.com/jpadilla/pyjwt) — работа с токенами JWT (JSON Web Token)
     * [PyMySQL](https://github.com/PyMySQL/PyMySQL) — работа с MySQL
     * [Requests](http://python—requests.org) — тестовые запросы к API
-    * [Sentry](https://github.com/getsentry/sentry—python) — трекер ошибок
+    * [Sentry](https://github.com/getsentry/sentry-python) — отслеживание исключений в коде
     * [SQLAlchemy](https://www.sqlalchemy.org) — ORM для работы с базой данных
 
 * Другое:
