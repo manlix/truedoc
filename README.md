@@ -18,6 +18,7 @@
 * [Инструменты](#tools)    
     * [Проверка кода на соответствие стандартам](#tools.code_standard)
     * [Проверка кода на безопасность](#tools.code_safety)
+    * [Обновление библиотек в requirements.txt до последних версий](#tools.update_requirements_txt)
 * [Технологии](#techstack)
 
 ## Системные требования <a name="system_requirements"></a>
@@ -281,6 +282,16 @@ $ pylint code.py
 $ bandit code.py
 ```
 
+### Обновление библиотек в requirements.txt до последних версий <a name="tools.update_requirements_txt"></a>
+
+```shell
+(truedoc) manlix@lab:~/git/truedoc$ pur 
+Updated alembic: 1.1.0 -> 1.2.0
+Updated marshmallow: 3.0.5 -> 3.2.0
+Updated sentry-sdk: 0.11.2 -> 0.12.2
+All requirements up-to-date.
+```
+
 ## Технологии <a name="techstack"></a>
 
 * Языки: 
@@ -308,3 +319,4 @@ $ bandit code.py
     * [JSON](https://en.wikipedia.org/wiki/JSON) — для работы API
     * [nginx](https://nginx.org) — обратный прокси—сервер поверх контейнеров
     * [Pylint](https://www.pylint.org) — проверка Python кода на соответствие стандартам
+    * [pur](https://github.com/alanhamlett/pip-update-requirements) — обновление requirements.txt до последних версий
