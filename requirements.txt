@@ -2,6 +2,7 @@
 
 alembic==1.2.0  # https://pypi.org/project/alembic/
 blinker==1.4  # Required for 'sentry-sdk'
+celery==4.3.0  # https://pypi.org/project/celery/
 Flask==1.1.1  # https://pypi.org/project/Flask/
 marshmallow==3.2.0  # https://pypi.org/project/marshmallow/
 PyJWT==1.7.1  # https://pypi.org/project/PyJWT/

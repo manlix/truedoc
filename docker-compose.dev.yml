@@ -70,3 +70,9 @@ services:
     volumes:
       - "./truedoc-ui:/var/lib/truedoc-ui:ro"
     command: python -m http.server --directory /var/lib/truedoc-ui/ 80
+
+  truedoc-rabbitmq:
+    image: rabbitmq:3.7.18-management-alpine  # https://hub.docker.com/_/rabbitmq
+    ports:
+      - "127.0.0.1:5672:5672"
+      - "127.0.0.1:15672:15672"
