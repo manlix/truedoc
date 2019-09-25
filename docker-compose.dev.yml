@@ -11,6 +11,12 @@ version: "3.7"
 services:
 
 
+#############################
+#
+# `truedoc-app` (works under db 'truedoc' with login 'truedoc' in MySQL)
+#
+#############################
+
   truedoc-app:  # Hostname inside containers: "truedoc-app". Access from local: "http://truedoc-app.localhost:36456".
     ports:
       - "127.0.0.1:36456:5000"
@@ -26,30 +32,51 @@ services:
       - truedoc-pma  # ATTENTION: do NOT use in production.
 
 
+#############################
+#
+# `truedoc-mysql` (allows 'root' account from any hosts)
+#
+#############################
+
   truedoc-mysql:  # Hostname inside containers: "truedoc-mysql".
     image: mysql/mysql-server:8.0.17  # https://hub.docker.com/r/mysql/mysql-server/
     ports:
       - "127.0.0.1:3306:3306"
     environment:  # More environment vars: https://dev.mysql.com/doc/refman/8.0/en/docker-mysql-more-topics.html
       MYSQL_DATABASE: truedoc
-      MYSQL_USER: truedoc
       MYSQL_PASSWORD: truedoc
+      MYSQL_ROOT_HOST: '%'
       MYSQL_ROOT_PASSWORD: truedoc
+      MYSQL_USER: truedoc
+    volumes:
+      - "./mysql-data:/var/lib/mysql"
     command:
       ## Required to prevent issue for PMA: "The server requested authentication method unknown to the client [caching_sha2_password]".
       ## TODO: drop after PMA will ready to use PHP compatible version supporting "caching_sha2_password". See: https://github.com/phpmyadmin/phpmyadmin/issues/14220
       - "--default-authentication-plugin=mysql_native_password"
 
 
+#############################
+#
+# `truedoc-pma` (works under 'root' in MySQL)
+#
+#############################
+
   truedoc-pma:  # Hostname inside containers: "truedoc-pma". Access from local: "http://truedoc-pma.localhost:8080".
     image: phpmyadmin/phpmyadmin:4.9  # https://hub.docker.com/r/phpmyadmin/phpmyadmin
     environment:
       PMA_HOST: truedoc-mysql
-      PMA_USER: truedoc
+      PMA_USER: root
       PMA_PASSWORD: truedoc
     depends_on:
       - truedoc-mysql
 
+
+#############################
+#
+# `truedoc-nginx` (listening truedoc-nginx:80 for all hosts)
+#
+#############################
 
   truedoc-nginx:
     image: nginx:1.16.1-alpine  # https://hub.docker.com/_/nginx
@@ -63,6 +90,12 @@ services:
       - truedoc-ui  # Required because nginx has 'truedoc-ui' in proxy_pass directive.
 
 
+#############################
+#
+# `truedoc-ui`
+#
+#############################
+
   truedoc-ui:
     image: python:3.7.4-alpine3.10  # https://hub.docker.com/_/python
     working_dir: /var/lib/truedoc-ui  # Just to run `shell` with start point with this directory
@@ -70,6 +103,13 @@ services:
     volumes:
       - "./truedoc-ui:/var/lib/truedoc-ui:ro"
     command: python -m http.server --directory /var/lib/truedoc-ui/ 80
+
+
+#############################
+#
+# `truedoc-rabbitmq` (UI is available on 'truedoc-rabbitmq-ui.localhost')
+#
+#############################
 
   truedoc-rabbitmq:
     image: rabbitmq:3.7.18-management-alpine  # https://hub.docker.com/_/rabbitmq
