@@ -18,13 +18,15 @@ class ProfileSchema(Schema):
 
 class DocumentBaseSchema(Schema):
     """Base schema for Document."""
-    document_id = fields.UUID(required=True, validate=[validate.Length(36)])
-    profile_id = fields.UUID(required=True, validate=[validate.Length(36)])
+    document_id = fields.String(required=True, validate=[validate.Length(36)])
+    profile_id = fields.String(required=True, validate=[validate.Length(36)])
     title = fields.String(required=True)
     filename = fields.String(required=True)
 
 
-class DocumentDetailsSchema(DocumentBaseSchema):
+class DocumentDetailedSchema(DocumentBaseSchema):
+    """Detailed Document with additional fields."""
+    filesize = fields.Integer(required=True)
     digest = fields.String(required=True, validate=[validate.Length(equal=32)])
     created_at = fields.DateTime(required=True)
 
@@ -33,7 +35,7 @@ class DocumentWorkerProcessingSchema(DocumentBaseSchema):
     """Structure for worker."""
 
 
-class DocumentProcessingSchema(DocumentWorkerProcessingSchema):
+class DocumentProcessingSchema(DocumentBaseSchema):
     """Schema for processing result uploaded document."""
     state = fields.String(
         required=True,
