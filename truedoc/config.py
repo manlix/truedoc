@@ -9,6 +9,15 @@ class Config:  # pylint: disable=too-few-public-methods
     """Common setting variables."""
     DB_PATH = 'mysql+pymysql://truedoc:truedoc@truedoc-mysql/truedoc'
 
+    class DocumentProcessing:
+        """Document processing-related variables"""
+
+        SAVE_TO_DIR = '/upload'
+
+        @staticmethod
+        def save_to(document_id):
+            return f'{Config.DocumentProcessing.SAVE_TO_DIR}/{document_id}'
+
     class Token:
         """Data for work with JWT."""
         ALGORITHM = 'HS256'
