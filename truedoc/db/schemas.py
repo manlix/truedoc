@@ -6,6 +6,8 @@ from marshmallow import post_load
 from marshmallow import Schema
 from marshmallow import validate
 
+import celery.states
+
 
 class ProfileSchema(Schema):
     profile_id = fields.UUID(required=True, dump_only=True)
@@ -14,17 +16,29 @@ class ProfileSchema(Schema):
     created_at = fields.DateTime(required=True, dump_only=True)
 
 
-class DocumentSchema(Schema):
-    """Document schema. Do NOT use UUID for members with 'load_only=True'
-    because SQLAlchemy cannot insert value 'UUID(...)' to database."""
-    document_id = fields.UUID(required=True, dump_only=True)
-    profile_id = fields.String(required=True, load_only=True, validate=[validate.Length(36)])
+class DocumentBaseSchema(Schema):
+    """Base schema for Document."""
+    document_id = fields.UUID(required=True, validate=[validate.Length(36)])
+    profile_id = fields.UUID(required=True, validate=[validate.Length(36)])
     title = fields.String(required=True)
-    document = fields.Raw(required=True, load_only=True)
     filename = fields.String(required=True)
-    filesize = fields.Integer(required=True, validate=[validate.Range(min=0)])
+
+
+class DocumentDetailsSchema(DocumentBaseSchema):
     digest = fields.String(required=True, validate=[validate.Length(equal=32)])
-    created_at = fields.DateTime(required=True, dump_only=True)
+    created_at = fields.DateTime(required=True)
+
+
+class DocumentWorkerProcessingSchema(DocumentBaseSchema):
+    """Structure for worker."""
+
+
+class DocumentProcessingSchema(DocumentWorkerProcessingSchema):
+    """Schema for processing result uploaded document."""
+    state = fields.String(
+        required=True,
+        validate=[validate.OneOf(choices=celery.states.ALL_STATES)],
+    )
 
 
 class AuthenticationSchema(Schema):
