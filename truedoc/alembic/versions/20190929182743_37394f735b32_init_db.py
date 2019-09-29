@@ -1,8 +1,8 @@
 """Init DB
 
-Revision ID: cb3afdbd10ea
+Revision ID: 37394f735b32
 Revises: 
-Create Date: 2019-08-24 21:08:21.948761+00:00
+Create Date: 2019-09-29 18:27:43.083034+00:00
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'cb3afdbd10ea'
+revision = '37394f735b32'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -29,12 +29,11 @@ def upgrade():
     op.create_table('document',
     sa.Column('document_id', sa.VARCHAR(length=36), nullable=False),
     sa.Column('profile_id', sa.VARCHAR(length=36), nullable=False),
-    sa.Column('title', sa.VARCHAR(length=128), nullable=False),
-    sa.Column('document', sa.BLOB(), nullable=False),
+    sa.Column('title', sa.VARCHAR(length=128), nullable=True),
     sa.Column('filename', sa.VARCHAR(length=256), nullable=False),
     sa.Column('filesize', sa.INTEGER(), nullable=False),
     sa.Column('digest', sa.VARCHAR(length=32), nullable=False),
-    sa.Column('created_at', sa.DATETIME(), nullable=False),
+    sa.Column('created_at', sa.DATETIME(), nullable=True),
     sa.ForeignKeyConstraint(['profile_id'], ['profile.profile_id'], ),
     sa.PrimaryKeyConstraint('document_id')
     )
