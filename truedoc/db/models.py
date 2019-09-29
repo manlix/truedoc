@@ -7,10 +7,9 @@ from sqlalchemy import ForeignKey
 
 from sqlalchemy.ext.declarative import declarative_base
 
-from sqlalchemy.types import BLOB
 from sqlalchemy.types import DATETIME
-from sqlalchemy.types import VARCHAR
 from sqlalchemy.types import INTEGER
+from sqlalchemy.types import VARCHAR
 
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
@@ -57,14 +56,12 @@ class Document(Model):
     """Document model."""
     __tablename__ = 'document'
 
-    document_id = Column(VARCHAR(36), default=common.uuid4, primary_key=True)
+    document_id = Column(VARCHAR(36), primary_key=True)  # Unique document ID
     profile_id = Column(VARCHAR(36), ForeignKey('profile.profile_id'), nullable=False)
-    title = Column(VARCHAR(128), nullable=False)
+    title = Column(VARCHAR(128), nullable=True)  # Document title
 
-    # TODO: drop 'document' field.
-    document = Column(BLOB, nullable=False)
+    filename = Column(VARCHAR(256), nullable=False)  # Document filename like 'data.txt'
+    filesize = Column(INTEGER, nullable=False)  # Document size in bytes
+    digest = Column(VARCHAR(32), nullable=False)  # MD5 of the document
+    created_at = Column(DATETIME, default=datetime.datetime.utcnow)
 
-    filename = Column(VARCHAR(256), nullable=False)
-    filesize = Column(INTEGER, nullable=False)
-    digest = Column(VARCHAR(32), nullable=False)
-    created_at = Column(DATETIME, nullable=False, default=datetime.datetime.utcnow)
