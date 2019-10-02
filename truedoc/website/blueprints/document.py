@@ -22,7 +22,7 @@ def create_document():
     # document = db.models.Document(**just_uploaded_schema.dump(data))
     # db.Document.create(document)
 
-    return success(http_code=HTTPStatus.ACCEPTED, result=schema_DocumentProcessing.dump(data))
+    return success(http_code=HTTPStatus.ACCEPTED, result=schema_DocumentProcessing.dump(data_DocumentProcessing))
 
 
 @bp.route('/', methods=['GET'])
