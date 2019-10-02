@@ -4,14 +4,15 @@
 # To download binary use page:
 # https://github.com/pwaller/docker-show-context/releases
 #
+**/__pycache__/
 .git/
 .gitignore
 .idea/
-**/__pycache__/
-docker-compose.dev.yml
-Dockerfile.dev
+api-requests/
+docker-compose.yml
+Dockerfile
+img/
 README.md
 scripts/
 setup.py
-img/
 website_mock/

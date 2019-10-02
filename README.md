@@ -43,7 +43,7 @@ manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc && . ~/venv/truedoc
 ```sh
 # Upgrade to 'head' (latest revision)
 
-manlix@lab:~/git/truedoc$ docker-compose -f docker-compose.dev.yml exec truedoc-app sh
+manlix@lab:~/git/truedoc$ docker-compose exec truedoc-app sh
 /var/lib/truedoc # cd truedoc/ && PYTHONPATH=.. alembic upgrade head && exit
 manlix@lab:~/git/truedoc$
 ```
@@ -90,22 +90,22 @@ manlix@lab:~/git/truedoc$ ./scripts/app.start.sh
 
 Остановить контейнер с Truedoc:
 ```sh
-manlix@lab:~/git/truedoc$ docker-compose -f docker-compose.dev.yml stop truedoc-app
+manlix@lab:~/git/truedoc$ docker-compose stop truedoc-app
 ```
 
 Запустить контейнер с Truedoc:
 ```sh
-manlix@lab:~/git/truedoc$ docker-compose -f docker-compose.dev.yml start truedoc-app
+manlix@lab:~/git/truedoc$ docker-compose start truedoc-app
 ```
 
 Посмотреть STDERR контейнера с Truedoc:
 ```sh
-manlix@lab:~/git/truedoc$ docker-compose -f docker-compose.dev.yml logs truedoc-app
+manlix@lab:~/git/truedoc$ docker-compose logs truedoc-app
 ```
 
 * Запустить bash-сессию внутри запущенного контейнера с MySQL: 
 ```sh
-manlix@lab:~/git/truedoc$ docker-compose -f ./docker-compose.dev.yml exec truedoc-mysql bash
+manlix@lab:~/git/truedoc$ docker-compose exec truedoc-mysql bash
 ```
 
 * Полностью остановить и зачистить (удалить контейнеры и образы) Truedoc: 

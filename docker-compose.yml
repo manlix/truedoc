@@ -22,7 +22,6 @@ services:
       - "127.0.0.1:36456:5000"
     build:
       context: .
-      dockerfile: Dockerfile.dev  # TODO: read about multi-stage builds: https://docs.docker.com/develop/develop-images/multistage-build/
 
     volumes:  # ATTENTION: you cannot mount a host directory from within the Dockerfile (see: https://docs.docker.com/engine/reference/builder/#notes-about-specifying-volumes)
       - "./truedoc:/var/lib/truedoc/truedoc"

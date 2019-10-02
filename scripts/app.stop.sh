@@ -14,7 +14,7 @@ function main() {
 
   cd "$(dirname "$0")/../" || die "Cannot open source dir"
 
-  docker-compose -f docker-compose.dev.yml stop || die "Failed stop services by docker-compose"
+  docker-compose stop || die "Failed stop services by docker-compose"
 
 }
 

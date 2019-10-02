@@ -14,7 +14,7 @@ function main() {
   cd "$(dirname "$0")/../" || die "Cannot open source dir"
 
   # Build image from Dockerfile
-  docker build --tag truedoc-app --no-cache -f ./Dockerfile.dev . || die "Failed build Docker image"
+  docker build --tag truedoc-app --no-cache . || die "Failed build Docker image"
 }
 
 main
