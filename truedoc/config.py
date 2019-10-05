@@ -8,6 +8,32 @@ from truedoc.constants import TIME
 class Config:  # pylint: disable=too-few-public-methods
     """Common setting variables."""
 
+    class CELERY:
+        """Celery-related variables."""
+
+        CONFIG = {
+            'result_backend': Config.CELERY.RESULT_BACKEND,
+            'result_persistent': True,
+            'broker_transport_options': {
+
+                # See about 'Retry Policy": https://docs.celeryproject.org/en/master/userguide/calling.html#retry-policy
+                "max_retries": 3,
+                "interval_start": 0,
+                "interval_step": 0.4,
+                "interval_max": 0.4,
+            }
+        }
+
+    class RABBITMQ:
+        """RabbitMQ broker-related variables."""
+
+        PROTO = 'amqp'
+        USER = 'guest'
+        PASSWORD = 'guest'
+        HOST = 'truedoc-rabbitmq'
+
+        PATH = f'{PROTO}://{USER}:{PASSWORD}@{HOST}',
+
     class DB:
         """Database-related variables."""
 
