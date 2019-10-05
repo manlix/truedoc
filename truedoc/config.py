@@ -12,7 +12,7 @@ class Config:  # pylint: disable=too-few-public-methods
         """Celery-related variables."""
 
         CONFIG = {
-            'result_backend': Config.CELERY.RESULT_BACKEND,
+            'result_backend': 'amqp',
             'result_persistent': True,
             'broker_transport_options': {
 
