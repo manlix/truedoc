@@ -32,7 +32,7 @@ class Config:  # pylint: disable=too-few-public-methods
         PASSWORD = 'guest'
         HOST = 'truedoc-rabbitmq'
 
-        PATH = f'{PROTO}://{USER}:{PASSWORD}@{HOST}',
+        PATH = f'{PROTO}://{USER}:{PASSWORD}@{HOST}'
 
     class DB:
         """Database-related variables."""
