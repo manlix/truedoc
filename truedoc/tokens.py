@@ -1,7 +1,8 @@
 """Work with tokens."""
 
 import jwt
-from truedoc.config import Config
+
+import truedoc.config
 import truedoc.exceptions
 
 
@@ -9,14 +10,14 @@ def create_token(profile_id, expiration_time) -> str:
     """Create token for given 'profile_id' with 'expiration_time'."""
 
     payload = dict(
-        exp=Config.Token.expiration_time(expiration_time),
+        exp=truedoc.config.Token.expiration_time(expiration_time),
         profile_id=profile_id,
     )
 
     token = jwt.encode(
         payload=payload,
-        algorithm=Config.Token.ALGORITHM,
-        key=Config.Token.SECRET,
+        algorithm=truedoc.config.Token.ALGORITHM,
+        key=truedoc.config.Token.SECRET,
     )
 
     return token
@@ -25,8 +26,8 @@ def create_token(profile_id, expiration_time) -> str:
 def create_tokens(profile_id) -> dict:
     """Create both access and refresh tokens."""
     return {
-        'access_token': create_token(profile_id, Config.Token.ACCESS_TOKEN_EXP),
-        'refresh_token': create_token(profile_id, Config.Token.REFRESH_TOKEN_EXP),
+        'access_token': create_token(profile_id, truedoc.config.Token.ACCESS_TOKEN_EXP),
+        'refresh_token': create_token(profile_id, truedoc.config.Token.REFRESH_TOKEN_EXP),
     }
 
 
@@ -36,10 +37,10 @@ def is_token_valid(token) -> bool:
     try:
         decoded = jwt.decode(
             jwt=token,
-            key=Config.Token.SECRET,
-            leeway=Config.Token.LEEWAY,
+            key=truedoc.config.Token.SECRET,
+            leeway=truedoc.config.Token.LEEWAY,
             algorithms=[
-                Config.Token.ALGORITHM,
+                truedoc.config.Token.ALGORITHM,
             ],
             options={
                 'require_exp': True,

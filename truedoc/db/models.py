@@ -14,12 +14,12 @@ from sqlalchemy.types import VARCHAR
 from werkzeug.security import check_password_hash
 from werkzeug.security import generate_password_hash
 
-from truedoc import common
-from truedoc.config import Config
-
+import truedoc.config
 import truedoc.exceptions
 
-engine = create_engine(Config.DB.PATH, echo=True)
+from truedoc import common
+
+engine = create_engine(truedoc.config.Database.PATH, echo=True)
 metadata = MetaData(bind=engine)
 Model = declarative_base(metadata=metadata)
 
