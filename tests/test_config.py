@@ -95,6 +95,19 @@ class TestConfigToken:
         assert self.REFRESH_TOKEN_EXP == truedoc.config.Token.REFRESH_TOKEN_EXP
 
 
-@pytest.mark.parametrize('timedelta', [TestConfigToken.ACCESS_TOKEN_EXP, TestConfigToken.REFRESH_TOKEN_EXP])
-def test_config_token_expiration_time(timedelta):
-    assert datetime.datetime.utcnow() + datetime.timedelta(seconds=timedelta) > datetime.datetime.utcnow()
+@pytest.mark.parametrize('timedelta', [
+    TestConfigToken.ACCESS_TOKEN_EXP,
+    TestConfigToken.REFRESH_TOKEN_EXP,
+])
+def test_config_token_expiration_time_is_datetime_type(timedelta):
+    """Check returns 'datetime.datetime' type."""
+    assert isinstance(truedoc.config.Token.expiration_time(timedelta), datetime.datetime)
+
+
+@pytest.mark.parametrize('timedelta', [
+    TestConfigToken.ACCESS_TOKEN_EXP,
+    TestConfigToken.REFRESH_TOKEN_EXP,
+])
+def test_config_token_expiration_time_more_than_utcnow(timedelta):
+    """Check that function returns time more than now."""
+    assert truedoc.config.Token.expiration_time(timedelta) > datetime.datetime.utcnow()
