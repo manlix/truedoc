@@ -7,7 +7,19 @@ from truedoc.constants import TIME
 
 class Config:  # pylint: disable=too-few-public-methods
     """Common setting variables."""
-    DB_PATH = 'mysql+pymysql://truedoc:truedoc@truedoc-mysql/truedoc'
+
+    class DB:
+        """Database-related variables."""
+
+        DIALECT = 'mysql'
+        DRIVER = 'pymysql'
+        USER = 'truedoc'
+        PASSWORD = 'truedoc'
+        HOST = 'truedoc-mysql'
+        DATABASE = 'truedoc'
+
+        # See: https://docs.sqlalchemy.org/en/latest/core/engines.html#sqlalchemy.create_engine
+        PATH = f'{DIALECT}+{DRIVER}://{USER}:{PASSWORD}@{HOST}/{DATABASE}'
 
     class DocumentProcessing:
         """Document processing-related variables"""

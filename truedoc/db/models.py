@@ -19,7 +19,7 @@ from truedoc.config import Config
 
 import truedoc.exceptions
 
-engine = create_engine(Config.DB_PATH, echo=True)
+engine = create_engine(Config.DB.PATH, echo=True)
 metadata = MetaData(bind=engine)
 Model = declarative_base(metadata=metadata)
 
