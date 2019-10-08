@@ -6,7 +6,7 @@
     * [Работа с docker-compose](#dev_mode.docker_compose)
 * [Архитектура взаимодействия](#arch)
 * [Действия](#actions)
-* [Использование очереди](#queue)
+* [Использование очереди (Celery)](#queue)
 * [Ответы](#responses)
     * [Генераторы ответов](#responses.generators)
     * [Простой положительный](#responses.simple_positive)
@@ -17,6 +17,7 @@
     * [Отрицательный](#responses.negative)
     * [HTTP коды ответов](#response_codes)
 * [Обработка исключения](#handle_exceptions)
+    * [Интеграция с Sentry](#handle_exceptions.sentry)
 * [Инструменты](#tools)    
     * [Проверка кода на соответствие стандартам](#tools.code_standard)
     * [Проверка кода на безопасность](#tools.code_safety)
@@ -303,6 +304,15 @@ def handle_exception_unknown(exc):
     ...
 ```
 
+### Интеграция с Sentry (<a name="handle_exceptions.sentry"></a>)
+
+В качестве инструмента выявления проблем (исключений) в реал-тайме используется (Sentry)[https://sentry.io].
+
+Используемые интеграции:
+* (Flask)[https://docs.sentry.io/platforms/python/flask/]
+* (SQLAlchemy)[https://docs.sentry.io/platforms/python/sqlalchemy/]
+* (Celery — на стороне `worker'а`)[https://docs.sentry.io/platforms/python/celery/]
+
 ## Инструменты <a name="tools"></a>
 
 ### Проверка кода на соответствие стандартам <a name="tools.code_standard"></a>
@@ -344,7 +354,7 @@ All requirements up-to-date.
     * [PyJWT](https://github.com/jpadilla/pyjwt) — работа с токенами JWT (JSON Web Token)
     * [PyMySQL](https://github.com/PyMySQL/PyMySQL) — работа с MySQL
     * [Requests](http://python—requests.org) — тестовые запросы к API
-    * [Sentry](https://github.com/getsentry/sentry-python) — отслеживание исключений в коде
+    * [Sentry](https://github.com/getsentry/sentry-python) — платформа мониторинга проблем в коде (исключения) в реал-тайме
     * [SQLAlchemy](https://www.sqlalchemy.org) — ORM для работы с базой данных
 
 * Другое:

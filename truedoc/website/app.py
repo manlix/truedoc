@@ -1,10 +1,13 @@
 """Application: Truedoc."""
+
 from http import HTTPStatus
 import logging
 
 from flask import Flask
 
 import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
 from truedoc.exceptions import MarshmallowError
 from truedoc.exceptions import SQLAlchemyError
@@ -23,7 +26,13 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-sentry_sdk.init("https://f6de8903ce254aa89bfc41f021320f5d@sentry.io/1513696")
+sentry_sdk.init(
+    dsn='https://f6de8903ce254aa89bfc41f021320f5d@sentry.io/1513696',
+    integrations=[
+        FlaskIntegration(),
+        SqlalchemyIntegration(),
+    ],
+)
 
 app = Flask(__name__)
 

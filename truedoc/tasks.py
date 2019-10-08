@@ -1,4 +1,4 @@
-"""Tasks for Celery. """
+"""Tasks for Celery workers. """
 
 import datetime
 import hashlib
@@ -10,6 +10,11 @@ from pathlib import Path
 import truedoc.config
 
 from truedoc.db import schemas
+
+import sentry_sdk
+from sentry_sdk.integrations.celery import CeleryIntegration
+
+sentry_sdk.init("https://f6de8903ce254aa89bfc41f021320f5d@sentry.io/1513696", integrations=[CeleryIntegration()])
 
 celery_app = Celery(
     'truedoctasks',
