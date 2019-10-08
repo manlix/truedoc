@@ -6,12 +6,14 @@
     * [Работа с docker-compose](#dev_mode.docker_compose)
 * [Архитектура взаимодействия](#arch)
 * [Действия](#actions)
+* [Использование очереди](#queue)
 * [Ответы](#responses)
     * [Генераторы ответов](#responses.generators)
     * [Простой положительный](#responses.simple_positive)
     * [Простой отрицательный](#responses.simple_negative)
     * [Простой отрицательный фатальный](#responses.simple_negative_fatal)
-    * [Положительный](#responses.positive)
+    * [Положительный синхронный](#responses.positive_synchronous)
+    * [Положительный асинхронный](#responses.positive_asynchronous)
     * [Отрицательный](#responses.negative)
     * [HTTP коды ответов](#response_codes)
 * [Обработка исключения](#handle_exceptions)
@@ -130,6 +132,16 @@ Read     | GET        | Объект
 Update   | PATCH      | Объект 
 Delete   | DELETE     | Объект
 
+## Использование очереди <a name="queue"></a>
+
+[Celery](https://docs.celeryproject.org) — распределённая очередь задач, используется для обработки загруженных файлов. Задачи сформированы в модуле `truedoc.tasks`.
+
+Запуск `worker'а` на локальной машине, когда пробер уже запущен:
+```bash
+(truedoc) manlix@lab:~/git/truedoc$ celery -A truedoc.tasks worker -l info --broker="amqp://guest:guest@localhost"
+```
+
+
 ## Ответы <a name="responses"></a>
 
 Каждый ответ строится [генератором ответов](#responses.generators) и содержит специфичный [HTTP-код](#responses.http_codes) и **JSON** с обязательным полем **status** и значением **success** _(str)_ (для положительных) и **error** _(str)_ (для отрицательных) с уточняющей информацией в поле **description** _(str)_.
@@ -191,6 +203,9 @@ Delete   | DELETE     | Объект
 ```
 
 ### Положительный <a name="responses.positive"></a>
+
+#### Положительны синхронный <a name="responses.positive_synchronous"></a>
+
 * HTTP-код: `200` _(OK)_;
 * Обязательные поля:
     * `status` _(str)_ = `success`
@@ -200,6 +215,30 @@ Delete   | DELETE     | Объект
 {
   "status": "success",
   "result": result
+}
+```
+
+#### Положительны асинхронный <a name="responses.positive_asynchronous"></a>
+
+**Используется только при загрузке документа.**
+
+* HTTP-код: `202` _(Accepted)_;
+* Обязательные поля ответа:
+    * `status` _(str)_ = `success`
+    * `result` _(dict)_ = `result`
+    * `result['state']` _(str)_ = `PENDING`   <--- запрос принят и будет обработан асинхронно
+
+Пример ответа:
+```json
+{
+  "result": {
+    "document_id": "82d23088-e3d5-4c1b-8949-a5edafb2955d",
+    "filename": "test.txt",
+    "profile_id": "0cfbd0a0-c46f-4ddb-8f01-f07622765969",
+    "state": "PENDING",
+    "title": "my test file"
+  },
+  "status": "success"
 }
 ```
 
@@ -229,6 +268,7 @@ Delete   | DELETE     | Объект
 ### HTTP коды ответов <a name="responses.http_codes"></a>
 
 * `200 (OK)`  - запрос принят и обработан (напр.: пользователь зарегистриррован);
+* `202` (Accepted) — запрос принят, но будет дополнительно (асинхронно) обработан (`worker'ом`);
 * `400 (Bad request)` - некорректный запрос (напр.: невалидный JSON);
 * `406 (Not Acceptable)` - запрос корректный, но есть ошибки в полях (напр.: при регистрации не указан пароль либо введён некорректный email);
 * `409 (Conflict)` - конфликт при обработке запросе (напр.: профиль с таким email уже существует);
@@ -297,6 +337,8 @@ All requirements up-to-date.
  
 * Библиотеки для Python:
     * [Alembic](https://alembic.sqlalchemy.org) — миграция базы данных
+    * [Bandit](https://github.com/PyCQA/bandit) — проверка безопасности Python кода
+    * [Celery](https://docs.celeryproject.org) — распределённая очередь задач
     * [Flask](https://palletsprojects.com/p/flask/) — основной framework
     * [Marshmallow](https://marshmallow.readthedocs.io) — валидация моделей
     * [PyJWT](https://github.com/jpadilla/pyjwt) — работа с токенами JWT (JSON Web Token)
@@ -306,14 +348,14 @@ All requirements up-to-date.
     * [SQLAlchemy](https://www.sqlalchemy.org) — ORM для работы с базой данных
 
 * Другое:
-    * [Bandit](https://github.com/PyCQA/bandit) — проверка безопасности Python кода
+
     * [CORS](https://learn.javascript.ru/fetch-crossorigin) — политика CORS
     * [Docker](https://www.docker.com) — контейнеры
     * [docker—composer](https://docs.docker.com/compose/) — декларативное организация контейнеров
     * [Git](https://git—scm.com) — управление исходным кодом
     * [HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) — канал связи для API
-    * [jQuery](https://jquery.com) — Javascript библиотека, для использования AJAX
-    * [JSON](https://en.wikipedia.org/wiki/JSON) — для работы API
+    * [jQuery](https://jquery.com) — Javascript-библиотека, для использования AJAX
+    * [JSON](https://en.wikipedia.org/wiki/JSON) — для передачи структур в видел JSON
     * [nginx](https://nginx.org) — обратный прокси—сервер поверх контейнеров
     * [Pylint](https://www.pylint.org) — проверка Python кода на соответствие стандартам
     * [pur](https://github.com/alanhamlett/pip-update-requirements) — обновление requirements.txt до последних версий
