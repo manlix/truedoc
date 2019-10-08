@@ -41,7 +41,7 @@ def test_auth_success(endpoint):
 
     response = requests.post(endpoint, json=payload)
 
-    assert response.status_code == HTTPStatus.OK  # 200 (OK)
+    assert response.status_code == HTTPStatus.OK, f'Status code ({response.status_code}) is NOT 200. Cannot make auth by login/password: {response.text}'
 
 
 def test_auth_invalid_password(endpoint):
@@ -54,4 +54,4 @@ def test_auth_invalid_password(endpoint):
 
     response = requests.post(endpoint, json=payload)
 
-    assert response.status_code == HTTPStatus.UNAUTHORIZED  # 401 (Unauthorized)
+    assert response.status_code == HTTPStatus.UNAUTHORIZED, f'Status code ({response.status_code}) is NOT 401. Should get failure instead successful response: {response.text}'

@@ -18,13 +18,13 @@ def test_create_and_delete_profile(endpoint):
 
     response = requests.post(endpoint, json=payload)
 
-    assert response.status_code == HTTPStatus.OK  # Profile created (200)
+    assert response.status_code == HTTPStatus.OK, f'Status code ({response.status_code}) is NOT 200. Cannot create new profile: {response.text}'
 
     profile_id = response.json()['result']['profile_id']
 
     response = requests.delete(f'{endpoint}{profile_id}')
 
-    assert response.status_code == HTTPStatus.OK  # Profile deleted (200)
+    assert response.status_code == HTTPStatus.OK, f'Status code ({response.status_code}) is NOT 200. Cannot delete profile ({profile_id}): {response.text}'
 
 
 def test_create_profile_bad_request(endpoint):
@@ -35,7 +35,7 @@ def test_create_profile_bad_request(endpoint):
 
     response = requests.post(endpoint, headers=headers)
 
-    assert response.status_code == HTTPStatus.BAD_REQUEST
+    assert response.status_code == HTTPStatus.BAD_REQUEST, f'Status code ({response.status_code}) is NOT 400. Should get failure (Bad request) instead: {response.text}'
 
 
 def test_create_profile_not_acceptable(endpoint):
@@ -46,7 +46,7 @@ def test_create_profile_not_acceptable(endpoint):
 
     response = requests.post(endpoint, json=payload)
 
-    assert response.status_code == HTTPStatus.NOT_ACCEPTABLE
+    assert response.status_code == HTTPStatus.NOT_ACCEPTABLE, f'Status code ({response.status_code}) is NOT 406. Should get failure (Not acceptable) instead: {response.text}'
 
 
 def test_create_profile_invalid_email(endpoint):
@@ -58,4 +58,4 @@ def test_create_profile_invalid_email(endpoint):
 
     response = requests.post(endpoint, json=payload)
 
-    assert response.status_code == HTTPStatus.NOT_ACCEPTABLE
+    assert response.status_code == HTTPStatus.NOT_ACCEPTABLE, f'Status code ({response.status_code}) is NOT 406. Should get failure (Not acceptable) instead: {response.text}'
