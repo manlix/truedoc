@@ -137,7 +137,9 @@ Delete   | DELETE     | Объект
 
 [Celery](https://docs.celeryproject.org) — распределённая очередь задач, используется для обработки загруженных файлов. Задачи сформированы в модуле `truedoc.tasks`.
 
-Запуск `worker'а` на локальной машине, когда пробер уже запущен:
+Запуск `worker'а` происходит при запуске контейнера [truedoc-celery-worker](https://github.com/manlix/truedoc/blob/c63756f4db25b1959386aefcd162b0aab8e84ff9/docker-compose.yml#L42).
+
+Запуск на локальном компьютере, при поднятом RabbitMQ:
 ```bash
 (truedoc) manlix@lab:~/git/truedoc$ celery -A truedoc.tasks worker -l info --broker="amqp://guest:guest@localhost"
 ```
@@ -304,14 +306,14 @@ def handle_exception_unknown(exc):
     ...
 ```
 
-### Интеграция с Sentry (<a name="handle_exceptions.sentry"></a>)
+### Интеграция с Sentry <a name="handle_exceptions.sentry"></a>
 
 В качестве инструмента выявления проблем (исключений) в реал-тайме используется (Sentry)[https://sentry.io].
 
 Используемые интеграции:
-* (Flask)[https://docs.sentry.io/platforms/python/flask/]
-* (SQLAlchemy)[https://docs.sentry.io/platforms/python/sqlalchemy/]
-* (Celery — на стороне `worker'а`)[https://docs.sentry.io/platforms/python/celery/]
+* [Flask](https://docs.sentry.io/platforms/python/flask/)
+* [SQLAlchemy](https://docs.sentry.io/platforms/python/sqlalchemy/)
+* [Celery — на стороне `worker'а`](https://docs.sentry.io/platforms/python/celery/)
 
 ## Инструменты <a name="tools"></a>
 
