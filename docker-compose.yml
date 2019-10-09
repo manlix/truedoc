@@ -35,6 +35,24 @@ services:
 
 #############################
 #
+# `truedoc-celery-worker` (queue worker)
+#
+#############################
+
+  truedoc-celery-worker:  # Hostname inside containers: "truedoc-celery-worker".
+    image: truedoc_truedoc-app
+    volumes:
+      - "./truedoc:/var/lib/truedoc/truedoc"
+      - "./upload:/upload"
+
+    depends_on:
+      - truedoc-app
+
+    command: celery -A truedoc.tasks worker -l info
+
+
+#############################
+#
 # `truedoc-mysql` (allows 'root' account from any hosts)
 #
 #############################
