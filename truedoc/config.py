@@ -9,7 +9,7 @@ class Celery:
     """Celery-related variables."""
 
     CONFIG = {
-        'result_backend': 'amqp',
+        'result_backend': 'amqp',  # TODO: move to another result backend (due to warning message 'The AMQP result backend is scheduled for deprecation in     version 4.0 and removal in version v5.0.     Please use RPC backend or a persistent backend.')
         'result_persistent': True,
         'broker_transport_options': {
 

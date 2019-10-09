@@ -51,7 +51,7 @@ def uploaded_document():
     data_tmp = schema_DocumentWorkerProcessing.dump(data_DocumentWorkerProcessing)
     data_tmp.update(
         {
-            'state': task.state,
+            'state': task.state,  # TODO: return expected values only not from Celery directly
         }
     )
 
