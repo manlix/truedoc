@@ -1,4 +1,4 @@
-"""Work with tokens."""
+"""Work with JWT: https://tools.ietf.org/html/rfc7519"""
 
 import jwt
 
