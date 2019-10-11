@@ -349,7 +349,6 @@ All requirements up-to-date.
  
 * Библиотеки для Python:
     * [Alembic](https://alembic.sqlalchemy.org) — миграция базы данных
-    * [Bandit](https://github.com/PyCQA/bandit) — проверка безопасности Python кода
     * [Celery](https://docs.celeryproject.org) — распределённая очередь задач
     * [Flask](https://palletsprojects.com/p/flask/) — основной framework
     * [Marshmallow](https://marshmallow.readthedocs.io) — валидация моделей
@@ -358,6 +357,14 @@ All requirements up-to-date.
     * [Requests](http://python—requests.org) — тестовые запросы к API
     * [Sentry](https://github.com/getsentry/sentry-python) — платформа мониторинга проблем в коде (исключения) в реал-тайме
     * [SQLAlchemy](https://www.sqlalchemy.org) — ORM для работы с базой данных
+
+* Plugins для PyCharm:
+    * [shellcheck](https://plugins.jetbrains.com/plugin/10195-shellcheck/) — анализ shell скриптов утилитой `shellcheck`
+    * [String Manipulation](https://plugins.jetbrains.com/plugin/2162-string-manipulation/) — сортировка строк и прочии манипуляции с текстом
+
+* Утилиты:
+    * [Bandit](https://github.com/PyCQA/bandit) — проверка безопасности Python кода
+    * [Pylint](https://www.pylint.org) — проверка Python кода на соответствие стандартам
 
 * Другое:
 
@@ -369,5 +376,4 @@ All requirements up-to-date.
     * [jQuery](https://jquery.com) — Javascript-библиотека, для использования AJAX
     * [JSON](https://en.wikipedia.org/wiki/JSON) — для передачи структур в видел JSON
     * [nginx](https://nginx.org) — обратный прокси—сервер поверх контейнеров
-    * [Pylint](https://www.pylint.org) — проверка Python кода на соответствие стандартам
     * [pur](https://github.com/alanhamlett/pip-update-requirements) — обновление requirements.txt до последних версий
