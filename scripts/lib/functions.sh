@@ -77,3 +77,16 @@ function docker_compose::installed() {
   # ATTENTION: avoid 'which' here. Because it failed by 'shellcheck'.
   command -v docker-compose
 }
+
+############################################
+# PYTEST
+############################################
+
+# Is "pytest" installed?
+
+function pytest::installed() {
+
+  msg "Looking up [pytest] executable..."
+  # ATTENTION: avoid 'which' here. Because it failed by 'shellcheck'.
+  command -v pytest
+}
