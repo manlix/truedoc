@@ -18,6 +18,7 @@
     * [HTTP коды ответов](#response_codes)
 * [Обработка исключения](#handle_exceptions)
     * [Интеграция с Sentry](#handle_exceptions.sentry)
+* [Тестирование](#tests)
 * [Инструменты](#tools)    
     * [Проверка кода на соответствие стандартам](#tools.code_standard)
     * [Проверка кода на безопасность](#tools.code_safety)
@@ -315,6 +316,22 @@ def handle_exception_unknown(exc):
 * [SQLAlchemy](https://docs.sentry.io/platforms/python/sqlalchemy/)
 * [Celery — на стороне `worker'а`](https://docs.sentry.io/platforms/python/celery/)
 
+## Тестирование <a name="tests"></a>
+
+Для тестирование используется [pytest](https://docs.pytest.org):
+
+```shell
+(truedoc) manlix@lab:~/git/truedoc$ ./scripts/tests.run.sh
+```
+
+Для генерации HTML-отчёта по покрытию кода тестами:
+
+```shell
+(truedoc) manlix@lab:~/git/truedoc$ ./scripts/tests.coverage.sh
+```
+
+Отчёт сохраняется в `htmlcov`, для просмотра открыть `htmlcov/index.html`.
+
 ## Инструменты <a name="tools"></a>
 
 ### Проверка кода на соответствие стандартам <a name="tools.code_standard"></a>
@@ -365,6 +382,8 @@ All requirements up-to-date.
 * Утилиты:
     * [Bandit](https://github.com/PyCQA/bandit) — проверка безопасности Python кода
     * [Pylint](https://www.pylint.org) — проверка Python кода на соответствие стандартам
+    * [pytest](https://docs.pytest.org) — тестирование Python кода
+    * [pytest-cov](https://pytest-cov.readthedocs.io) — проверка проекта на покрытие кода тестами
 
 * Другое:
 
