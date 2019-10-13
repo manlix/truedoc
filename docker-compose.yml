@@ -47,6 +47,7 @@ services:
 
     depends_on:
       - truedoc-app
+      - truedoc-rabbitmq
 
     command: celery -A truedoc.tasks worker -l info
 
@@ -105,8 +106,9 @@ services:
       - "./nginx-dev/conf.d:/etc/nginx/conf.d"
     depends_on:
       - truedoc-app     # Required because nginx has 'truedoc-app' in proxy_pass directive.
+      - truedoc-jenkins # Required because nginx has 'truedoc-jenkins' in proxy_pass directive.
       - truedoc-pma     # Required because nginx has 'truedoc-pma' in proxy_pass directive.
-      - truedoc-ui  # Required because nginx has 'truedoc-ui' in proxy_pass directive.
+      - truedoc-ui      # Required because nginx has 'truedoc-ui' in proxy_pass directive.
 
 
   #############################
@@ -135,3 +137,14 @@ services:
     ports:
       - "127.0.0.1:5672:5672"
       - "127.0.0.1:15672:15672"
+
+  #############################
+  #
+  # `truedoc-jenkins` (UI is available on 'truedoc-jenkins.localhost')
+  #
+  #############################
+
+  truedoc-jenkins:
+    image: jenkins/jenkins:lts  # https://hub.docker.com/r/jenkins/jenkins
+    volumes:
+      - "./jenkins-data:/var/jenkins_home"
