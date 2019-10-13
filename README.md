@@ -392,6 +392,7 @@ All requirements up-to-date.
     * [docker—composer](https://docs.docker.com/compose/) — декларативное организация контейнеров
     * [Git](https://git—scm.com) — управление исходным кодом
     * [HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) — канал связи для API
+    * [Jenkins](https://jenkins.io) — CI/CD
     * [jQuery](https://jquery.com) — Javascript-библиотека, для использования AJAX
     * [JSON](https://en.wikipedia.org/wiki/JSON) — для передачи структур в видел JSON
     * [nginx](https://nginx.org) — обратный прокси—сервер поверх контейнеров
