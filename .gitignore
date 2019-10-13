@@ -1,6 +1,7 @@
 .coverage
 htmlcov/
 .idea/
+jenkins-data/
 mysql-data/
 **/__pycache__/
 upload/
