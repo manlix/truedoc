@@ -36,8 +36,8 @@ def load_document(document_id):
 
     document_id = str(document_id)
 
-    document_schema = schemas.DocumentSchema()
-    document = document_schema.dump(db.Document.load(document_id))
+    schema = schemas.DocumentDetailedSchema()
+    document = schema.dump(db.Document.load(document_id))
 
     return success(result=document)
 
