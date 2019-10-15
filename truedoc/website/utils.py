@@ -31,7 +31,7 @@ def uploaded_document():
 
     request.files['document'].save(os.path.join('/upload', document_id))
 
-    just_uploaded = schemas.DocumentProcessingSchema().load(
+    just_uploaded = schemas.DocumentSchema().load(
         {
             'document_id': document_id,
             'profile_id': profile_id,

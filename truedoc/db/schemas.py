@@ -16,26 +16,19 @@ class ProfileSchema(Schema):
     created_at = fields.DateTime(required=True, dump_only=True)
 
 
-class DocumentBaseSchema(Schema):
+class DocumentSchema(Schema):
     """Base schema for Document."""
     document_id = fields.String(required=True, validate=[validate.Length(36)])
     profile_id = fields.String(required=True, validate=[validate.Length(36)])
     title = fields.String(required=True)
     filename = fields.String(required=True)
 
+    filesize = fields.Integer()
+    digest = fields.String(validate=[validate.Length(equal=32)])
+    created_at = fields.DateTime()
 
-class DocumentDetailedSchema(DocumentBaseSchema):
-    """Detailed Document with additional fields."""
-    filesize = fields.Integer(required=True)
-    digest = fields.String(required=True, validate=[validate.Length(equal=32)])
-    created_at = fields.DateTime(required=True)
-
-
-class DocumentProcessingSchema(DocumentBaseSchema):
-    """Schema for processing uploaded document."""
     state = fields.String(
         required=True,
-        load_only=True,
         validate=[validate.OneOf(choices=truedoc.constants.JOB_STATE.ALL_STATES)],
     )
 
