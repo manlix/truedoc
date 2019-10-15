@@ -9,6 +9,7 @@ from pathlib import Path
 
 import truedoc.config
 
+from truedoc.db import db
 from truedoc.db import schemas
 
 import sentry_sdk
@@ -18,34 +19,65 @@ sentry_sdk.init("https://f6de8903ce254aa89bfc41f021320f5d@sentry.io/1513696", in
 
 celery_app = Celery(
     'truedoctasks',
+    backend='amqp',
     broker=truedoc.config.Rabbitmq.PATH,
 )
 
 celery_app.conf.update(truedoc.config.Celery.CONFIG)
 
 
+class Document:
+
+    def __init__(self, document):
+        self.document = document
+
+        self.valid_document = None
+        self.processing_data = None
+        self.path_to_save = None
+
+        self.validate()
+        self.generate_path_to_save()
+        self.processing()
+        self.save_to_storage()
+
+    def validate(self):
+        if self.valid_document is None:
+            schema = schemas.DocumentSchema()
+            self.valid_document = schema.load(self.document)
+
+    def generate_path_to_save(self):
+
+        if self.path_to_save is None:
+            print('X' * 80)
+            self.path_to_save = Path(truedoc.config.DocumentProcessing.save_to(self.valid_document['document_id']))
+
+    def processing(self):
+
+        if self.processing_data is None:
+            self.processing_data = {
+                'filesize': self.path_to_save.stat().st_size,
+                'digest': hashlib.md5(self.path_to_save.read_bytes()).hexdigest(),
+                'created_at': datetime.datetime.utcnow(),
+            }
+
+    def save_to_storage(self):
+        shutil.move(str(self.path_to_save), str(self.path_to_save) + '.DONE')
+
+
 @celery_app.task
 def process_document(document):
-    schema_DocumentWorkerProcessing = schemas.DocumentWorkerProcessingSchema()
-    data_DocumentWorkerProcessing = schema_DocumentWorkerProcessing.dump(document)
+    """Processing document."""
 
-    document_path = Path(truedoc.config.DocumentProcessing.save_to(data_DocumentWorkerProcessing['document_id']))
+    res = Document(document)
 
-    filesize = document_path.stat().st_size
-    digest = hashlib.md5(document_path.read_bytes()).hexdigest()
-    created_at = datetime.datetime.utcnow()
-
-    # Move uploaded document
-    shutil.move(str(document_path), str(document_path) + '.DONE')
-
-    schema_DocumentDetailedSchema = schemas.DocumentDetailedSchema()
-    data_DocumentDetailedSchema = schema_DocumentDetailedSchema.load(
+    schema = schemas.DocumentSchema(exclude=['state'])
+    detailed_document = schema.dump(
         {
-            **data_DocumentWorkerProcessing,
-            'digest': digest,
-            'filesize': filesize,
-            'created_at': str(created_at),
+            **res.valid_document,
+            **res.processing_data,
         }
     )
 
-    return data_DocumentDetailedSchema
+    db.Document.create(db.models.Document(**detailed_document))
+
+    return detailed_document
