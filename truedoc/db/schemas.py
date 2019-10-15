@@ -6,7 +6,7 @@ from marshmallow import post_load
 from marshmallow import Schema
 from marshmallow import validate
 
-import celery.states
+import truedoc.constants
 
 
 class ProfileSchema(Schema):
@@ -31,15 +31,12 @@ class DocumentDetailedSchema(DocumentBaseSchema):
     created_at = fields.DateTime(required=True)
 
 
-class DocumentWorkerProcessingSchema(DocumentBaseSchema):
-    """Structure for worker."""
-
-
 class DocumentProcessingSchema(DocumentBaseSchema):
-    """Schema for processing result uploaded document."""
+    """Schema for processing uploaded document."""
     state = fields.String(
         required=True,
-        validate=[validate.OneOf(choices=celery.states.ALL_STATES)],
+        load_only=True,
+        validate=[validate.OneOf(choices=truedoc.constants.JOB_STATE.ALL_STATES)],
     )
 
 

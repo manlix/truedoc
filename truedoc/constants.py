@@ -19,3 +19,23 @@ class TIME:
     SECOND = 1
     MINUTE = 60 * SECOND
     HOUR = 60 * MINUTE
+
+
+class JOB_STATE:
+    """Job states. Default state for new task — PENDING."""
+
+    PENDING = 'PENDING'
+    PROCESSING = 'PROCESSING'
+    FAILURE = 'FAILURE'
+    SUCCESS = 'SUCCESS'
+    UNKNOWN = 'UNKNOWN'
+
+    ALL_STATES = frozenset(
+        {
+            PENDING,
+            PROCESSING,
+            FAILURE,
+            SUCCESS,
+            UNKNOWN,
+        }
+    )

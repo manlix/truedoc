@@ -7,6 +7,7 @@ from werkzeug.utils import secure_filename
 from truedoc.db import schemas
 from truedoc.exceptions import DocumentNoFileInRequest
 
+import truedoc.constants
 import truedoc.common
 import truedoc.tasks
 
@@ -30,31 +31,20 @@ def uploaded_document():
 
     request.files['document'].save(os.path.join('/upload', document_id))
 
-    just_uploaded = {
-        'document_id': document_id,
-        'profile_id': profile_id,
-        'title': title,
-        'filename': filename,
-    }
-
-    schema_DocumentWorkerProcessing = schemas.DocumentWorkerProcessingSchema()
-    data_DocumentWorkerProcessing = schema_DocumentWorkerProcessing.load(just_uploaded)
-
-    # See: https://docs.celeryproject.org/en/master/reference/celery.app.task.html#celery.app.task.Task.apply_async
-    task = truedoc.tasks.process_document.apply_async(
-        args=(data_DocumentWorkerProcessing,),
-        task_id=document_id,
-    )
-
-    schema_DocumentProcessing = schemas.DocumentProcessingSchema()
-
-    data_tmp = schema_DocumentWorkerProcessing.dump(data_DocumentWorkerProcessing)
-    data_tmp.update(
+    just_uploaded = schemas.DocumentProcessingSchema().load(
         {
-            'state': task.state,  # TODO: return expected values only not from Celery directly
+            'document_id': document_id,
+            'profile_id': profile_id,
+            'title': title,
+            'filename': filename,
+            'state': truedoc.constants.JOB_STATE.PENDING,  # Default state for new task
         }
     )
 
-    data_DocumentProcessing = schema_DocumentProcessing.load(data_tmp)
+    # Send task to workers
+    task = truedoc.tasks.process_document.apply_async(
+        args=(just_uploaded,),
+        task_id=document_id,
+    )
 
-    return schema_DocumentProcessing.dump(data_DocumentProcessing)
+    return just_uploaded

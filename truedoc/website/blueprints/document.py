@@ -14,15 +14,10 @@ bp = Blueprint('document', __name__)
 def create_document():
     """Create document."""
 
-    schema_DocumentProcessing = schemas.DocumentProcessingSchema()
-    data_DocumentProcessing = schema_DocumentProcessing.load(utils.uploaded_document())
-
-    # TODO: drop legacy code
-    # document = db.models.Document(**data)
-    # document = db.models.Document(**just_uploaded_schema.dump(data))
-    # db.Document.create(document)
-
-    return success(http_code=HTTPStatus.ACCEPTED, result=schema_DocumentProcessing.dump(data_DocumentProcessing))
+    return success(
+        http_code=HTTPStatus.ACCEPTED,
+        result=schemas.DocumentProcessingSchema().dump(utils.uploaded_document()),
+    )
 
 
 @bp.route('/', methods=['GET'])
