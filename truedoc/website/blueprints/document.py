@@ -1,10 +1,15 @@
 from http import HTTPStatus
 
+from celery.result import AsyncResult
+
 from flask import Blueprint
+
+import truedoc.constants
 
 from truedoc.db import db
 from truedoc.db import schemas
 from truedoc.response import success
+from truedoc.tasks import celery_app
 from truedoc.website import utils
 
 bp = Blueprint('document', __name__)
@@ -14,10 +19,37 @@ bp = Blueprint('document', __name__)
 def create_document():
     """Create document."""
 
+    result = schemas.DocumentSchema().dump(utils.uploaded_document())
+    result.update({
+        'ref': f'/document/{result["document_id"]}/state',
+    })
+
     return success(
         http_code=HTTPStatus.ACCEPTED,
-        result=schemas.DocumentProcessingSchema().dump(utils.uploaded_document()),
+        result=result,
     )
+
+
+@bp.route('/<uuid:document_id>/state', methods=['GET'])
+def document_state(document_id):
+    """Document state."""
+
+    document_id = str(document_id)
+
+    # Remember that 'status' in Celery == 'state' in the project
+
+    task = AsyncResult(document_id, app=celery_app)
+
+    # TODO: see https://github.com/manlix/truedoc/issues/22
+
+    state = task.status
+
+    if state not in truedoc.constants.JOB_STATE.ALL_STATES:
+        state = truedoc.constants.JOB_STATE.UNKNOWN
+
+    return success(result={
+        'state': state,
+    })
 
 
 @bp.route('/', methods=['GET'])
@@ -36,7 +68,7 @@ def load_document(document_id):
 
     document_id = str(document_id)
 
-    schema = schemas.DocumentDetailedSchema()
+    schema = schemas.DocumentSchema()
     document = schema.dump(db.Document.load(document_id))
 
     return success(result=document)
