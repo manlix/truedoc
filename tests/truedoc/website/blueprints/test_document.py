@@ -1,7 +1,11 @@
+import time
+
 from http import HTTPStatus
 
 import pytest
 import requests
+
+import truedoc.constants
 
 res = {}
 
@@ -16,10 +20,11 @@ def profile_lifecycle():
     )
 
     # Create profile
-    response = requests.post('http://truedoc-app.localhost/profile/', json=payload)
-    assert response.status_code == HTTPStatus.OK  # Profile created (200)
+    r = requests.post('http://truedoc-app.localhost/profile/', json=payload)
+    assert 200 == r.status_code, f'Status code ({r.status_code}) is NOT 200. Cannot create profile: {r.text}'
 
-    profile_id = response.json()['result']['profile_id']
+    profile_id = r.json()['result']['profile_id']
+
     res.update({
         'profile_id': profile_id,
     })
@@ -27,24 +32,21 @@ def profile_lifecycle():
     yield
 
     # Delete profile
-    response = requests.delete(f'http://truedoc-app.localhost/profile/{profile_id}')
-    assert response.status_code == HTTPStatus.OK  # Profile deleted (200)
+    r = requests.delete(f'http://truedoc-app.localhost/profile/{profile_id}')
+    assert r.status_code == HTTPStatus.OK  # Profile deleted (200)
 
 
 @pytest.fixture()
-def endpoint_document():
-    """Endpoint for 'document'."""
-    return 'http://truedoc-app.localhost/document/'
+def endpoints():
+    """Endpoints."""
+    return {
+        'document': 'http://truedoc-app.localhost/document/',
+        'profile': 'http://truedoc-app.localhost/profile/',
+    }
 
 
-@pytest.fixture()
-def endpoint_profile():
-    """Endpoint for 'auth'."""
-    return 'http://truedoc-app.localhost/profile/'
-
-
-def test_upload_1kb_document(endpoint_document):
-    """Upload 1KB document."""
+def test_document_lifecycle(endpoints):
+    """Document lifecycle."""
     payload = {
         'data': {
             'profile_id': res['profile_id'],
@@ -61,24 +63,40 @@ def test_upload_1kb_document(endpoint_document):
         ]
     }
 
-    response = requests.post(endpoint_document, **payload)
+    # Upload document
+    r = requests.post(endpoints['document'], **payload)
 
-    assert response.status_code == HTTPStatus.ACCEPTED, f'Status code ({response.status_code}) is NOT 202. Cannot create document: {response.text}'
+    assert 202 == r.status_code, f'Status code ({r.status_code}) is NOT 202. Cannot create document: {r.text}'
+
+    document_id = r.json()['result']['document_id']
 
     res.update({
-        'document_id': response.json()['result']['document_id'],
+        'document_id': document_id,
     })
 
+    # Waiting that document task state == 'SUCCESS'
+    for _ in range(5):
+        r = requests.get(f'http://truedoc-app.localhost/document/{document_id}/state')
+        assert 200 == r.status_code, f'Status code ({r.status_code}) is NOT 200. Cannot get task ({document_id}) state: {r.text}'
 
-def test_get_uploaded_document(endpoint_document):
-    """Get uploaded document."""
-    response = requests.get(f'{endpoint_document}{res["document_id"]}')
+        assert 'result' in r.json(), f'Not found "result" in response: {r.text}'
+        assert 'state' in r.json()['result'], f'Not found "state" in response["result"]: {r.text}'
 
-    assert response.status_code == 200, f'Status code ({response.status_code}) is NOT 200. Cannot load document ({res["document_id"]}): {response.text}'
+        assert r.json()['result']['state'] in truedoc.constants.JOB_STATE.ALL_STATES, f'Unknown task state: {r.text}'
 
+        if r.json()['result']['state'] == truedoc.constants.JOB_STATE.SUCCESS:
+            break
 
-def test_delete_uploaded_document(endpoint_document):
-    """Delete uploaded document."""
-    response = requests.delete(f'{endpoint_document}{res["document_id"]}')
+        time.sleep(1)
+    else:
+        raise Exception('5 attempts to get task state exceeded')
 
-    assert response.status_code == 200, f'Status code ({response.status_code}) is NOT 200. Cannot delete document ({res["document_id"]}): {response.text}'
+    # Get document
+    r = requests.get(f'{endpoints["document"]}')
+
+    assert 200 == r.status_code, f'Status code ({r.status_code}) is NOT 200. Cannot load document ({res["document_id"]}): {r.text}'
+
+    # Delete document
+    r = requests.delete(f'{endpoints["document"]}{res["document_id"]}')
+
+    assert r.status_code == 200, f'Status code ({r.status_code}) is NOT 200. Cannot delete document ({res["document_id"]}): {r.text}'
