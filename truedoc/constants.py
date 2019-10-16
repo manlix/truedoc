@@ -24,11 +24,11 @@ class TIME:
 class JOB_STATE:
     """Job states. Default state for new task — PENDING."""
 
-    PENDING = 'PENDING'
-    PROCESSING = 'PROCESSING'
-    FAILURE = 'FAILURE'
-    SUCCESS = 'SUCCESS'
-    UNKNOWN = 'UNKNOWN'
+    PENDING = 'pending'
+    PROCESSING = 'processing'
+    FAILURE = 'failure'
+    SUCCESS = 'success'
+    UNKNOWN = 'unknown'
 
     ALL_STATES = frozenset(
         {

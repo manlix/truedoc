@@ -4,6 +4,7 @@ from celery.result import AsyncResult
 
 from flask import Blueprint
 
+import truedoc.common
 import truedoc.constants
 
 from truedoc.db import db
@@ -42,13 +43,8 @@ def document_state(document_id):
 
     # TODO: see https://github.com/manlix/truedoc/issues/22
 
-    state = task.status
-
-    if state not in truedoc.constants.JOB_STATE.ALL_STATES:
-        state = truedoc.constants.JOB_STATE.UNKNOWN
-
     return success(result={
-        'state': state,
+        'state': truedoc.common.normalize_job_state(task.status),
     })
 
 
