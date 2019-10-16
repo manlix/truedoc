@@ -33,31 +33,50 @@ def profile_lifecycle():
 
     # Delete profile
     r = requests.delete(f'http://truedoc-app.localhost/profile/{profile_id}')
-    assert r.status_code == HTTPStatus.OK  # Profile deleted (200)
+    assert 200 == r.status_code, f'Status code ({r.status_code}) is NOT 200. Cannot delete profile: {r.text}'
 
 
 @pytest.fixture()
 def endpoints():
-    """Endpoints."""
+    """Endpoints dict."""
     return {
         'document': 'http://truedoc-app.localhost/document/',
         'profile': 'http://truedoc-app.localhost/profile/',
     }
 
 
-def test_document_lifecycle(endpoints):
+@pytest.fixture()
+def max_retries():
+    """Max retries to get document."""
+    return 5
+
+
+@pytest.mark.parametrize('filesize', [
+    0 * truedoc.constants.SIZE.BYTE,
+    512 * truedoc.constants.SIZE.BYTE,
+    1 * truedoc.constants.SIZE.KILOBYTE,
+    100 * truedoc.constants.SIZE.KILOBYTE,
+    250 * truedoc.constants.SIZE.KILOBYTE,
+    1 * truedoc.constants.SIZE.MEGABYTE,
+    4 * truedoc.constants.SIZE.MEGABYTE,
+])
+def test_document_lifecycle(
+        endpoints,
+        max_retries,
+        filesize,
+):
     """Document lifecycle."""
     payload = {
         'data': {
             'profile_id': res['profile_id'],
-            'title': 'Document Simple Title: 1KB',
+            'title': f'Test document title with filesize {filesize}',
         },
         'files': [
             (
                 'document',
                 (
-                    'file_1KB.txt',
-                    1024 * 'x',
+                    'file.txt',
+                    'x' * filesize,
                 )
             ),
         ]
@@ -66,16 +85,17 @@ def test_document_lifecycle(endpoints):
     # Upload document
     r = requests.post(endpoints['document'], **payload)
 
+    # Empty document
+    if not filesize:
+        assert 406 == r.status_code, f'Status code ({r.status_code}) is NOT 406 due to empty document: {r.text}'
+        return
+
     assert 202 == r.status_code, f'Status code ({r.status_code}) is NOT 202. Cannot create document: {r.text}'
 
     document_id = r.json()['result']['document_id']
 
-    res.update({
-        'document_id': document_id,
-    })
-
     # Waiting that document task state == 'SUCCESS'
-    for _ in range(5):
+    for _ in range(max_retries):  # TODO: think about retries by 'requests'
         r = requests.get(f'http://truedoc-app.localhost/document/{document_id}/state')
         assert 200 == r.status_code, f'Status code ({r.status_code}) is NOT 200. Cannot get task ({document_id}) state: {r.text}'
 
@@ -89,14 +109,14 @@ def test_document_lifecycle(endpoints):
 
         time.sleep(1)
     else:
-        raise Exception('5 attempts to get task state exceeded')
+        raise Exception(f'{max_retries} attempts to get task state exceeded')
 
     # Get document
     r = requests.get(f'{endpoints["document"]}')
 
-    assert 200 == r.status_code, f'Status code ({r.status_code}) is NOT 200. Cannot load document ({res["document_id"]}): {r.text}'
+    assert 200 == r.status_code, f'Status code ({r.status_code}) is NOT 200. Cannot load document ({document_id}): {r.text}'
 
     # Delete document
-    r = requests.delete(f'{endpoints["document"]}{res["document_id"]}')
+    r = requests.delete(f'{endpoints["document"]}{document_id}')
 
-    assert r.status_code == 200, f'Status code ({r.status_code}) is NOT 200. Cannot delete document ({res["document_id"]}): {r.text}'
+    assert 200 == r.status_code, f'Status code ({r.status_code}) is NOT 200. Cannot delete document ({document_id}): {r.text}'
