@@ -7,6 +7,7 @@ from marshmallow import Schema
 from marshmallow import validate
 
 import truedoc.constants
+import truedoc.config
 
 
 class ProfileSchema(Schema):
@@ -23,7 +24,7 @@ class DocumentSchema(Schema):
     title = fields.String(required=True)
     filename = fields.String(required=True)
 
-    filesize = fields.Integer()
+    filesize = fields.Integer(validate=[validate.Range(min=1, max=truedoc.config.PROJECT.MAX_DOCUMENT_FILESIZE)])
     digest = fields.String(validate=[validate.Length(equal=32)])
     created_at = fields.DateTime()
 

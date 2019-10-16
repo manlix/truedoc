@@ -1,4 +1,7 @@
+import datetime
 import os
+
+from pathlib import Path
 
 from flask import request
 from werkzeug.datastructures import FileStorage
@@ -10,6 +13,10 @@ from truedoc.exceptions import DocumentNoFileInRequest
 import truedoc.constants
 import truedoc.common
 import truedoc.tasks
+
+
+def path_to_save(document_id):
+    return Path(truedoc.config.DocumentProcessing.save_to(document_id))
 
 
 def uploaded_document():
@@ -29,7 +36,7 @@ def uploaded_document():
 
     filename = secure_filename(request.files['document'].filename)  # TODO: handle None of the filename
 
-    request.files['document'].save(os.path.join('/upload', document_id))
+    request.files['document'].save(str(path_to_save(document_id)))  # WARNING: 'str' for Path object is required!
 
     just_uploaded = schemas.DocumentSchema().load(
         {
@@ -38,6 +45,9 @@ def uploaded_document():
             'title': title,
             'filename': filename,
             'state': truedoc.constants.JOB_STATE.PENDING,  # Default state for new task
+
+            'filesize': path_to_save(document_id).stat().st_size,
+            'created_at': datetime.datetime.utcnow().isoformat(),
         }
     )
 

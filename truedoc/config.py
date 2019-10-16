@@ -2,14 +2,19 @@
 
 import datetime
 
-from truedoc.constants import TIME
+import truedoc.constants
+
+
+class PROJECT:
+    """Project-related variables."""
+    MAX_DOCUMENT_FILESIZE = 4 * truedoc.constants.SIZE.MEGABYTE
 
 
 class Celery:
     """Celery-related variables."""
 
     CONFIG = {
-        'result_backend': 'amqp',  # TODO: move to another result backend (due to warning message 'The AMQP result backend is scheduled for deprecation in     version 4.0 and removal in version v5.0.     Please use RPC backend or a persistent backend.')
+        'result_backend': 'amqp',  # TODO: change result backend (https://github.com/manlix/truedoc/issues/26)
         'result_persistent': True,
         'broker_transport_options': {
 
@@ -62,10 +67,10 @@ class Token:
     ALGORITHM = 'HS256'
     SECRET = 'secret'  # TODO: think where we can to save it securely
 
-    LEEWAY = 10 * TIME.SECOND
+    LEEWAY = 10 * truedoc.constants.TIME.SECOND
 
-    ACCESS_TOKEN_EXP = 10 * TIME.MINUTE
-    REFRESH_TOKEN_EXP = 15 * TIME.MINUTE
+    ACCESS_TOKEN_EXP = 10 * truedoc.constants.TIME.MINUTE
+    REFRESH_TOKEN_EXP = 15 * truedoc.constants.TIME.MINUTE
 
     @staticmethod
     def expiration_time(timedelta):
