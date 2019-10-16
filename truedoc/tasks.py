@@ -54,9 +54,7 @@ class Document:
 
         if self.processing_data is None:
             self.processing_data = {
-                'filesize': self.path_to_save.stat().st_size,
                 'digest': hashlib.md5(self.path_to_save.read_bytes()).hexdigest(),
-                'created_at': datetime.datetime.utcnow(),
             }
 
     def save_to_storage(self):
@@ -69,7 +67,7 @@ def process_document(document):
 
     res = Document(document)
 
-    schema = schemas.DocumentSchema(exclude=['state'])
+    schema = schemas.DocumentSchema(exclude=['state'])  # Drop 'state' — does not exist in document db model.
     detailed_document = schema.dump(
         {
             **res.valid_document,
