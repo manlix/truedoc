@@ -48,7 +48,6 @@ class Document:
     def generate_path_to_save(self):
 
         if self.path_to_save is None:
-            print('X' * 80)
             self.path_to_save = Path(truedoc.config.DocumentProcessing.save_to(self.valid_document['document_id']))
 
     def processing(self):
