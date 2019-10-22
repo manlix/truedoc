@@ -16,5 +16,5 @@ PyMySQL == 0.9.3        # Direct use: https://pypi.org/project/PyMySQL/
 pytest == 5.2.1         # Tests: https://pypi.org/project/pytest/
 pytest-cov == 2.8.1     # Dependence: for Tests: https://pypi.org/project/pytest-cov/
 requests == 2.22.0      # Dependence: for Tests: https://pypi.org/project/requests/
-sentry-sdk == 0.12.3    # Direct use: https://pypi.org/project/sentry-sdk/
+sentry-sdk == 0.13.0    # Direct use: https://pypi.org/project/sentry-sdk/
 SQLAlchemy == 1.3.10     # Direct use: https://pypi.org/project/SQLAlchemy/
