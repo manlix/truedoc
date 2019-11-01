@@ -11,11 +11,11 @@ version: "3.7"
 services:
 
 
-  #############################
+  #############################################################################
   #
   # `truedoc-app` (works under db 'truedoc' with login 'truedoc' in MySQL)
   #
-  #############################
+  #############################################################################
 
   truedoc-app:  # Hostname inside containers: "truedoc-app". Access from local: "http://truedoc-app.localhost:36456".
     ports:
@@ -33,11 +33,11 @@ services:
       - truedoc-rabbitmq
 
 
-  #############################
+  #############################################################################
   #
   # `truedoc-celery-worker` (queue worker)
   #
-  #############################
+  #############################################################################
 
   truedoc-celery-worker:  # Hostname inside containers: "truedoc-celery-worker".
     image: truedoc_truedoc-app
@@ -52,11 +52,11 @@ services:
     command: celery -A truedoc.tasks worker -l info
 
 
-  #############################
+  #############################################################################
   #
   # `truedoc-mysql` (allows 'root' account from any hosts)
   #
-  #############################
+  #############################################################################
 
   truedoc-mysql:  # Hostname inside containers: "truedoc-mysql".
     image: mysql/mysql-server:8.0.18  # https://hub.docker.com/r/mysql/mysql-server/
@@ -76,11 +76,13 @@ services:
       - "--default-authentication-plugin=mysql_native_password"
 
 
-  #############################
+  #############################################################################
   #
   # `truedoc-pma` (works under 'root' in MySQL)
   #
-  #############################
+  # Latest versions: https://www.phpmyadmin.net/downloads/
+  #
+  #############################################################################
 
   truedoc-pma:  # Hostname inside containers: "truedoc-pma". Access from local: "http://truedoc-pma.localhost:8080".
     image: phpmyadmin/phpmyadmin:4.9  # https://hub.docker.com/r/phpmyadmin/phpmyadmin
@@ -92,11 +94,13 @@ services:
       - truedoc-mysql
 
 
-  #############################
+  #############################################################################
   #
   # `truedoc-nginx` (listening truedoc-nginx:80 for all hosts)
   #
-  #############################
+  # Latest versions: https://nginx.org/en/download.html
+  #
+  #############################################################################
 
   truedoc-nginx:
     image: nginx:1.16.1-alpine  # https://hub.docker.com/_/nginx
@@ -111,11 +115,11 @@ services:
       - truedoc-ui      # Required because nginx has 'truedoc-ui' in proxy_pass directive.
 
 
-  #############################
+  #############################################################################
   #
   # `truedoc-ui`
   #
-  #############################
+  #############################################################################
 
   truedoc-ui:
     image: python:3.7.4-alpine3.10  # https://hub.docker.com/_/python
@@ -126,11 +130,13 @@ services:
     command: python -m http.server --directory /var/lib/truedoc-ui/ 80
 
 
-  #############################
+  #############################################################################
   #
   # `truedoc-rabbitmq` (UI is available on 'truedoc-rabbitmq-ui.localhost')
   #
-  #############################
+  # Latest version: https://www.rabbitmq.com/download.html
+  #
+  #############################################################################
 
   truedoc-rabbitmq:
     image: rabbitmq:3.7.20-management-alpine  # https://hub.docker.com/_/rabbitmq
@@ -138,11 +144,13 @@ services:
       - "127.0.0.1:5672:5672"
       - "127.0.0.1:15672:15672"
 
-  #############################
+  #############################################################################
   #
   # `truedoc-jenkins` (UI is available on 'truedoc-jenkins.localhost')
   #
-  #############################
+  # Latest versions: https://jenkins.io/download/
+  #
+  #############################################################################
 
   truedoc-jenkins:
     image: jenkins/jenkins:lts-alpine  # https://hub.docker.com/r/jenkins/jenkins
