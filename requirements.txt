@@ -5,7 +5,7 @@
 #   $ pushd ~/git/truedoc && pur
 #
 
-alembic == 1.2.1        # Direct use: https://pypi.org/project/alembic/
+alembic == 1.3.0        # Direct use: https://pypi.org/project/alembic/
 blinker == 1.4          # Dependence: for 'sentry-sdk'
 celery == 4.3.0         # Direct use: https://pypi.org/project/celery/
 Flask == 1.1.1          # Direct use: https://pypi.org/project/Flask/
@@ -13,8 +13,8 @@ marshmallow == 3.2.1    # Direct use: https://pypi.org/project/marshmallow/
 pur == 5.2.2            # Dev: updates requirements.txt to the latest versions — https://pypi.org/project/pur/
 PyJWT == 1.7.1          # Direct use: https://pypi.org/project/PyJWT/
 PyMySQL == 0.9.3        # Direct use: https://pypi.org/project/PyMySQL/
-pytest == 5.2.1         # Tests: https://pypi.org/project/pytest/
+pytest == 5.2.2         # Tests: https://pypi.org/project/pytest/
 pytest-cov == 2.8.1     # Dependence: for Tests: https://pypi.org/project/pytest-cov/
 requests == 2.22.0      # Dependence: for Tests: https://pypi.org/project/requests/
-sentry-sdk == 0.13.0    # Direct use: https://pypi.org/project/sentry-sdk/
+sentry-sdk == 0.13.1    # Direct use: https://pypi.org/project/sentry-sdk/
 SQLAlchemy == 1.3.10     # Direct use: https://pypi.org/project/SQLAlchemy/
