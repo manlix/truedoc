@@ -59,7 +59,7 @@ services:
   #############################
 
   truedoc-mysql:  # Hostname inside containers: "truedoc-mysql".
-    image: mysql/mysql-server:8.0.17  # https://hub.docker.com/r/mysql/mysql-server/
+    image: mysql/mysql-server:8.0.18  # https://hub.docker.com/r/mysql/mysql-server/
     ports:
       - "127.0.0.1:3306:3306"
     environment:  # More environment vars: https://dev.mysql.com/doc/refman/8.0/en/docker-mysql-more-topics.html
@@ -133,7 +133,7 @@ services:
   #############################
 
   truedoc-rabbitmq:
-    image: rabbitmq:3.7.18-management-alpine  # https://hub.docker.com/_/rabbitmq
+    image: rabbitmq:3.7.20-management-alpine  # https://hub.docker.com/_/rabbitmq
     ports:
       - "127.0.0.1:5672:5672"
       - "127.0.0.1:15672:15672"
@@ -145,6 +145,6 @@ services:
   #############################
 
   truedoc-jenkins:
-    image: jenkins/jenkins:lts  # https://hub.docker.com/r/jenkins/jenkins
+    image: jenkins/jenkins:lts-alpine  # https://hub.docker.com/r/jenkins/jenkins
     volumes:
       - "./jenkins-data:/var/jenkins_home"
