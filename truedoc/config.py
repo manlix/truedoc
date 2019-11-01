@@ -14,7 +14,7 @@ class Celery:
     """Celery-related variables."""
 
     CONFIG = {
-        'result_backend': 'amqp',  # TODO: change result backend (https://github.com/manlix/truedoc/issues/26)
+        'result_backend': 'redis://truedoc-redis:6379/0',
         'result_persistent': True,
         'broker_transport_options': {
 

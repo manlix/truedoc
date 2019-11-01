@@ -143,6 +143,8 @@ services:
     ports:
       - "127.0.0.1:5672:5672"
       - "127.0.0.1:15672:15672"
+    depends_on:
+      - truedoc-redis
 
   #############################################################################
   #
@@ -156,3 +158,17 @@ services:
     image: jenkins/jenkins:lts-alpine  # https://hub.docker.com/r/jenkins/jenkins
     volumes:
       - "./jenkins-data:/var/jenkins_home"
+
+
+  #############################################################################
+  #
+  # `truedoc-redis`
+  #
+  # Latest version: https://redis.io/download
+  #
+  #############################################################################
+
+  truedoc-redis:  # Hostname inside containers: "truedoc-redis".
+    image: redis:5.0.6-alpine  # https://hub.docker.com/_/redis
+    ports:
+      - "127.0.0.1:6379:6379"
