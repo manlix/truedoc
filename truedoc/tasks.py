@@ -1,6 +1,5 @@
 """Tasks for Celery workers. """
 
-import datetime
 import hashlib
 import shutil
 
@@ -19,7 +18,6 @@ sentry_sdk.init("https://f6de8903ce254aa89bfc41f021320f5d@sentry.io/1513696", in
 
 celery_app = Celery(
     'truedoctasks',
-    backend='amqp',
     broker=truedoc.config.Rabbitmq.PATH,
 )
 
