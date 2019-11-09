@@ -36,7 +36,7 @@ class DocumentSchema(Schema):
 
 class AuthenticationSchema(Schema):
     """Authentication schema."""
-    email = fields.Email(required=True, load_only=True, validate=[validate.Length(max=128), validate.Email()])
+    email = fields.Email(required=True, load_only=True)  # ATTENTION: do NOT use validator for 'email' for type 'Email'
     password = fields.String(required=True, load_only=True)
 
 
