@@ -9,6 +9,7 @@ import truedoc.constants
 
 from truedoc.db import db
 from truedoc.db import schemas
+from truedoc.decorators import require_valid_token
 from truedoc.response import success
 from truedoc.tasks import celery_app
 from truedoc.website import utils
@@ -17,6 +18,7 @@ bp = Blueprint('document', __name__)
 
 
 @bp.route('/', methods=['POST'])
+@require_valid_token
 def create_document():
     """Create document."""
 
@@ -32,6 +34,7 @@ def create_document():
 
 
 @bp.route('/<uuid:document_id>/state', methods=['GET'])
+@require_valid_token
 def document_state(document_id):
     """Document state."""
 
@@ -49,6 +52,7 @@ def document_state(document_id):
 
 
 @bp.route('/', methods=['GET'])
+@require_valid_token
 def list_documents():
     """List documents."""
 
@@ -59,6 +63,7 @@ def list_documents():
 
 
 @bp.route('/<uuid:document_id>', methods=['GET'])
+@require_valid_token
 def load_document(document_id):
     """Load document by document_id."""
 
@@ -71,6 +76,7 @@ def load_document(document_id):
 
 
 @bp.route('/<uuid:document_id>', methods=['DELETE'])
+@require_valid_token
 def delete_document(document_id):
     """Delete given document."""
 
