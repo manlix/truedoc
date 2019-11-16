@@ -37,7 +37,8 @@ def create_document():
 @bp.route('/<uuid:document_id>/state', methods=['GET'])
 @require_valid_token
 def document_state(document_id):
-    """Document state."""
+    """Document state.
+    You can get 'success' state only once after you will get 'pending'."""
 
     document_id = str(document_id)
 
@@ -47,9 +48,16 @@ def document_state(document_id):
 
     # TODO: see https://github.com/manlix/truedoc/issues/22
 
-    return success(result={
-        'state': truedoc.common.normalize_job_state(task.status),
-    })
+    state = truedoc.common.normalize_job_state(task.status)
+
+    if state == truedoc.constants.JOB_STATE.SUCCESS:
+        task.forget()
+
+    return success(
+        result={
+            'state': state,
+        }
+    )
 
 
 @bp.route('/list', methods=['POST'])
