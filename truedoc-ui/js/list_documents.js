@@ -102,9 +102,7 @@ $(document).ready(function () {
 
         $.ajax({
             async: true,
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
+            type: 'GET',
             url: 'http://truedoc-app.localhost/document/list',
 
             headers: {

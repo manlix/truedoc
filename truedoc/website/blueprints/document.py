@@ -60,7 +60,7 @@ def document_state(document_id):
     )
 
 
-@bp.route('/list', methods=['POST'])
+@bp.route('/list', methods=['GET'])
 @require_valid_token
 def list_documents():
     """List documents."""
