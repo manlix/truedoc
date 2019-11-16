@@ -1,18 +1,19 @@
 import datetime
-import os
 
 from pathlib import Path
 
 from flask import request
+
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 
 from truedoc.db import schemas
 from truedoc.exceptions import DocumentNoFileInRequest
 
-import truedoc.constants
 import truedoc.common
+import truedoc.constants
 import truedoc.tasks
+import truedoc.website.context
 
 
 def path_to_save(document_id):
@@ -30,7 +31,7 @@ def uploaded_document():
     # TODO: should saves file to object storage.
     # document_in_memory = request.files['document'].read()
 
-    profile_id = request.form.get('profile_id', None)  # TODO: read profile_id from JWT
+    profile_id = truedoc.website.context.get("token")["profile_id"]
     document_id = truedoc.common.uuid4()
     title = request.form.get('title', None)  # TODO: edit schema to replace empty string ('') to None
 

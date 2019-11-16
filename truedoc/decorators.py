@@ -26,7 +26,7 @@ def require_valid_token(func):
         except marshmallow.exceptions.ValidationError:
             raise truedoc.exceptions.TokenNoValidTokenInHeaderError
 
-        tokens.is_token_valid(authorization_header_data['token'])
+        tokens.is_valid_token(authorization_header_data['token'])
 
         return func(*arg, **kwargs)
 

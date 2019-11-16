@@ -51,5 +51,5 @@ def check_token():
     except marshmallow.exceptions.ValidationError:
         raise truedoc.exceptions.TokenNoValidTokenInHeaderError
 
-    if tokens.is_token_valid(authorization_header_data['token']):
+    if tokens.is_valid_token(authorization_header_data['token'], False):
         return success()
