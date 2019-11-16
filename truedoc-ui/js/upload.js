@@ -1,3 +1,5 @@
+"use strict";
+
 $(document).ready(function () {
 
     $('body').empty();
@@ -33,6 +35,8 @@ $(document).ready(function () {
 
         if (xhr.readyState == 0) {
             onError('Сервис недоступен');
+        } else if (xhr.status == 401) {
+            onError('Ошибка авторизации');
         } else if (xhr.status == 406) {
             onError('Некоторые поля заполнены неверно');
         }
@@ -58,9 +62,9 @@ $(document).ready(function () {
                 '<h1>Загрузка документа</h1>',
                 '<div id="error"></div>',
                 '<div id="success"></div>',
-                '<div><input id="profile_id" placeholder="profile_id"></div>',
-                '<div><input type="file" id="truedoc_document" autofocus required></div>',
-                '<div><input id="truedoc_title" placeholder="Описание..."></div>',
+                '<div>Access TOKEN: <input id="token" autofocus required></div>',
+                '<div>File: <input type="file" id="truedoc_document" autofocus required></div>',
+                '<div>File description: <input id="truedoc_title" placeholder="optional field"></div>',
                 '<div><br><input id="truedoc_submit" type="submit"></div>',
                 '<progress value="0"></progress>',
             ]
@@ -101,15 +105,13 @@ $(document).ready(function () {
 
     $('form').submit(function (event) {
         event.preventDefault();
-         sendData();
+        sendData();
     });
 
     function sendData() {
 
 
-
         var data = new FormData();
-        data.append("profile_id", $('#profile_id').val());
         data.append("title", $('#truedoc_title').val());
         data.append("document", $('#truedoc_document')[0].files[0]);
 
@@ -124,16 +126,18 @@ $(document).ready(function () {
             contentType: false,
             processData: false,
 
+            headers: {
+                "Authorization": "Bearer " + $('#token').val(),
+            },
+
             success: formSuccess,
             error: formFail,
 
             statusCode: {
-                200: function () {
-                }, // Документ успешно успешно.
+                202: function () {
+                }, // Документ успешно загружен на обработку.
                 406: function () {
                 }, // Какие-то поля заполнены неверно. Смотри: xhr.responseJSON.error_fields
-                409: function () {
-                }, // Профиль с указаным email'ом уже существует.
             },
 
             xhr: function () {
