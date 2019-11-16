@@ -7,6 +7,8 @@ To catch original exception from PyMySQL dig to "exc.orig":
     - exc.orig.args[1] - error message
 """
 
+from typing import List
+
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 
@@ -90,6 +92,18 @@ class Document:
     def list_all():
         """List all documents."""
         query = db_session.query(models.Document).all()
+
+        return query
+
+    @staticmethod
+    def documents(profile_id: str) -> List:
+        """List documents by profile_id."
+
+        :param profile_id: profile_id
+        :return: list of profile documents
+        """
+
+        query = db_session.query(models.Document).filter(models.Document.profile_id == profile_id)
 
         return query
 

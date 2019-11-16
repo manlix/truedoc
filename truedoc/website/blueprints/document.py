@@ -6,6 +6,7 @@ from flask import Blueprint
 
 import truedoc.common
 import truedoc.constants
+import truedoc.website.context
 
 from truedoc.db import db
 from truedoc.db import schemas
@@ -51,13 +52,13 @@ def document_state(document_id):
     })
 
 
-@bp.route('/', methods=['GET'])
+@bp.route('/list', methods=['POST'])
 @require_valid_token
 def list_documents():
     """List documents."""
 
     documents_schema = schemas.DocumentSchema(many=True)
-    documents = documents_schema.dump(db.Document.list_all())
+    documents = documents_schema.dump(db.Document.documents(truedoc.website.context.get("token")["profile_id"]))
 
     return success(result=documents)
 
