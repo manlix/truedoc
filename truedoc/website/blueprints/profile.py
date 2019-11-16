@@ -22,6 +22,7 @@ def create_profile():
     return success(result=profile_schema.dump(profile))
 
 
+# TODO: drop or move to admin scope
 @bp.route('/', methods=['GET'])
 def list_profiles():
     """List profiles."""
@@ -32,6 +33,7 @@ def list_profiles():
     return success(result=profiles)
 
 
+# TODO: drop or move to admin scope
 @bp.route('/<uuid:profile_id>', methods=['DELETE'])
 def delete_profile(profile_id):
     """Delete given profile_id."""

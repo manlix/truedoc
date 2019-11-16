@@ -76,6 +76,7 @@ def load_document(document_id):
     return success(result=document)
 
 
+# TODO: drop or move to admin scope
 @bp.route('/<uuid:document_id>', methods=['DELETE'])
 @require_valid_token
 def delete_document(document_id):
