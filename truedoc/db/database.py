@@ -7,7 +7,10 @@ To catch original exception from PyMySQL dig to "exc.orig":
     - exc.orig.args[1] - error message
 """
 
-from typing import List
+from typing import (
+    List,
+    NoReturn,
+)
 
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
@@ -34,7 +37,7 @@ class Profile:
         return query
 
     @staticmethod
-    def create(profile: models.Profile) -> None:
+    def create(profile: models.Profile) -> NoReturn:
         """Create profile."""
         db_session.add(profile)
 
@@ -51,7 +54,7 @@ class Profile:
             raise
 
     @staticmethod
-    def delete(profile: models.Profile) -> None:
+    def delete(profile: models.Profile) -> NoReturn:
         """Delete profile."""
 
         db_session.delete(profile)
@@ -89,14 +92,7 @@ class Profile:
 class Document:
 
     @staticmethod
-    def list_all():
-        """List all documents."""
-        query = db_session.query(models.Document).all()
-
-        return query
-
-    @staticmethod
-    def documents(profile_id: str) -> List:
+    def documents(profile_id: str) -> List[models.Document]:
         """List documents by profile_id."
 
         :param profile_id: profile_id
@@ -125,10 +121,13 @@ class Document:
             raise
 
     @staticmethod
-    def load(document_id: str) -> models.Document:  # TODO: think how to replace 'str' -> 'uuid'
-        """Load document."""
+    def document(document_id: str, profile_id: str) -> models.Document:  # TODO: think how to replace 'str' -> 'uuid'
+        """Load document by 'document_id' and 'profile_id'."""
 
-        query = db_session.query(models.Document).filter(models.Document.document_id == document_id).first()
+        query = db_session.query(models.Document).filter(
+            models.Document.document_id == document_id,
+            models.Document.profile_id == profile_id,
+        ).first()
 
         if query is None:
             raise DocumentDoesNotExist

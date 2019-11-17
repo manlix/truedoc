@@ -10,7 +10,7 @@ class TestConfigCelery:
 
     def test_constants(self):
         assert truedoc.config.Celery.CONFIG == {
-            'result_backend': 'amqp',
+            'result_backend': 'redis://truedoc-redis:6379/0',
             'result_persistent': True,
             'broker_transport_options': {
 

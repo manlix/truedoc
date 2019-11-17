@@ -65,8 +65,10 @@ def document_state(document_id):
 def list_documents():
     """List documents."""
 
+    profile_id = truedoc.website.context.get("token")["profile_id"]
+
     documents_schema = schemas.DocumentSchema(many=True)
-    documents = documents_schema.dump(db.Document.documents(truedoc.website.context.get("token")["profile_id"]))
+    documents = documents_schema.dump(db.Document.documents(profile_id))
 
     return success(result=documents)
 
@@ -77,9 +79,10 @@ def load_document(document_id):
     """Load document by document_id."""
 
     document_id = str(document_id)
+    profile_id = truedoc.website.context.get("token")["profile_id"]
 
     schema = schemas.DocumentSchema()
-    document = schema.dump(db.Document.load(document_id))
+    document = schema.dump(db.Document.document(document_id, profile_id))
 
     return success(result=document)
 
@@ -91,8 +94,9 @@ def delete_document(document_id):
     """Delete given document."""
 
     document_id = str(document_id)
+    profile_id = truedoc.website.context.get("token")["profile_id"]
 
-    document = db.Document.load(document_id)
+    document = db.Document.document(document_id, profile_id)
     db.Document.delete(document)
 
     return success()
