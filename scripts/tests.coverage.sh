@@ -14,7 +14,7 @@ function main() {
   cd "$(dirname "$0")/../" || die "Cannot open source dir"
 
   # Generate tests report in HTML
-  pytest --cov-report  html --cov=truedoc
+  pytest --cov-report html --cov=truedoc
 }
 
 main
