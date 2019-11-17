@@ -70,7 +70,7 @@ class DocumentNoFileInRequest(DocumentError):
 class DocumentDoesNotExist(DocumentError):
     """Child document exception: given document does not exist."""
 
-    http_code = HTTPStatus.NOT_ACCEPTABLE  # 406
+    http_code = HTTPStatus.NOT_FOUND  # 404
     description = 'Document does not exist'
 
 
