@@ -4,6 +4,8 @@
 * [Разработческий стенд](#dev_mode)
     * [Работа с базой данных](#dev_mode.db)
     * [Работа с docker-compose](#dev_mode.docker_compose)
+    * [Запуск в обычном режиме (docker-compose)](#dev_mode.simple_run)
+    * [Запуск в режиме Debug (docker-compose)](#dev_mode.debug_run)
 * [Архитектура взаимодействия](#arch)
 * [Действия](#actions)
 * [Использование очереди (Celery)](#queue)
@@ -116,6 +118,53 @@ manlix@lab:~/git/truedoc$ docker-compose exec truedoc-mysql bash
 ```sh
 manlix@lab:~/git/truedoc$ ./scripts/docker.dropall.sh
 ```
+
+### Запуск в обычном режиме (docker-compose) <a name="#dev_mode.simple_run"></a>
+
+Создание конфигурации:
+* `Run` -> `Edit Configurations...` -> `+` -> `Docker` -> `Docker Compose`
+
+Параметры для заполнения:
+* *Server*: `Docker`
+* *Compose file(s)*: `./docker-compose.yml`
+* *Service(s):*: `truedoc-app`
+* *Environment variables*: `(empty)`
+
+**Options**
+
+* `[ ]` *--build, force build images*
+
+Запуск:
+* `Run` -> `Run...` -> `(выбрать только что созданную конфигураци)`
+
+### Запуск в режиме Debug (docker-compose) <a name="#dev_mode.debug_run"></a>
+
+Создание конфигурации:
+* `Run` -> `Edit Configurations...` -> `+` -> `Flask Server`
+
+Параметры для заполнения:
+* *Target type*: `[V] Module name`
+* *Target*: `truedoc.website`
+* *Application*: `app`
+* *Additional options*: `--host=0.0.0.0`
+* *FLASK_ENV*: `development`
+* *FLASK_DEBUG*: `[V]`
+
+**Environment**
+* *Environment variables*: `(empty)`
+* *Python Interpretator*: `Remove Python 3.8.0 Docker Compose (truedoc-app at [/home/manlix/git/truedoc/docker-compose.yml])`
+* *Interpretator options*: `(empty)`
+* *Working directory*: `(empty)`
+* *Path mappings*: `(empty)`
+* `[V]` *Add content roots to PYTHONPATH*
+* `[V]` *Add source roots to PYTHONPATH*
+
+Запуск:
+* `Run` -> `Run...` -> `(выбрать только что созданную конфигураци)`
+
+**Docker Compose**
+* *Command and options*: `(default)`
+* *Command preview: `(default)`
 
 ## Архитектура взаимодействия <a name="arch"></a>
 
