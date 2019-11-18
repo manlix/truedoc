@@ -119,7 +119,7 @@ manlix@lab:~/git/truedoc$ docker-compose exec truedoc-mysql bash
 manlix@lab:~/git/truedoc$ ./scripts/docker.dropall.sh
 ```
 
-### Запуск в обычном режиме (docker-compose) <a name="#dev_mode.simple_run"></a>
+### Запуск в обычном режиме (docker-compose) <a name="dev_mode.simple_run"></a>
 
 Создание конфигурации:
 * `Run` -> `Edit Configurations...` -> `+` -> `Docker` -> `Docker Compose`
@@ -137,7 +137,7 @@ manlix@lab:~/git/truedoc$ ./scripts/docker.dropall.sh
 Запуск:
 * `Run` -> `Run...` -> `(выбрать только что созданную конфигураци)`
 
-### Запуск в режиме Debug (docker-compose) <a name="#dev_mode.debug_run"></a>
+### Запуск в режиме Debug (docker-compose) <a name="dev_mode.debug_run"></a>
 
 Создание конфигурации:
 * `Run` -> `Edit Configurations...` -> `+` -> `Flask Server`
