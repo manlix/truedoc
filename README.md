@@ -438,7 +438,7 @@ All requirements up-to-date.
 
     * [CORS](https://learn.javascript.ru/fetch-crossorigin) — политика CORS
     * [Docker](https://www.docker.com) — контейнеры
-    * [docker—compose](https://docs.docker.com/compose/) — декларативная организация контейнеров
+    * [docker-compose](https://docs.docker.com/compose/) — декларативная организация контейнеров
     * [Git](https://git—scm.com) — управление исходным кодом
     * [HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) — канал связи для API
     * [Jenkins](https://jenkins.io) — CI/CD
