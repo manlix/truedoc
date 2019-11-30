@@ -26,6 +26,8 @@
     * [Проверка кода на безопасность](#tools.code_safety)
     * [Обновление библиотек в requirements.txt до последних версий](#tools.update_requirements_txt)
 * [Технологии](#techstack)
+* [Известные проблемы](#issues)
+    * [При доступе к БД: Unknown (generic) error from engine](#issues.populate_db)
 
 ## Системные требования <a name="system_requirements"></a>
 
@@ -446,3 +448,19 @@ All requirements up-to-date.
     * [JSON](https://en.wikipedia.org/wiki/JSON) — для передачи структур в видел JSON
     * [nginx](https://nginx.org) — обратный прокси—сервер поверх контейнеров
     * [pur](https://github.com/alanhamlett/pip-update-requirements) — обновление requirements.txt до последних версий
+
+## Известные проблемы <a name="issues"></a>
+
+### При доступе к БД: Unknown (generic) error from engine <a name="issues.populate_db"></a>
+
+Проблема возникает из-за проблем с правами доступа на `mysql-data` при запуске Docker-контейнера `truedoc-mysql`:
+```
+pymysql.err.InternalError: (1030, "Got error 168 - 'Unknown (generic) error from engine' from storage engine")
+
+```
+
+*Решение:*
+
+```
+(truedoc) manlix@lab:~/git/truedoc$ sudo chown -R manlix:manlix ./mysql-data
+```
