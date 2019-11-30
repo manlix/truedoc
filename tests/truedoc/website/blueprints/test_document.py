@@ -59,12 +59,22 @@ def profile_lifecycle():
 
     # Create profile
     r = requests.post('http://truedoc-app.localhost/profile/', json=payload)
-    assert 200 == r.status_code, expected_result(200, r, 'cannot create profile')
+    expected_code = 200
+    assert r.status_code == expected_code, expected_result(
+        expected_code,
+        r,
+        f'cannot create profile [{payload["email"]}]',
+    )
 
     profile_id = r.json()['result']['profile_id']
 
     r = requests.post('http://truedoc-app.localhost/auth/', json=payload)
-    assert 200 == r.status_code, expected_result(200, r, 'failed authorization')
+    expected_code = 200
+    assert r.status_code == expected_code, expected_result(
+        expected_code,
+        r,
+        f'failed authorization [{payload["email"]}]',
+    )
 
     access_token = r.json()['result']['access_token']
     refresh_token = r.json()['result']['refresh_token']
@@ -79,7 +89,12 @@ def profile_lifecycle():
 
     # Delete profile
     r = requests.delete(f'http://truedoc-app.localhost/profile/{profile_id}', headers=authorization_header())
-    assert 200 == r.status_code, expected_result(200, r, 'cannot delete profile')
+    expected_code = 200
+    assert r.status_code == expected_code, expected_result(
+        expected_code,
+        r,
+        f'cannot delete profile [{payload["email"]}]',
+    )
 
 
 @pytest.fixture()
@@ -114,14 +129,24 @@ def test_document_lifecycle(endpoints, max_retries, filesize):
     # Upload document
     r = requests.post(endpoints['document'], headers=authorization_header(), **payload)
 
-    assert 202 == r.status_code, expected_result(202, r, 'cannot create document')
+    expected_code = 202
+    assert r.status_code == expected_code, expected_result(
+        expected_code,
+        r,
+        'cannot create document',
+    )
 
     document_id = r.json()['result']['document_id']
 
     # Waiting that document task state == 'SUCCESS'
     for _ in range(max_retries):  # TODO: think about retries by 'requests'
         r = requests.get(f'http://truedoc-app.localhost/document/{document_id}/state', headers=authorization_header())
-        assert 200 == r.status_code, expected_result(200, r, f'cannot get task for processing document ({document_id})')
+        expected_code = 200
+        assert r.status_code == expected_code, expected_result(
+            expected_code,
+            r,
+            f'cannot get task for processing document ({document_id})',
+        )
 
         assert 'result' in r.json(), f'Not found "result" in response: {r.text}'
         assert 'state' in r.json()['result'], f'Not found "state" in response["result"]: {r.text}'
@@ -138,12 +163,22 @@ def test_document_lifecycle(endpoints, max_retries, filesize):
     # Get document
     r = requests.get(f'{endpoints["document"]}{document_id}', headers=authorization_header())
 
-    assert 200 == r.status_code, expected_result(200, r, f'cannot load document ({document_id})')
+    expected_code = 200
+    assert r.status_code == expected_code, expected_result(
+        expected_code,
+        r,
+        f'cannot load document ({document_id})',
+    )
 
     # Delete document
     r = requests.delete(f'{endpoints["document"]}{document_id}', headers=authorization_header())
 
-    assert 200 == r.status_code, expected_result(200, r, f'cannot delete document ({document_id})')
+    expected_code = 200
+    assert r.status_code == expected_code, expected_result(
+        expected_code,
+        r,
+        f'cannot delete document ({document_id})',
+    )
 
 
 def test_upload_empty_document(endpoints):
@@ -154,7 +189,11 @@ def test_upload_empty_document(endpoints):
     r = requests.post(endpoints['document'], headers=authorization_header(), **payload)
 
     expected_code = 406
-    assert expected_code == r.status_code, expected_result(expected_code, r, 'has been send empty document but got OK')
+    assert r.status_code == expected_code, expected_result(
+        expected_code,
+        r,
+        'has been send empty document but got OK',
+    )
 
 
 def test_upload_document_bigger_than_max_allowed_size(endpoints):
@@ -165,7 +204,7 @@ def test_upload_document_bigger_than_max_allowed_size(endpoints):
     r = requests.post(endpoints['document'], headers=authorization_header(), **payload)
 
     expected_code = 406  # ATTENTION: nginx returns '413' but app returns '406' due to using marshmallow
-    assert expected_code == r.status_code, expected_result(
+    assert r.status_code == expected_code, expected_result(
         expected_code,
         r,
         'has been uploaded very large document but got OK',
@@ -177,7 +216,11 @@ def test_get_document_by_invalid_id(endpoints):
     r = requests.get(f'{endpoints["document"]}{document_id}', headers=authorization_header())
 
     expected_code = 404
-    assert expected_code == r.status_code, expected_result(expected_code, r, f'document is loaded but must got 404')
+    assert r.status_code == expected_code, expected_result(
+        expected_code,
+        r,
+        f'document is loaded but must got 404',
+    )
 
 
 def test_get_not_existing_document(endpoints):
@@ -185,4 +228,8 @@ def test_get_not_existing_document(endpoints):
     r = requests.get(f'{endpoints["document"]}{document_id}', headers=authorization_header())
 
     expected_code = 404
-    assert expected_code == r.status_code, expected_result(expected_code, r, f'document is loaded but must got 404')
+    assert r.status_code == expected_code, expected_result(
+        expected_code,
+        r,
+        f'document is loaded but must got 404',
+    )

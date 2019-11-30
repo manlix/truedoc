@@ -1,7 +1,20 @@
-from http import HTTPStatus
+from typing import Tuple
 
 import pytest
 import requests
+
+
+# TODO: do NOT duplicate this function in all modules
+def expected_result(expected_code: int, r, error_msg: str) -> str:
+    """Show expected HTTP code and related message.
+
+    :param expected_code: int — expected HTTP code
+    :param r: Requests response
+    :param error_msg: str — small detailed message of the error
+    :return: str
+    """
+
+    return f'Status code ({r.status_code}) is NOT {expected_code}. {error_msg[0].capitalize()}{error_msg[1:]}: {r.text}'
 
 
 @pytest.fixture(autouse=True)
@@ -14,15 +27,25 @@ def profile_lifecycle():
     )
 
     # Create profile
-    response = requests.post('http://truedoc-app.localhost/profile/', json=payload)
-    assert response.status_code == HTTPStatus.OK  # Profile created (200)
-    profile_id = response.json()['result']['profile_id']
+    r = requests.post('http://truedoc-app.localhost/profile/', json=payload)
+    excepted_code = 200
+    assert r.status_code == excepted_code, expected_result(
+        excepted_code,
+        r,
+        f'cannot create profile [{payload["email"]}]',
+    )
+    profile_id = r.json()['result']['profile_id']
 
     yield
 
     # Delete profile
-    response = requests.delete(f'http://truedoc-app.localhost/profile/{profile_id}')
-    assert response.status_code == HTTPStatus.OK  # Profile deleted (200)
+    r = requests.delete(f'http://truedoc-app.localhost/profile/{profile_id}')
+    excepted_code = 200
+    assert r.status_code == excepted_code, expected_result(
+        excepted_code,
+        r,
+        f'cannot delete profile [{payload["email"]}]',
+    )
 
 
 @pytest.fixture()
@@ -39,9 +62,14 @@ def test_auth_success(endpoint):
         password='password',
     )
 
-    response = requests.post(endpoint, json=payload)
+    r = requests.post(endpoint, json=payload)
 
-    assert response.status_code == HTTPStatus.OK, f'Status code ({response.status_code}) is NOT 200. Cannot make auth by login/password: {response.text}'
+    excepted_code = 200
+    assert r.status_code == excepted_code, expected_result(
+        excepted_code,
+        r,
+        'cannot make auth by login/password',
+    )
 
 
 def test_auth_invalid_password(endpoint):
@@ -52,6 +80,11 @@ def test_auth_invalid_password(endpoint):
         password='INVALID_PASSWORD',
     )
 
-    response = requests.post(endpoint, json=payload)
+    r = requests.post(endpoint, json=payload)
 
-    assert response.status_code == HTTPStatus.UNAUTHORIZED, f'Status code ({response.status_code}) is NOT 401. Should get failure instead successful response: {response.text}'
+    excepted_code = 401
+    assert r.status_code == excepted_code, expected_result(
+        excepted_code,
+        r,
+        'should get failure instead successful',
+    )
