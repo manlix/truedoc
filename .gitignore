@@ -1,8 +1,8 @@
+# sorted by: LC_ALL=C sort ./.gitignore
+**/__pycache__/
 .coverage
-htmlcov/
 .idea/
+htmlcov/
 jenkins-data/
 mysql-data/
-**/__pycache__/
 upload/
-
