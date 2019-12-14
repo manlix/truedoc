@@ -1,4 +1,3 @@
-# sorted by: LC_ALL=C sort ./.gitignore
 **/__pycache__/
 .coverage
 .idea/

@@ -9,15 +9,15 @@
 .gitignore
 .idea/
 .pytest_cache/
+Dockerfile
+README.md
 api-requests/
 docker-compose.yml
-Dockerfile
 htmlcov/
 img/
 jenkins-data/
 mysql-data/
 nginx-dev/
-README.md
 scripts/
 setup.py
 tests/
