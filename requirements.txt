@@ -13,7 +13,7 @@ marshmallow == 3.3.0    # Direct use: https://pypi.org/project/marshmallow/
 pur == 5.2.2            # Dev: updates requirements.txt to the latest versions — https://pypi.org/project/pur/
 PyJWT == 1.7.1          # Direct use: https://pypi.org/project/PyJWT/
 PyMySQL == 0.9.3        # Direct use: https://pypi.org/project/PyMySQL/
-pytest == 5.3.1         # Tests: https://pypi.org/project/pytest/
+pytest == 5.3.2         # Tests: https://pypi.org/project/pytest/
 pytest-cov == 2.8.1     # Dependence: for Tests: https://pypi.org/project/pytest-cov/
 redis == 3.3.11          # Dependence: for 'celery'
 requests == 2.22.0      # Dependence: for Tests: https://pypi.org/project/requests/
