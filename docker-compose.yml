@@ -24,14 +24,12 @@ services:
       context: .
 
     volumes:  # ATTENTION: you cannot mount a host directory from within the Dockerfile (see: https://docs.docker.com/engine/reference/builder/#notes-about-specifying-volumes)
-      - "./truedoc:/var/lib/truedoc/truedoc"
+      - "./truedoc:/var/lib/truedoc/truedoc:ro"
       - "./upload:/upload"
 
     depends_on:
+      - truedoc-celery-worker
       - truedoc-mysql
-      - truedoc-pma  # ATTENTION: do NOT use in production.
-      - truedoc-rabbitmq
-
 
   #############################################################################
   #
@@ -40,14 +38,15 @@ services:
   #############################################################################
 
   truedoc-celery-worker:  # Hostname inside containers: "truedoc-celery-worker".
-    image: truedoc_truedoc-app
+    build:
+      context: .
     volumes:
-      - "./truedoc:/var/lib/truedoc/truedoc"
+      - "./truedoc:/var/lib/truedoc/truedoc:ro"
       - "./upload:/upload"
 
     depends_on:
-      - truedoc-app
       - truedoc-rabbitmq
+      - truedoc-redis
 
     command: celery -A truedoc.tasks worker -l info
 
@@ -107,12 +106,12 @@ services:
     ports:
       - "127.0.0.1:80:80"
     volumes:
-      - "./nginx-dev/conf.d:/etc/nginx/conf.d"
+      - "./nginx-dev/conf.d:/etc/nginx/conf.d:ro"
     depends_on:
-      - truedoc-app     # Required because nginx has 'truedoc-app' in proxy_pass directive.
-      - truedoc-jenkins # Required because nginx has 'truedoc-jenkins' in proxy_pass directive.
-      - truedoc-pma     # Required because nginx has 'truedoc-pma' in proxy_pass directive.
-      - truedoc-ui      # Required because nginx has 'truedoc-ui' in proxy_pass directive.
+      # Remember about these names in 'proxy_pass' directives
+      - truedoc-jenkins
+      - truedoc-pma
+      - truedoc-ui
 
 
   #############################################################################
@@ -128,6 +127,8 @@ services:
     volumes:
       - "./truedoc-ui:/var/lib/truedoc-ui:ro"
     command: python -m http.server --directory /var/lib/truedoc-ui/ 80
+    depends_on:
+      - truedoc-app
 
 
   #############################################################################
@@ -139,12 +140,10 @@ services:
   #############################################################################
 
   truedoc-rabbitmq:
-    image: rabbitmq:3.7.21-management-alpine  # https://hub.docker.com/_/rabbitmq
+    image: rabbitmq:3.8.2-management-alpine  # https://hub.docker.com/_/rabbitmq
     ports:
       - "127.0.0.1:5672:5672"
       - "127.0.0.1:15672:15672"
-    depends_on:
-      - truedoc-redis
 
   #############################################################################
   #
