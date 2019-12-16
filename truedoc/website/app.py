@@ -15,6 +15,7 @@ from truedoc.exceptions import TruedocError
 
 from truedoc.response import failure
 from truedoc.website.blueprints import auth
+from truedoc.website.blueprints import day
 from truedoc.website.blueprints import document
 from truedoc.website.blueprints import error
 from truedoc.website.blueprints import profile
@@ -40,6 +41,7 @@ app.register_blueprint(error.bp)
 app.register_blueprint(profile.bp, url_prefix='/profile')
 app.register_blueprint(document.bp, url_prefix='/document')
 app.register_blueprint(auth.bp, url_prefix='/auth')
+app.register_blueprint(day.bp, url_prefix='/day')
 
 
 # TODO: see error handling manual
