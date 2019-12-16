@@ -66,3 +66,9 @@ class AuthorizationHeaderSchema(Schema):
             'token': token,
             'authorization_schema': authorization_schema,
         }
+
+
+class DaySchema(Schema):
+    day_id = fields.String(required=True, dump_only=True, validate=[validate.Length(36)])
+    profile_id = fields.String(required=True, dump_only=True, validate=[validate.Length(36)])
+    date = fields.Date(required=True)
