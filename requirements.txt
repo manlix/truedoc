@@ -7,7 +7,7 @@
 
 alembic == 1.3.1        # Direct use: https://pypi.org/project/alembic/
 blinker == 1.4          # Dependence: for 'sentry-sdk'
-celery == 4.3.0         # Direct use: https://pypi.org/project/celery/
+celery == 4.4.0         # Direct use: https://pypi.org/project/celery/
 Flask == 1.1.1          # Direct use: https://pypi.org/project/Flask/
 marshmallow == 3.3.0    # Direct use: https://pypi.org/project/marshmallow/
 pur == 5.2.2            # Dev: updates requirements.txt to the latest versions — https://pypi.org/project/pur/
