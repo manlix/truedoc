@@ -140,3 +140,13 @@ class Document:
 
         db_session.delete(document)
         db_session.commit()
+
+
+class Day:
+
+    @staticmethod
+    def create(day: models.Day):
+        """Create day."""
+
+        db_session.add(day)
+        db_session.commit()
