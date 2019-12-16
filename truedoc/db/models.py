@@ -7,8 +7,10 @@ from sqlalchemy import ForeignKey
 
 from sqlalchemy.ext.declarative import declarative_base
 
+from sqlalchemy.types import DATE
 from sqlalchemy.types import DATETIME
 from sqlalchemy.types import INTEGER
+from sqlalchemy.types import TIME
 from sqlalchemy.types import VARCHAR
 
 from werkzeug.security import check_password_hash
@@ -64,3 +66,50 @@ class Document(Model):
     filesize = Column(INTEGER, nullable=False)  # Document size in bytes
     digest = Column(VARCHAR(32), nullable=False)  # MD5 of the document
     created_at = Column(DATETIME, nullable=False)  # UTC
+
+
+class Day(Model):
+    """Days model."""
+    __tablename__ = 'day'
+
+    # TODO: see about 'relationship'
+    day_id = Column(VARCHAR(36), primary_key=True)  # UUID
+    profile_id = Column(VARCHAR(36), ForeignKey('profile.profile_id'), nullable=False)  # UUID
+    date = Column(DATE, nullable=False)
+
+    def __init__(self, profile_id, date):
+        self.__set_day_id()
+        self.__set_profile_id(profile_id)
+        self.__set_date(date)
+
+    def __repr__(self):
+        return f'<Day day_id={self.day_id}>'
+
+    def __set_day_id(self):
+        self.day_id = common.uuid4()
+
+    def __set_date(self, date):
+        self.date = date
+
+    def __set_profile_id(self, profile_id):
+        self.profile_id = profile_id
+
+
+class Slot(Model):
+    """Slots model."""
+    __tablename__ = 'slot'
+
+    # TODO: see about 'relationship'
+    slot_id = Column(VARCHAR(36), default=common.uuid4, primary_key=True)
+    day_id = Column(VARCHAR(36), ForeignKey('day.day_id'), nullable=False)
+    time = Column(TIME, nullable=False)
+    appointment_id = Column(VARCHAR(36), nullable=True)
+
+
+class Appointment(Model):
+    """Appointments model."""
+    __tablename__ = 'appointment'
+
+    # TODO: see about 'relationship'
+    appointment_id = Column(VARCHAR(36), default=common.uuid4, primary_key=True)
+    slot_id = Column(VARCHAR(36), ForeignKey('slot.slot_id'), nullable=False)
