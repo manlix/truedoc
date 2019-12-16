@@ -25,6 +25,7 @@ services:
 
     volumes:  # ATTENTION: you cannot mount a host directory from within the Dockerfile (see: https://docs.docker.com/engine/reference/builder/#notes-about-specifying-volumes)
       - "./truedoc:/var/lib/truedoc/truedoc:ro"
+      - "./truedoc/alembic/versions:/var/lib/truedoc/truedoc/alembic/versions:rw"  # Allowing write new migrations
       - "./upload:/upload"
 
     depends_on:
