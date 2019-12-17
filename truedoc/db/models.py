@@ -1,9 +1,10 @@
 import datetime
 
 from sqlalchemy import Column
-from sqlalchemy import create_engine
-from sqlalchemy import MetaData
 from sqlalchemy import ForeignKey
+from sqlalchemy import MetaData
+from sqlalchemy import UniqueConstraint
+from sqlalchemy import create_engine
 
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -21,8 +22,19 @@ import truedoc.exceptions
 
 from truedoc import common
 
+# Standard naming convention:
+# https://docs.sqlalchemy.org/en/13/core/constraints.html#configuring-constraint-naming-conventions
+
+convention = {
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+}
+
 engine = create_engine(truedoc.config.Database.PATH, echo=True)
-metadata = MetaData(bind=engine)
+metadata = MetaData(bind=engine, naming_convention=convention)
 Model = declarative_base(metadata=metadata)
 
 
@@ -76,6 +88,8 @@ class Day(Model):
     day_id = Column(VARCHAR(36), primary_key=True)  # UUID
     profile_id = Column(VARCHAR(36), ForeignKey('profile.profile_id'), nullable=False)  # UUID
     date = Column(DATE, nullable=False)
+
+    UniqueConstraint(profile_id, date)  # One 'date' on each 'profile_id' only.
 
     def __init__(self, profile_id, date):
         self.__set_day_id()
