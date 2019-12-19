@@ -378,7 +378,7 @@ def handle_exception_unknown(exc):
 Для генерации HTML-отчёта по покрытию кода тестами:
 
 ```shell
-(truedoc) manlix@lab:~/git/truedoc$ ./scripts/tests.coverage.sh
+(truedoc) manlix@lab:~/git/truedoc$ ./scripts/tests.coverage-save.sh
 ```
 
 Отчёт сохраняется в `htmlcov`, для просмотра открыть `htmlcov/index.html`.
