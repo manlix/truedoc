@@ -5,7 +5,7 @@
 #   $ pushd ~/git/truedoc && pur
 #
 
-alembic == 1.3.1        # Direct use: https://pypi.org/project/alembic/
+alembic == 1.3.2        # Direct use: https://pypi.org/project/alembic/
 blinker == 1.4          # Dependence: for 'sentry-sdk'
 celery == 4.4.0         # Direct use: https://pypi.org/project/celery/
 Flask == 1.1.1          # Direct use: https://pypi.org/project/Flask/
@@ -18,4 +18,4 @@ pytest-cov == 2.8.1     # Dependence: for Tests: https://pypi.org/project/pytest
 redis == 3.3.11          # Dependence: for 'celery'
 requests == 2.22.0      # Dependence: for Tests: https://pypi.org/project/requests/
 sentry-sdk == 0.13.5    # Direct use: https://pypi.org/project/sentry-sdk/
-SQLAlchemy == 1.3.11     # Direct use: https://pypi.org/project/SQLAlchemy/
+SQLAlchemy == 1.3.12     # Direct use: https://pypi.org/project/SQLAlchemy/
