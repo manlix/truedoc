@@ -10,6 +10,10 @@ import truedoc.website.context
 
 bp = Blueprint('bookmytime', __name__)
 
+"""
+http 'http://truedoc-app.localhost/bookmytime/' date="YYY-MM-DD" Authorization:"Bearer ${TOKEN}"
+http 'http://truedoc-app.localhost/bookmytime/UUID-DATE-ID' time="HH:MM" Authorization:"Bearer ${TOKEN}"
+"""
 
 @bp.route('/', methods=['POST'])
 @require_valid_token
