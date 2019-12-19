@@ -1,10 +1,15 @@
 import re
 
+import datetime
+
 from marshmallow import EXCLUDE
 from marshmallow import fields
+from marshmallow import post_dump
 from marshmallow import post_load
 from marshmallow import Schema
 from marshmallow import validate
+from marshmallow import validates
+from marshmallow import ValidationError
 
 import truedoc.constants
 import truedoc.config
@@ -68,7 +73,24 @@ class AuthorizationHeaderSchema(Schema):
         }
 
 
-class DaySchema(Schema):
-    day_id = fields.String(required=True, dump_only=True, validate=[validate.Length(36)])
-    profile_id = fields.String(required=True, dump_only=True, validate=[validate.Length(36)])
+class BookmytimeDateSchema(Schema):
+    """Boookmytime 'Date' schema."""
+    date_id = fields.String(required=True, dump_only=True, validate=[validate.Length(36)])
+    profile_id = fields.String(required=True, load_only=True, validate=[validate.Length(36)])
     date = fields.Date(required=True)
+
+
+class BookmytimeTimeSchema(Schema):
+    """Bookmytime 'Time' schema."""
+    time_id = fields.String(required=True, dump_only=True, validate=[validate.Length(36)])
+    date_id = fields.String(required=True, load_only=True, validate=[validate.Length(36)])
+    time = fields.String(required=True, validate=[
+        validate.Regexp(re.compile('^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$'), error="Incorrect time"),
+    ])
+
+    @post_dump
+    def parts(self, data, **kwargs):
+        data.update({
+            'time': data['time'][0:5],  # Format data from db: '13:00:00' -> '13:00'
+        })
+        return data

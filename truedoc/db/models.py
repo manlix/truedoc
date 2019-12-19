@@ -80,27 +80,27 @@ class Document(Model):
     created_at = Column(DATETIME, nullable=False)  # UTC
 
 
-class Day(Model):
-    """Days model."""
-    __tablename__ = 'day'
+class BookmytimeDate(Model):
+    """Bookmytime: 'Date' model."""
+    __tablename__ = 'bookmytime_date'
 
     # TODO: see about 'relationship'
-    day_id = Column(VARCHAR(36), primary_key=True)  # UUID
-    profile_id = Column(VARCHAR(36), ForeignKey('profile.profile_id'), nullable=False)  # UUID
+    date_id = Column(VARCHAR(36), primary_key=True)  # UUID
+    profile_id = Column(VARCHAR(36), ForeignKey(Profile.profile_id), nullable=False)  # UUID
     date = Column(DATE, nullable=False)
 
     UniqueConstraint(profile_id, date)  # One 'date' on each 'profile_id' only.
 
     def __init__(self, profile_id, date):
-        self.__set_day_id()
         self.__set_profile_id(profile_id)
         self.__set_date(date)
+        self.__set_date_id()
 
     def __repr__(self):
-        return f'<Day day_id={self.day_id}>'
+        return f'<Date date_id={self.date_id}>'
 
-    def __set_day_id(self):
-        self.day_id = common.uuid4()
+    def __set_date_id(self):
+        self.date_id = common.uuid4()
 
     def __set_date(self, date):
         self.date = date
@@ -109,21 +109,40 @@ class Day(Model):
         self.profile_id = profile_id
 
 
-class Slot(Model):
-    """Slots model."""
-    __tablename__ = 'slot'
+class BookmytimeTime(Model):
+    """Bookmytime: 'Time' model."""
+    __tablename__ = 'bookmytime_time'
 
     # TODO: see about 'relationship'
-    slot_id = Column(VARCHAR(36), default=common.uuid4, primary_key=True)
-    day_id = Column(VARCHAR(36), ForeignKey('day.day_id'), nullable=False)
+    time_id = Column(VARCHAR(36), primary_key=True)
+    date_id = Column(VARCHAR(36), ForeignKey(BookmytimeDate.date_id), nullable=False)
     time = Column(TIME, nullable=False)
     appointment_id = Column(VARCHAR(36), nullable=True)
 
+    UniqueConstraint(date_id, time)  # Only unique time is allowed in the slot.
 
-class Appointment(Model):
-    """Appointments model."""
-    __tablename__ = 'appointment'
+    def __init__(self, date_id, time):
+        self.__set_date_id(date_id)
+        self.__set_time(time)
+        self.__set_time_id()
+
+    def __repr__(self):
+        return f'<Time time_id={self.time_id}>'
+
+    def __set_time_id(self):
+        self.time_id = common.uuid4()
+
+    def __set_time(self, time):
+        self.time = time
+
+    def __set_date_id(self, day_id):
+        self.date_id = day_id
+
+
+class BookmytimeAppointment(Model):
+    """Bookmytime: 'Appointment' model."""
+    __tablename__ = 'bookmytime_appointment'
 
     # TODO: see about 'relationship'
     appointment_id = Column(VARCHAR(36), default=common.uuid4, primary_key=True)
-    slot_id = Column(VARCHAR(36), ForeignKey('slot.slot_id'), nullable=False)
+    time_id = Column(VARCHAR(36), ForeignKey(BookmytimeTime.time_id), nullable=False)

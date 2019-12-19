@@ -19,10 +19,14 @@ from sqlalchemy.exc import IntegrityError
 from pymysql.constants import ER
 
 from . import models
+from truedoc.exceptions import BookmytimeDateAlreadyExistsError
+from truedoc.exceptions import BookmytimeDateDoesNotExist
 from truedoc.exceptions import DocumentDoesNotExist
 from truedoc.exceptions import ProfileAlreadyExistsError
 from truedoc.exceptions import ProfileDoesNotExist
 from truedoc.exceptions import ProfileIsNotAvailableForDeleting
+from truedoc.exceptions import BookmytimeTimeAlreadyExistsError
+from truedoc.exceptions import BookmytimeViolationError
 
 db_session = scoped_session(sessionmaker(bind=models.engine))
 
@@ -142,11 +146,60 @@ class Document:
         db_session.commit()
 
 
-class Day:
+class BookmytimeDay:
 
     @staticmethod
-    def create(day: models.Day):
+    def create(day: models.BookmytimeDate) -> None:
         """Create day."""
 
         db_session.add(day)
-        db_session.commit()
+
+        try:
+            db_session.commit()
+        except IntegrityError as exc:
+            db_session.rollback()
+
+            errno, errmsg = exc.orig.args
+
+            if errno == ER.DUP_ENTRY:
+                raise BookmytimeDateAlreadyExistsError
+
+            raise
+
+    @staticmethod
+    def by_id(day_id: str) -> bool:
+        """Check that given day exists."""
+        query = db_session.query(models.BookmytimeDate).filter(
+            models.BookmytimeDate.date_id == day_id,
+        ).first()
+
+        if query is None:
+            raise BookmytimeDateDoesNotExist
+
+        return query
+
+
+class BookmytimeSlot:
+
+    @staticmethod
+    def create(slot: models.BookmytimeTime, profile_id: str) -> NoReturn:
+        """Create slot in the day."""
+
+        day = BookmytimeDay.by_id(slot.date_id)
+
+        if day is None or day.profile_id != profile_id:
+            raise BookmytimeViolationError
+
+        db_session.add(slot)
+
+        try:
+            db_session.commit()
+        except IntegrityError as exc:
+            db_session.rollback()
+
+            errno, errmsg = exc.orig.args
+
+            if errno == ER.DUP_ENTRY:
+                raise BookmytimeTimeAlreadyExistsError
+
+            raise
