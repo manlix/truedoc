@@ -10,7 +10,7 @@ blinker == 1.4          # Dependence: for 'sentry-sdk'
 celery == 4.4.0         # Direct use: https://pypi.org/project/celery/
 Flask == 1.1.1          # Direct use: https://pypi.org/project/Flask/
 marshmallow == 3.3.0    # Direct use: https://pypi.org/project/marshmallow/
-pur == 5.2.2            # Dev: updates requirements.txt to the latest versions — https://pypi.org/project/pur/
+pur == 5.3.0            # Dev: updates requirements.txt to the latest versions — https://pypi.org/project/pur/
 PyJWT == 1.7.1          # Direct use: https://pypi.org/project/PyJWT/
 PyMySQL == 0.9.3        # Direct use: https://pypi.org/project/PyMySQL/
 pytest == 5.3.2         # Tests: https://pypi.org/project/pytest/
