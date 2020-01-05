@@ -1,5 +1,7 @@
 """Work with JWT: https://tools.ietf.org/html/rfc7519"""
 
+import os
+
 import jwt
 
 import truedoc.config
@@ -64,7 +66,15 @@ def is_valid_token(token: str, save_to_ctx: bool = True) -> bool:
         )
 
     except jwt.exceptions.PyJWTError as exc:
-        raise truedoc.exceptions.TokenError(exc)
+
+        # Allow requests with hardcoded token for development:
+        if os.environ.get('FLASK_ENV') == 'development' and token == truedoc.config.DEVELOPMENT.TOKEN:
+            decoded_token = {
+                'profile_id': truedoc.config.DEVELOPMENT.PROFILE_ID,
+            }
+
+        else:
+            raise truedoc.exceptions.TokenError(exc)
 
     if save_to_ctx:
         truedoc.website.context.add("token", decoded_token)

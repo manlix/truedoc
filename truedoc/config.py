@@ -75,3 +75,9 @@ class Token:
     @staticmethod
     def expiration_time(timedelta):
         return datetime.datetime.utcnow() + datetime.timedelta(seconds=timedelta)
+
+
+class DEVELOPMENT:
+    """Data for development stage."""
+    TOKEN = '.d3v3l0pm3nt.t0k3n.'
+    PROFILE_ID = '00000000-0000-0000-0000-000000000001'
