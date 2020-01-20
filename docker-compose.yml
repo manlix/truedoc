@@ -85,7 +85,10 @@ services:
   #############################################################################
 
   truedoc-pma:  # Hostname inside containers: "truedoc-pma". Access from local: "http://truedoc-pma.localhost:8080".
-    image: phpmyadmin/phpmyadmin:4.9  # https://hub.docker.com/r/phpmyadmin/phpmyadmin
+    # TODO: move to Alpine image
+    image: phpmyadmin/phpmyadmin:5.0.1  # https://hub.docker.com/r/phpmyadmin/phpmyadmin
+    ports:
+      - "127.0.0.1:8080:80"
     environment:
       PMA_HOST: truedoc-mysql
       PMA_USER: root
