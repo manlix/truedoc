@@ -172,6 +172,6 @@ services:
   #############################################################################
 
   truedoc-redis:  # Hostname inside containers: "truedoc-redis".
-    image: redis:5.0.6-alpine  # https://hub.docker.com/_/redis
+    image: redis:5.0.7-alpine3.11  # https://hub.docker.com/_/redis
     ports:
       - "127.0.0.1:6379:6379"
