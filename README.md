@@ -1,5 +1,4 @@
 
-* [Требование к языку](#language_requirement)
 * [Разработческий стенд](#dev_mode)
     * [Работа с базой данных](#dev_mode.db)
     * [Работа с docker-compose](#dev_mode.docker_compose)
@@ -28,9 +27,6 @@
 * [Известные проблемы](#issues)
     * [При доступе к БД: Unknown (generic) error from engine](#issues.populate_db)
 
-## Требование к языку <a name="language_requirement"></a>
-
-* Python 3.7
 
 ## Разработческий стенд <a name="dev_mode"></a>
 
