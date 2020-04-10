@@ -1,6 +1,5 @@
 
-# Правила проекта
-* [Системные требования](#system_requirements)
+* [Требование к языку](#language_requirement)
 * [Разработческий стенд](#dev_mode)
     * [Работа с базой данных](#dev_mode.db)
     * [Работа с docker-compose](#dev_mode.docker_compose)
@@ -29,7 +28,7 @@
 * [Известные проблемы](#issues)
     * [При доступе к БД: Unknown (generic) error from engine](#issues.populate_db)
 
-## Системные требования <a name="system_requirements"></a>
+## Требование к языку <a name="language_requirement"></a>
 
 * Python 3.7
 
