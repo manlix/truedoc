@@ -1,5 +1,5 @@
 # Tags at Docker hub: https://hub.docker.com/_/python
-FROM python:3.8.1-alpine3.11
+FROM python:3.8.2-alpine3.11
 
 # Place "truedoc" python package to this path on local filesystem
 ARG TRUEDOC_PATH="/var/lib/truedoc"
