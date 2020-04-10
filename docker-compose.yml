@@ -144,7 +144,7 @@ services:
   #############################################################################
 
   truedoc-rabbitmq:
-    image: rabbitmq:3.8.2-management-alpine  # https://hub.docker.com/_/rabbitmq
+    image: rabbitmq:3.8.3-management-alpine  # https://hub.docker.com/_/rabbitmq
     ports:
       - "127.0.0.1:5672:5672"
       - "127.0.0.1:15672:15672"
