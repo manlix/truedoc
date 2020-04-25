@@ -7,7 +7,7 @@
 
 function get_mysql_ip() {
 
-  docker container inspect truedoc_truedoc-mysql_1 -f '{{ .NetworkSettings.Networks.truedoc_default.IPAddress }}'
+  sudo docker container inspect truedoc_truedoc-mysql_1 -f '{{ .NetworkSettings.Networks.truedoc_default.IPAddress }}'
 }
 
 function mysql_is_healthy() {
@@ -37,7 +37,7 @@ function wait_for_mysql() {
 function run_containers() {
 
   # Builds, (re)create, starts, and attaches to containers for a service
-  docker-compose up -d --remove-orphans || die "Failed start services by docker-compose"
+  sudo docker-compose up -d --remove-orphans || die "Failed start services by docker-compose"
 }
 
 function main() {

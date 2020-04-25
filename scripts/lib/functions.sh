@@ -62,19 +62,19 @@ function docker::installed() {
 function docker::stop_all_containers() {
 
   msg "Stopping all containers..."
-  docker container ls --all --quiet | xargs -i docker container stop {}
+  sudo docker container ls --all --quiet | xargs -i sudo docker container stop {}
 }
 
 function docker::remove_all_containers() {
 
   msg "Removing all containers..."
-  docker container ls --all --quiet | xargs -i docker container rm {}
+  sudo docker container ls --all --quiet | xargs -i sudo docker container rm {}
 }
 
 function docker::remove_all_images() {
 
   msg "Remove all images..."
-  docker image ls --quiet | xargs -i docker image rm --force {}
+  sudo docker image ls --quiet | xargs -i sudo docker image rm --force {}
 }
 
 ############################################
