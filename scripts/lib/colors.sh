@@ -12,5 +12,8 @@ readonly GREEN
 YELLOW=$(echo -en '\033[00;33m')
 readonly YELLOW
 
+MAGENTA=$(echo -en '\033[00;35m')
+readonly MAGENTA
+
 RESTORE=$(echo -en '\033[0m')
 readonly RESTORE

@@ -8,6 +8,18 @@ function msg() {
   echo "${GREEN}$*${RESTORE}"
 }
 
+# Print message to STDOUT with not new line
+function prefix_msg() {
+
+  echo -n "${MAGENTA}$*${RESTORE} "
+}
+
+# Print "OK" to STDOUT (useful for prefix_msg function)
+function print_ok() {
+
+  msg "OK"
+}
+
 # Print error message to STDERR and exit
 function die() {
 
@@ -42,26 +54,26 @@ function exit::failure() {
 
 function docker::installed() {
 
-  msg "Looking up [docker] executable..."
+  prefix_msg "Looking up [docker] executable..."
   # ATTENTION: avoid 'which' here. Because it failed by 'shellcheck'.
   command -v docker
 }
 
 function docker::stop_all_containers() {
 
-  msg "Stop all containers..."
+  msg "Stopping all containers..."
   docker container ls --all --quiet | xargs -i docker container stop {}
 }
 
 function docker::remove_all_containers() {
 
-  msg "Remove all containers..."
+  msg "Removing all containers..."
   docker container ls --all --quiet | xargs -i docker container rm {}
 }
 
 function docker::remove_all_images() {
 
-  msg "Remove all docker images..."
+  msg "Remove all images..."
   docker image ls --quiet | xargs -i docker image rm --force {}
 }
 
@@ -73,7 +85,7 @@ function docker::remove_all_images() {
 
 function docker_compose::installed() {
 
-  msg "Looking up [docker-compose] executable..."
+  prefix_msg "Looking up [docker-compose] executable..."
   # ATTENTION: avoid 'which' here. Because it failed by 'shellcheck'.
   command -v docker-compose
 }
@@ -86,7 +98,7 @@ function docker_compose::installed() {
 
 function pytest::installed() {
 
-  msg "Looking up [pytest] executable..."
+  prefix_msg "Looking up [pytest] executable..."
   # ATTENTION: avoid 'which' here. Because it failed by 'shellcheck'.
   command -v pytest
 }
