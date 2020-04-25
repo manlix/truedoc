@@ -106,7 +106,7 @@ services:
   #############################################################################
 
   truedoc-nginx:
-    image: nginx:1.16.1-alpine  # https://hub.docker.com/_/nginx
+    image: nginx:1.18.0-alpine  # https://hub.docker.com/_/nginx
     ports:
       - "127.0.0.1:80:80"
     volumes:

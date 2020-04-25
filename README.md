@@ -23,7 +23,7 @@
     * [Проверка кода на соответствие стандартам](#tools.code_standard)
     * [Проверка кода на безопасность](#tools.code_safety)
     * [Обновление библиотек в requirements.txt до последних версий](#tools.update_requirements_txt)
-* [Технологии](#techstack)
+* [Инструменты](#tools)
 * [Известные проблемы](#issues)
     * [При доступе к БД: Unknown (generic) error from engine](#issues.populate_db)
 
@@ -32,8 +32,8 @@
 
 Единожды необходимо создать **virtualenv** и установить пакеты из **requirements.txt**:
 ```sh
-manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc && . ~/venv/truedoc
-(truedoc) manlix@lab:~$ pip3 install -r ~/git/truedoc/requirements.txt
+manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc && . ~/venv/truedoc/bin/activate
+(truedoc) manlix@lab:~$ python3 -m pip install -r ~/git/truedoc/requirements.txt
 
 # В отличие от "install", для разработки используется "develop" - пакеты не устанавливаются, создаются ссылки.
 (truedoc) manlix@lab:~$ pushd ~/git/truedoc && python3 setup.py develop && popd
@@ -404,7 +404,7 @@ Updated sentry-sdk: 0.11.2 -> 0.12.2
 All requirements up-to-date.
 ```
 
-## Технологии <a name="techstack"></a>
+## Инструменты <a name="tools"></a>
 
 * Языки: 
     * [Python](https://www.python.org)
