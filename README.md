@@ -1,9 +1,9 @@
 
 * [Разработческий стенд](#dev_mode)
-    * [Работа с базой данных](#dev_mode.db)
-    * [Работа с docker-compose](#dev_mode.docker_compose)
+    * [Запуск Docker контейнеров](#dev_mode.docker_compose)
     * [Запуск в обычном режиме (docker-compose)](#dev_mode.simple_run)
     * [Запуск в режиме Debug (docker-compose)](#dev_mode.debug_run)
+    * [Работа с базой данных](#dev_mode.db)
 * [Архитектура взаимодействия](#arch)
 * [Действия](#actions)
 * [Использование очереди (Celery)](#queue)
@@ -39,48 +39,7 @@ manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc && . ~/venv/truedoc
 (truedoc) manlix@lab:~$ pushd ~/git/truedoc && python3 setup.py develop && popd
 ```
 
-### Работа с базой данных <a name="dev_mode.db"></a>
-
-Перед запуском **Truedoc** необходимо инициализировать базу данных:
-
-```sh
-# Upgrade to 'head' (latest revision)
-
-manlix@lab:~/git/truedoc$ docker-compose exec truedoc-app sh
-/var/lib/truedoc # cd truedoc/ && PYTHONPATH=.. alembic upgrade head && exit
-manlix@lab:~/git/truedoc$
-```
-
-* Место хранения конфига: `truedoc/truedoc/alembic.ini`
-* Место хранения ревизий: `truedoc/truedoc/alembic/versions/`
-* Формат файла ревизии: `YYYYMMDDHHMMSS_revision_slug.py` _(список файлов ревизий всегда отсортирован)_
-
-Создание новой ревизии:
-
-**ВАЖНО:** после создания необходимо проверить сгенерированный код _(**alembic** может не распознавать некоторые изменения в моделях и базе данных)_.
-```sh
-manlix@lab:~/git/truedoc/truedoc$ alembic revision -m 'Init DB' --autogenerate
-```
-
-Текущая ревизия в базе данных:
-```sh
-# Show 'current revision' in database
-manlix@lab:~/git/truedoc/truedoc$ alembic current
-```
-
-Даунгрейд на 1 ревизию:
-```sh
-# Downgrade to '-1 revision'
-manlix@lab:~/git/truedoc/truedoc$ alembic downgrade -1
-```
-
-Апгрейд на 1 ревизию:
-```sh
-# Upgrade to '+1 revision'
-manlix@lab:~/git/truedoc/truedoc$ alembic upgrade +1
-```
-
-### Работа с docker-compose <a name="dev_mode.docker_compose"></a>
+### Запуск Docker контейнеров <a name="dev_mode.docker_compose"></a>
 
 * Запустить Truedoc: 
 ```sh
@@ -162,6 +121,47 @@ manlix@lab:~/git/truedoc$ ./scripts/docker.dropall.sh
 **Docker Compose**
 * *Command and options*: `(default)`
 * *Command preview: `(default)`
+
+### Работа с базой данных <a name="dev_mode.db"></a>
+
+Перед запуском **Truedoc** необходимо инициализировать базу данных:
+
+```sh
+# Upgrade to 'head' (latest revision)
+
+manlix@lab:~/git/truedoc$ docker-compose exec truedoc-app sh
+/var/lib/truedoc # cd truedoc/ && PYTHONPATH=.. alembic upgrade head && exit
+manlix@lab:~/git/truedoc$
+```
+
+* Место хранения конфига: `truedoc/truedoc/alembic.ini`
+* Место хранения ревизий: `truedoc/truedoc/alembic/versions/`
+* Формат файла ревизии: `YYYYMMDDHHMMSS_revision_slug.py` _(список файлов ревизий всегда отсортирован)_
+
+Создание новой ревизии:
+
+**ВАЖНО:** после создания необходимо проверить сгенерированный код _(**alembic** может не распознавать некоторые изменения в моделях и базе данных)_.
+```sh
+manlix@lab:~/git/truedoc/truedoc$ alembic revision -m 'Init DB' --autogenerate
+```
+
+Текущая ревизия в базе данных:
+```sh
+# Show 'current revision' in database
+manlix@lab:~/git/truedoc/truedoc$ alembic current
+```
+
+Даунгрейд на 1 ревизию:
+```sh
+# Downgrade to '-1 revision'
+manlix@lab:~/git/truedoc/truedoc$ alembic downgrade -1
+```
+
+Апгрейд на 1 ревизию:
+```sh
+# Upgrade to '+1 revision'
+manlix@lab:~/git/truedoc/truedoc$ alembic upgrade +1
+```
 
 ## Архитектура взаимодействия <a name="arch"></a>
 
