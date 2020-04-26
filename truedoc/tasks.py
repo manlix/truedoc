@@ -6,6 +6,7 @@ import shutil
 from celery import Celery
 from pathlib import Path
 
+import truedoc.common
 import truedoc.config
 
 from truedoc.db import db
@@ -52,7 +53,7 @@ class Document:
 
         if self.processing_data is None:
             self.processing_data = {
-                'digest': hashlib.md5(self.path_to_save.read_bytes()).hexdigest(),
+                'digest': truedoc.common.document_hash(self.path_to_save.read_bytes()),
             }
 
     def save_to_storage(self):

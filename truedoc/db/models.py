@@ -76,7 +76,7 @@ class Document(Model):
 
     filename = Column(VARCHAR(256), nullable=False)  # Document filename like 'data.txt'
     filesize = Column(INTEGER, nullable=False)  # Document size in bytes
-    digest = Column(VARCHAR(32), nullable=False)  # MD5 of the document
+    digest = Column(VARCHAR(128), nullable=False)  # Document hash
     created_at = Column(DATETIME, nullable=False)  # UTC
 
 
