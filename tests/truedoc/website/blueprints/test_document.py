@@ -49,7 +49,7 @@ def expected_result(expected_code: int, r, error_msg: str) -> str:
 
 
 @pytest.fixture(autouse=True)
-def profile_lifecycle():
+def profile_lifecycle(endpoints):
     """Create and delete profile during session."""
 
     payload = dict(
@@ -58,7 +58,7 @@ def profile_lifecycle():
     )
 
     # Create profile
-    r = requests.post('http://truedoc-app.localhost/profile/', json=payload)
+    r = requests.post(f'{endpoints["profile"]}', json=payload)
     expected_code = 200
     assert r.status_code == expected_code, expected_result(
         expected_code,
@@ -68,7 +68,7 @@ def profile_lifecycle():
 
     profile_id = r.json()['result']['profile_id']
 
-    r = requests.post('http://truedoc-app.localhost/auth/', json=payload)
+    r = requests.post(f'{endpoints["auth"]}', json=payload)
     expected_code = 200
     assert r.status_code == expected_code, expected_result(
         expected_code,
@@ -88,23 +88,13 @@ def profile_lifecycle():
     yield
 
     # Delete profile
-    r = requests.delete(f'http://truedoc-app.localhost/profile/{profile_id}', headers=authorization_header())
+    r = requests.delete(f'{endpoints["profile"]}{profile_id}', headers=authorization_header())
     expected_code = 200
     assert r.status_code == expected_code, expected_result(
         expected_code,
         r,
         f'cannot delete profile [{payload["email"]}]',
     )
-
-
-@pytest.fixture()
-def endpoints():
-    """Endpoints dict."""
-    return {
-        'auth': 'http://truedoc-app.localhost/auth/',
-        'document': 'http://truedoc-app.localhost/document/',
-        'profile': 'http://truedoc-app.localhost/profile/',
-    }
 
 
 @pytest.fixture()
@@ -140,7 +130,7 @@ def test_document_lifecycle(endpoints, max_retries, filesize):
 
     # Waiting that document task state == 'SUCCESS'
     for _ in range(max_retries):  # TODO: think about retries by 'requests'
-        r = requests.get(f'http://truedoc-app.localhost/document/{document_id}/state', headers=authorization_header())
+        r = requests.get(f'{endpoints["document"]}{document_id}/state', headers=authorization_header())
         expected_code = 200
         assert r.status_code == expected_code, expected_result(
             expected_code,

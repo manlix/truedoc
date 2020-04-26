@@ -21,3 +21,13 @@ def many_uuid4():
 def many_uuid4_len(many_uuid4):
     """Length of uuid4 items list."""
     return MANY_UUID4_LEN
+
+
+@pytest.fixture()
+def endpoints():
+    """Endpoints dict."""
+    return {
+        'auth': 'http://truedoc-app.localhost/auth/',
+        'document': 'http://truedoc-app.localhost/document/',
+        'profile': 'http://truedoc-app.localhost/profile/',
+    }

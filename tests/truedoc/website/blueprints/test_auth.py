@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import pytest
 import requests
 
@@ -18,7 +16,7 @@ def expected_result(expected_code: int, r, error_msg: str) -> str:
 
 
 @pytest.fixture(autouse=True)
-def profile_lifecycle():
+def profile_lifecycle(endpoints):
     """Create and delete profile during session."""
 
     payload = dict(
@@ -27,7 +25,7 @@ def profile_lifecycle():
     )
 
     # Create profile
-    r = requests.post('http://truedoc-app.localhost/profile/', json=payload)
+    r = requests.post(f'{endpoints["profile"]}', json=payload)
     excepted_code = 200
     assert r.status_code == excepted_code, expected_result(
         excepted_code,
@@ -39,7 +37,7 @@ def profile_lifecycle():
     yield
 
     # Delete profile
-    r = requests.delete(f'http://truedoc-app.localhost/profile/{profile_id}')
+    r = requests.delete(f'{endpoints["profile"]}{profile_id}')
     excepted_code = 200
     assert r.status_code == excepted_code, expected_result(
         excepted_code,
@@ -48,13 +46,7 @@ def profile_lifecycle():
     )
 
 
-@pytest.fixture()
-def endpoint():
-    """Endpoint for 'auth'."""
-    return 'http://truedoc-app.localhost/auth/'
-
-
-def test_auth_success(endpoint):
+def test_auth_success(endpoints):
     """Test success auth."""
 
     payload = dict(
@@ -62,7 +54,7 @@ def test_auth_success(endpoint):
         password='password',
     )
 
-    r = requests.post(endpoint, json=payload)
+    r = requests.post(f'{endpoints["auth"]}', json=payload)
 
     excepted_code = 200
     assert r.status_code == excepted_code, expected_result(
@@ -72,7 +64,7 @@ def test_auth_success(endpoint):
     )
 
 
-def test_auth_invalid_password(endpoint):
+def test_auth_invalid_password(endpoints):
     """Test failure auth."""
 
     payload = dict(
@@ -80,7 +72,7 @@ def test_auth_invalid_password(endpoint):
         password='INVALID_PASSWORD',
     )
 
-    r = requests.post(endpoint, json=payload)
+    r = requests.post(f'{endpoints["auth"]}', json=payload)
 
     excepted_code = 401
     assert r.status_code == excepted_code, expected_result(
