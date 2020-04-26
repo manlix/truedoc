@@ -1,5 +1,6 @@
 """Common module."""
 
+import hashlib
 import uuid
 
 import truedoc.constants
@@ -19,3 +20,9 @@ def normalize_job_state(state):
         state = truedoc.constants.JOB_STATE.UNKNOWN
 
     return state
+
+
+def document_hash(document):
+    """Common hash function for documents."""
+
+    return hashlib.blake2b(document).hexdigest()

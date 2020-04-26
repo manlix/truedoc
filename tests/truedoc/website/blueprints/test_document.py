@@ -3,8 +3,10 @@ import time
 import pytest
 import requests
 
+import truedoc.common
 import truedoc.config
 import truedoc.constants
+import truedoc.db.schemas
 
 res = {}
 
@@ -157,8 +159,10 @@ def test_document_lifecycle(endpoints, max_retries, filesize):
     assert r.status_code == expected_code, expected_result(
         expected_code,
         r,
-        f'cannot load document ({document_id})',
+        f'cannot get document ({document_id})',
     )
+
+    assert truedoc.db.schemas.DocumentSchema(exclude=['state']).load(r.json()['result'])
 
     # Delete document
     r = requests.delete(f'{endpoints["document"]}{document_id}', headers=authorization_header())
@@ -223,3 +227,7 @@ def test_get_not_existing_document(endpoints):
         r,
         f'document is loaded but must got 404',
     )
+
+
+def test_document_hash_function():
+    assert len(truedoc.common.document_hash(b"Hello World")) == 128

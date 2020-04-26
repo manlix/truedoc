@@ -30,7 +30,7 @@ class DocumentSchema(Schema):
     filename = fields.String(required=True)
 
     filesize = fields.Integer(validate=[validate.Range(min=1, max=truedoc.config.PROJECT.MAX_DOCUMENT_FILESIZE)])
-    digest = fields.String(validate=[validate.Length(equal=32)])
+    digest = fields.String(validate=[validate.Length(equal=128)])
     created_at = fields.DateTime()
 
     state = fields.String(
