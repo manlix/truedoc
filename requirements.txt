@@ -6,6 +6,7 @@
 #
 
 alembic == 1.4.2        # Direct use: https://pypi.org/project/alembic/
+bandit == 1.6.2         # Direct use: https://pypi.org/project/bandit/
 blinker == 1.4          # Dependence: for 'sentry-sdk'
 celery == 4.4.2         # Direct use: https://pypi.org/project/celery/
 Flask == 1.1.2          # Direct use: https://pypi.org/project/Flask/
