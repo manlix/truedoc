@@ -20,7 +20,7 @@ def generate_payload(filesize: int) -> dict:
                 'document',
                 (
                     'file.txt',
-                    'x' * filesize,
+                    ''.zfill(filesize),  # Fill string with <filesize> zeros
                 )
             ),
         ]
