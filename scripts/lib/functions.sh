@@ -102,3 +102,16 @@ function pytest::installed() {
   # ATTENTION: avoid 'which' here. Because it failed by 'shellcheck'.
   command -v pytest
 }
+
+############################################
+# BANDIT
+############################################
+
+# Is "bandit" installed?
+
+function bandit::installed() {
+
+  prefix_msg "Looking up [bandit] executable..."
+  # ATTENTION: avoid 'which' here. Because it failed by 'shellcheck'.
+  command -v bandit
+}
