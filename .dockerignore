@@ -19,7 +19,6 @@ jenkins-data/
 mysql-data/
 nginx-dev/
 scripts/
-setup.py
 tests/
 truedoc-ui/
 truedoc.egg-info/

@@ -18,8 +18,6 @@ services:
   #############################################################################
 
   truedoc-app:  # Hostname inside containers: "truedoc-app". Access from local: "http://truedoc-app.localhost:36456".
-    ports:
-      - "127.0.0.1:36456:5000"
     build:
       context: .
 
