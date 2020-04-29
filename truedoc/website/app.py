@@ -9,6 +9,8 @@ import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 
+from truedoc.db import db
+
 from truedoc.exceptions import MarshmallowError
 from truedoc.exceptions import SQLAlchemyError
 from truedoc.exceptions import TruedocError
@@ -46,6 +48,12 @@ app.register_blueprint(bookmytime.bp, url_prefix='/bookmytime')
 
 # TODO: see error handling manual
 # https://flask.palletsprojects.com/en/1.1.x/errorhandling/
+
+# See: https://docs.sqlalchemy.org/en/13/orm/contextual.html#using-thread-local-scope-with-web-applications
+@app.teardown_request
+def show_teardown(exc):
+    db.db_session.remove()
+
 
 @app.errorhandler(TruedocError)
 def handle_exception_truedocerror(exc):
