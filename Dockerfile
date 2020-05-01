@@ -4,21 +4,21 @@ FROM python:3.8.2-alpine3.11
 # Place "truedoc" python package to this path on local filesystem
 ARG TRUEDOC_PATH="/var/lib/truedoc"
 
-RUN apk add uwsgi uwsgi-python3
-COPY ./uwsgi/truedoc.ini /etc/uwsgi/
+# ATTENTION: "FLASK_ENV=development" is required to automatic reload changed source code without rebuild containers.
+# Docs: https://flask.palletsprojects.com/en/1.1.x/quickstart/#debug-mode
+ENV FLASK_APP="truedoc.website:app" \
+    FLASK_ENV="development"
 
 RUN mkdir -p ${TRUEDOC_PATH}
 WORKDIR ${TRUEDOC_PATH}
 
-# Copy required files to ${WORKDIR}
+# Copy "requirements.txt" to ${WORKDIR}
 COPY ./requirements.txt .
-COPY ./setup.py .
 
 RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install -r ${TRUEDOC_PATH}/requirements.txt && \
-    python3 setup.py develop
+    python3 -m pip install -r ${TRUEDOC_PATH}/requirements.txt
 
-CMD /usr/sbin/uwsgi --ini /etc/uwsgi/truedoc.ini
-
+EXPOSE 5000
+CMD python3 -m flask run --host 0.0.0.0 --port 5000
 
 # Docs about "Dockerfile": https://docs.docker.com/engine/reference/builder/
