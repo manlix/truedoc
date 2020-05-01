@@ -57,7 +57,7 @@ services:
   #############################################################################
 
   truedoc-mysql:  # Hostname inside containers: "truedoc-mysql".
-    image: mysql/mysql-server:8.0.19  # https://hub.docker.com/r/mysql/mysql-server/
+    image: mysql/mysql-server:8.0.20  # https://hub.docker.com/r/mysql/mysql-server/
     ports:
       - "127.0.0.1:3306:3306"
     environment:  # More environment vars: https://dev.mysql.com/doc/refman/8.0/en/docker-mysql-more-topics.html
@@ -170,6 +170,6 @@ services:
   #############################################################################
 
   truedoc-redis:  # Hostname inside containers: "truedoc-redis".
-    image: redis:5.0.9-alpine3.11  # https://hub.docker.com/_/redis
+    image: redis:6.0.0-alpine3.11  # https://hub.docker.com/_/redis
     ports:
       - "127.0.0.1:6379:6379"
