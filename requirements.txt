@@ -13,9 +13,9 @@ Flask == 1.1.2          # Direct use: https://pypi.org/project/Flask/
 marshmallow == 3.5.2    # Direct use: https://pypi.org/project/marshmallow/
 pur == 5.3.0            # Dev: updates requirements.txt to the latest versions — https://pypi.org/project/pur/
 PyJWT == 1.7.1          # Direct use: https://pypi.org/project/PyJWT/
-pylint == 2.5.0         # Direct use: https://pypi.org/project/pylint/
+pylint == 2.5.2         # Direct use: https://pypi.org/project/pylint/
 PyMySQL == 0.9.3        # Direct use: https://pypi.org/project/PyMySQL/
-pytest == 5.4.1         # Tests: https://pypi.org/project/pytest/
+pytest == 5.4.2         # Tests: https://pypi.org/project/pytest/
 pytest-cov == 2.8.1     # Dependence: for Tests: https://pypi.org/project/pytest-cov/
 redis == 3.5.0          # Dependence: for 'celery'
 requests == 2.23.0      # Dependence: for Tests: https://pypi.org/project/requests/
