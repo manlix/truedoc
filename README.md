@@ -120,7 +120,7 @@ manlix@lab:~/git/truedoc$ ./scripts/docker.dropall.sh
 
 **Docker Compose**
 * *Command and options*: `(default)`
-* *Command preview: `(default)`
+* *Command preview*: `(default)`
 
 ### Работа с базой данных <a name="dev_mode.db"></a>
 
