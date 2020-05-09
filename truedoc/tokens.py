@@ -68,7 +68,7 @@ def is_valid_token(token: str, save_to_ctx: bool = True) -> bool:
     except jwt.exceptions.PyJWTError as exc:
 
         # Allow requests with hardcoded token for development:
-        if os.environ.get('FLASK_ENV') == 'development' and token == truedoc.config.DEVELOPMENT.TOKEN:
+        if truedoc.config.IS_DEVELOPMENT and token == truedoc.config.DEVELOPMENT.TOKEN:
             decoded_token = {
                 'profile_id': truedoc.config.DEVELOPMENT.PROFILE_ID,
             }

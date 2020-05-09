@@ -1,8 +1,11 @@
 """Project configuration."""
 
 import datetime
+import os
 
 import truedoc.constants
+
+IS_DEVELOPMENT = os.environ.get('FLASK_ENV') == 'development'
 
 
 class PROJECT:
@@ -81,3 +84,5 @@ class DEVELOPMENT:
     """Data for development stage."""
     TOKEN = '.d3v3l0pm3nt.t0k3n.'
     PROFILE_ID = '00000000-0000-0000-0000-000000000001'
+    EMAIL = 'development@example.com'
+    PASSWORD = 'd3v3l0pm3nt_p@$$w0rd'
