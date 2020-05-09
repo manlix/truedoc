@@ -85,6 +85,7 @@ function main() {
   print_ok
 
   msg "Initializing DB (if required)..."
+  export FLASK_ENV="development"
   init_db
 
   msg "Truedoc is ready to accept connections."
