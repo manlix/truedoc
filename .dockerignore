@@ -15,7 +15,6 @@ api-requests/
 docker-compose.yml
 htmlcov/
 img/
-jenkins-data/
 mysql-data/
 nginx-dev/
 scripts/
