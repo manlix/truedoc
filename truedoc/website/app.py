@@ -4,6 +4,7 @@ from http import HTTPStatus
 import logging
 
 from flask import Flask
+from flask_cors import CORS
 
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
@@ -38,6 +39,7 @@ sentry_sdk.init(
 )
 
 app = Flask(__name__)
+CORS(app)
 
 app.register_blueprint(error.bp)
 app.register_blueprint(profile.bp, url_prefix='/profile')
