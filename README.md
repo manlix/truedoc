@@ -19,7 +19,7 @@
 * [Обработка исключения](#handle_exceptions)
     * [Интеграция с Sentry](#handle_exceptions.sentry)
 * [Тестирование](#tests)
-* [Инструменты](#tools)    
+* [Инструменты](#tools)
     * [Проверка кода на соответствие стандартам](#tools.code_standard)
     * [Проверка кода на безопасность](#tools.code_safety)
     * [Обновление библиотек в requirements.txt до последних версий](#tools.update_requirements_txt)
@@ -41,7 +41,7 @@ manlix@lab:~$ mkdir ~/venv && python3 -m venv ~/venv/truedoc && . ~/venv/truedoc
 
 ### Запуск Docker контейнеров <a name="dev_mode.docker_compose"></a>
 
-* Запустить Truedoc: 
+* Запустить Truedoc:
 ```sh
 manlix@lab:~/git/truedoc$ ./scripts/app.start.sh
 ```
@@ -65,12 +65,12 @@ manlix@lab:~/git/truedoc$ docker-compose start truedoc-app
 manlix@lab:~/git/truedoc$ docker-compose logs truedoc-app
 ```
 
-* Запустить bash-сессию внутри запущенного контейнера с MySQL: 
+* Запустить bash-сессию внутри запущенного контейнера с MySQL:
 ```sh
 manlix@lab:~/git/truedoc$ docker-compose exec truedoc-mysql bash
 ```
 
-* Полностью остановить и зачистить (удалить контейнеры и образы) Truedoc: 
+* Полностью остановить и зачистить (удалить контейнеры и образы) Truedoc:
 ```sh
 manlix@lab:~/git/truedoc$ ./scripts/docker.dropall.sh
 ```
@@ -177,7 +177,7 @@ manlix@lab:~/git/truedoc/truedoc$ alembic upgrade +1
 -------- | ---------- | --------
 Create   | POST       | Объект
 Read     | GET        | Объект
-Update   | PATCH      | Объект 
+Update   | PATCH      | Объект
 Delete   | DELETE     | Объект
 
 ## Использование очереди <a name="queue"></a>
@@ -220,7 +220,7 @@ Delete   | DELETE     | Объект
   "status": "success"
 }
 ```
-         
+
 ### Простой отрицательный <a name="responses.simple_negative"></a>
 * HTTP-код: `406 (Not Acceptable)` или `409 (Conflict)`;
 * Обязательные поля:
@@ -247,7 +247,7 @@ Delete   | DELETE     | Объект
 ```json
 {
   "status": "error",
-  "internal_error": true,        
+  "internal_error": true,
   "description": "Краткое описание проблемы"
 }
 ```
@@ -292,13 +292,13 @@ Delete   | DELETE     | Объект
 }
 ```
 
-### Отрицательный <a name="responses.negative"></a> 
+### Отрицательный <a name="responses.negative"></a>
 * HTTP-код: `406 (Not Acceptable)` и выше, но не больше `499`;
 * Обязательные поля:
     * `status` _(str)_ = `error` — факт неудачного запроса ошибка
     * `description` _(str)_= `краткое описание неудачного запроса`
     * `errors_fields` _(dict)_ — факт на некорректные данные во входящем запросе, в полях
-    * `errors_fields['входящее_поле']` _(list)_ — каждый элемент является описанием найденной ошибки в поле **входящее_поле**. Ошибок для каждого поля может быть несколько (зависит от кол-ва привязанных валидаторов) 
+    * `errors_fields['входящее_поле']` _(list)_ — каждый элемент является описанием найденной ошибки в поле **входящее_поле**. Ошибок для каждого поля может быть несколько (зависит от кол-ва привязанных валидаторов)
 
 ```json
 {
@@ -306,14 +306,14 @@ Delete   | DELETE     | Объект
   "description": "Bad request",
   "error_fields": {
     "email": [
-      "Incorrect email."    
+      "Incorrect email."
     ],
     "password": [
       "Missing data for required field."
-    ]  
-  } 
+    ]
+  }
 }
-``` 
+```
 
 ### HTTP коды ответов <a name="responses.http_codes"></a>
 
@@ -328,7 +328,7 @@ Delete   | DELETE     | Объект
 
 Чтобы при ∀ проблемах на стороне сервера отдавать клиенту `JSON`, вместо обычного текста (например: `500 (Internal Server Error)` необходимо градировать типы исключений и отдавать соответствующий ответ:
 
-* `TruedocError` — проблемы уровня проекта (указанный пользователь не ∃, не введены обязательные поля, ...); 
+* `TruedocError` — проблемы уровня проекта (указанный пользователь не ∃, не введены обязательные поля, ...);
 * `SQLAlchemyError` — проблемы при работе с БД (ошибки при доступе к БД);
 * `MarshmallowError` — проблемы валидации данных;
 * `Exception` — ∀ другие проблемы.
@@ -397,7 +397,7 @@ $ bandit code.py
 ### Обновление библиотек в requirements.txt до последних версий <a name="tools.update_requirements_txt"></a>
 
 ```shell
-(truedoc) manlix@lab:~/git/truedoc$ pur 
+(truedoc) manlix@lab:~/git/truedoc$ pur
 Updated alembic: 1.1.0 -> 1.2.0
 Updated marshmallow: 3.0.5 -> 3.2.0
 Updated sentry-sdk: 0.11.2 -> 0.12.2
@@ -406,10 +406,10 @@ All requirements up-to-date.
 
 ## Инструменты <a name="tools"></a>
 
-* Языки: 
+* Языки:
     * [Python](https://www.python.org)
     * [Bash](https://www.gnu.org/software/bash/)
- 
+
 * Библиотеки для Python:
     * [Alembic](https://alembic.sqlalchemy.org) — миграция базы данных
     * [Celery](https://docs.celeryproject.org) — распределённая очередь задач
@@ -438,7 +438,6 @@ All requirements up-to-date.
     * [docker-compose](https://docs.docker.com/compose/) — декларативная организация контейнеров
     * [Git](https://git—scm.com) — управление исходным кодом
     * [HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) — канал связи для API
-    * [Jenkins](https://jenkins.io) — CI/CD
     * [jQuery](https://jquery.com) — Javascript-библиотека, для использования AJAX
     * [JSON](https://en.wikipedia.org/wiki/JSON) — для передачи структур в видел JSON
     * [nginx](https://nginx.org) — обратный прокси—сервер поверх контейнеров

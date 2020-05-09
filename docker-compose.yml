@@ -113,7 +113,6 @@ services:
       - "./nginx-dev/conf.d:/etc/nginx/conf.d:ro"
     depends_on:
       # Remember about these names in 'proxy_pass' directives
-      - truedoc-jenkins
       - truedoc-pma
       - truedoc-ui
 
@@ -148,19 +147,6 @@ services:
     ports:
       - "127.0.0.1:5672:5672"
       - "127.0.0.1:15672:15672"
-
-  #############################################################################
-  #
-  # `truedoc-jenkins` (UI is available on 'truedoc-jenkins.localhost')
-  #
-  # Latest versions: https://jenkins.io/download/
-  #
-  #############################################################################
-
-  truedoc-jenkins:
-    image: jenkins/jenkins:lts-alpine  # https://hub.docker.com/r/jenkins/jenkins
-    volumes:
-      - "./jenkins-data:/var/jenkins_home"
 
 
   #############################################################################
