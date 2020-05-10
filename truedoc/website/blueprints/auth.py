@@ -13,6 +13,11 @@ from truedoc.response import success
 
 bp = Blueprint('auth', __name__)
 
+"""
+Small tip:
+http 'http://truedoc-app.localhost/auth/' email="development@example.com" password='d3v3l0pm3nt_p@$$w0rd'  Authorization:"Bearer ${TOKEN}"
+"""
+
 
 @bp.route('/', methods=['POST'])
 def authentication():
@@ -28,8 +33,8 @@ def authentication():
         profile = db.Profile.load(profile_data['email'])
         profile.check_password(profile_data['password'])
     except (
-            truedoc.exceptions.ProfileDoesNotExist,
-            truedoc.exceptions.ProfileInvalidPassword,
+        truedoc.exceptions.ProfileDoesNotExist,
+        truedoc.exceptions.ProfileInvalidPassword,
     ):
         raise truedoc.exceptions.ProfileUnauthorizedError
 
