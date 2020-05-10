@@ -89,38 +89,3 @@ class TokenError(TruedocError):
 class TokenNoValidTokenInHeaderError(TokenError):
     """Child exception for 'token'."""
     description = 'No valid token in header'
-
-
-#########################
-#
-# BOOKMYTIME
-#
-#########################
-
-class BookmytimeError(TruedocError):
-    """General exception for 'Bookmytime' routines."""
-
-
-class BookmytimeDateAlreadyExistsError(BookmytimeError):
-    """Child exception: date already exists for this profile."""
-    http_code = HTTPStatus.CONFLICT  # 409
-    description = 'Given date already exists'
-
-
-class BookmytimeDateDoesNotExist(BookmytimeError):
-    """Child exception: given date does not exist for this profile."""
-
-    http_code = HTTPStatus.NOT_FOUND  # 404
-    description = 'Date does not exist'
-
-
-class BookmytimeTimeAlreadyExistsError(BookmytimeError):
-    """Child exception: time already exists for this profile."""
-    http_code = HTTPStatus.CONFLICT  # 409
-    description = 'Given time already exists'
-
-
-class BookmytimeViolationError(BookmytimeError):
-    """Child exception: access violation."""
-    http_code = HTTPStatus.FORBIDDEN  # 403
-    description = 'Given date does not belong to this profile'
