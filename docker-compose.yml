@@ -143,7 +143,7 @@ services:
   #############################################################################
 
   truedoc-rabbitmq:
-    image: rabbitmq:3.8.3-management-alpine  # https://hub.docker.com/_/rabbitmq
+    image: rabbitmq:3.8.4-management-alpine  # https://hub.docker.com/_/rabbitmq
     ports:
       - "127.0.0.1:5672:5672"
       - "127.0.0.1:15672:15672"
@@ -158,6 +158,6 @@ services:
   #############################################################################
 
   truedoc-redis:  # Hostname inside containers: "truedoc-redis".
-    image: redis:6.0.1-alpine3.11  # https://hub.docker.com/_/redis
+    image: redis:6.0.4-alpine3.11  # https://hub.docker.com/_/redis
     ports:
       - "127.0.0.1:6379:6379"
