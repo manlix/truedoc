@@ -124,7 +124,7 @@ services:
   #############################################################################
 
   truedoc-ui:
-    image: python:3.8.3-alpine3.11  # https://hub.docker.com/_/python
+    image: python:3.8.3-alpine3.12  # https://hub.docker.com/_/python
     working_dir: /var/lib/truedoc-ui  # Just to run `shell` with start point with this directory
     tty: true  # Required to see logs redirected to STDOUT & STDERR by 'docker-compose ... logs truedoc-ui'
     volumes:
@@ -143,7 +143,7 @@ services:
   #############################################################################
 
   truedoc-rabbitmq:
-    image: rabbitmq:3.8.4-management-alpine  # https://hub.docker.com/_/rabbitmq
+    image: rabbitmq:3.8.5-management-alpine  # https://hub.docker.com/_/rabbitmq
     ports:
       - "127.0.0.1:5672:5672"
       - "127.0.0.1:15672:15672"
